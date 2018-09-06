@@ -2,10 +2,12 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import * as firebase from 'firebase';
+
 
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false,
+    isLoadingComplete: false
   };
 
   render() {
@@ -30,8 +32,7 @@ export default class App extends React.Component {
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
+        require('./assets/images/logo.png'),
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
@@ -60,3 +61,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#69a5b0',
   },
 });
+
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBN6ndtrkgfg4sDr3EVrAUWvd_fv7PVgj0",
+  authDomain: "rutacaninarn.firebaseapp.com",
+  databaseURL: "https://rutacaninarn.firebaseio.com",
+  storageBucket: ""
+};
+
+firebase.initializeApp(firebaseConfig);

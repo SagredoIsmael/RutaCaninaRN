@@ -7,9 +7,12 @@ import RutasScreen from '../screens/RutasScreen';
 import PerfilScreen from '../screens/PerfilScreen';
 import MisRutasScreen from '../screens/MisRutasScreen';
 
+import { Ionicons } from '@expo/vector-icons';
+
 const RutasStack = createStackNavigator({
   Rutas : RutasScreen,
 });
+
 
 RutasStack.navigationOptions = {
   tabBarLabel: 'Rutas cerca',
@@ -17,9 +20,9 @@ RutasStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+        Platform.OS === 'ios'?
+           `ios-navigate${focused ? '' : '-outline'}`
+          : 'md-navigate'
       }
     />
   ),
@@ -34,7 +37,9 @@ PerfilStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+      name={Platform.OS === 'ios' ?
+       `ios-contact${focused ? '' : '-outline'}`
+        : 'md-contact'}
     />
   ),
 };
@@ -48,7 +53,9 @@ MisRutasStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+      name={Platform.OS === 'ios' ?
+       `ios-heart${focused ? '' : '-outline'}`
+        : 'md-heart'}
     />
   ),
 };
