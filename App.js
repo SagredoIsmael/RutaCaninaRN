@@ -3,12 +3,19 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import * as firebase from 'firebase';
+import Apikeys from './constants/ApiKeys';
 
 
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false
-  };
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoadingComplete : false,
+    }
+    // Initialite Firebase..
+    if (!firebase.apps.length) { firebase.initializeApp(Apikeys.FirebaseConfig); }
+  }
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -61,13 +68,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#69a5b0',
   },
 });
-
-// Initialize Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyBN6ndtrkgfg4sDr3EVrAUWvd_fv7PVgj0",
-  authDomain: "rutacaninarn.firebaseapp.com",
-  databaseURL: "https://rutacaninarn.firebaseio.com",
-  storageBucket: ""
-};
-
-firebase.initializeApp(firebaseConfig);
