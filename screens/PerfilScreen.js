@@ -1,6 +1,7 @@
 import React from 'react';
 import { Avatar } from 'react-native-elements';
-import ImagePickers from '../components/ImagePicker'
+import ImagePickers from '../components/ImagePicker';
+import List from '../components/List';
 import {
   Image,
   Platform,

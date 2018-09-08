@@ -1,80 +1,109 @@
 import React from 'react';
-import { ExpoLinksView } from '@expo/samples';
+import firebase from 'firebase';
+import Fire from '../api/Fire';
+import List from '../components/List';
+import getPermission from '../utils/getPermission';
 import {
-  Image,
-  Platform,
-  ScrollView,
+  LayoutAnimation,
+  RefreshControl,
   StyleSheet,
   ListView,
-  Text,
-  TouchableOpacity,
-  TouchableHighlight,
   View,
+  TouchableHighlight,
+  Text,
 } from 'react-native';
+
 
 export default class RutasScreen extends React.Component {
   static navigationOptions = {
     title: 'Rutas cerca de mí',
   };
 
-  constructor(){
-    super()
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      itemDataSource: ds
-    }
-    this.renderRow = this.renderRow.bind(this);
-    this.pressRow = this.pressRow.bind(this);
+  state = {
+    loading: false,
+    posts:[],
+    data:{},
+  };
+
+  componentDidMount() {
+  // Check if we are signed in...
+  if (Fire.shared.uid) {
+    // If we are, then we can get the first 5 posts
+    this.makeRemoteRequest();
+  } else {
+    // If we aren't then we should just start observing changes. This will be called when the user signs in
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.makeRemoteRequest();
+      }
+    });
   }
-
-  componentWillMount(){
-    this.getItems();
-  }
-
-  componentDidMount(){
-    this.getItems();
-  }
-
-  getItems(){
-    let items = [{title:'Item uno'}, {title:'Item dos coño'}];
-
-    this.setState({
-        itemDataSource : this.state.itemDataSource.cloneWithRows(items)
-    })
-  }
-
-  renderRow(item){
-    return (
-      <TouchableHighlight onPress = {() => {
-        this.pressRow(item)
-      }}>
-        <View style={styles.container}>
-          <Text> El titulo de lo que has seleccionado es: {item.title} </Text>
-        </View>
-      </TouchableHighlight>
-    );
-  }
-
-  pressRow(){
-    console.log(item)
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <ListView
-          dataSource = {this.state.itemDataSource}
-          renderRow = {this.renderRow}
-        />
-      </View>
-    );
-  }
-
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#69a5b0',
-  },
-});
+
+makeRemoteRequest = async lastKey => {
+    // If we are currently getting posts, then bail out..
+    if (this.state.loading) {
+      return;
+    }
+    this.setState({ loading: true });
+
+    // The data prop will be an array of posts, the cursor will be used for pagination.
+    const { data, cursor } = await Fire.shared.getPaged({
+      size: PAGE_SIZE,
+      start: lastKey,
+    });
+
+    this.lastKnownKey = cursor;
+    // Iteratively add posts
+    let posts = {};
+    for (let child of data) {
+      posts[child.key] = child;
+    }
+    console.log (posts);
+    this.addPosts(posts);
+
+    // Finish loading, this will stop the refreshing animation.
+    this.setState({ loading: false });
+  };
+
+  // Append the item to our states `data` prop
+  addPosts = posts => {
+    this.setState(previousState => {
+      let data = {
+        ...previousState.data,
+        ...posts,
+      };
+      return {
+        data,
+        // Sort the data by timestamp
+        posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp),
+      };
+    });
+  };
+
+
+  // Because we want to get the most recent items, don't pass the cursor back.
+  // This will make the data base pull the most recent items.
+  _onRefresh = () => this.makeRemoteRequest();
+
+  // If we press the "Load More..." footer then get the next page of posts
+  onPressFooter = () => this.makeRemoteRequest(this.lastKnownKey);
+
+  render() {
+    // Let's make everything purrty by calling this method which animates layout changes.
+    LayoutAnimation.easeInEaseOut();
+    return (
+      <List
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.loading}
+            onRefresh={this._onRefresh}
+          />
+        }
+        onPressFooter={this.onPressFooter}
+        data={this.state.posts}
+      />
+    );
+  }
+}

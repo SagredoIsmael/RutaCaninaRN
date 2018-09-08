@@ -2,8 +2,6 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import * as firebase from 'firebase';
-import Apikeys from './constants/ApiKeys';
 
 
 export default class App extends React.Component {
@@ -13,9 +11,8 @@ export default class App extends React.Component {
     this.state = {
       isLoadingComplete : false,
     }
-    // Initialite Firebase..
-    if (!firebase.apps.length) { firebase.initializeApp(Apikeys.FirebaseConfig); }
   }
+
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
