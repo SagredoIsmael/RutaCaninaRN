@@ -26,18 +26,19 @@ export default class RutasScreen extends React.Component {
   };
 
   componentDidMount() {
-  // Check if we are signed in...
-  if (Fire.shared.uid) {
-    // If we are, then we can get the first 5 posts
-    this.makeRemoteRequest();
-  } else {
-    // If we aren't then we should just start observing changes. This will be called when the user signs in
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        this.makeRemoteRequest();
-      }
-    });
-  }
+  // // Check if we are signed in...
+  // if (Fire.shared.uid) {
+  //   // If we are, then we can get the first 5 posts
+  //   this.makeRemoteRequest();
+  // } else {
+  //   // If we aren't then we should just start observing changes. This will be called when the user signs in
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       this.makeRemoteRequest();
+  //     }
+  //   });
+  // }
+  this.makeRemoteRequest();
 }
 
 
@@ -50,17 +51,17 @@ makeRemoteRequest = async lastKey => {
 
     // The data prop will be an array of posts, the cursor will be used for pagination.
     const { data, cursor } = await Fire.shared.getPaged({
-      size: PAGE_SIZE,
+      size: 20,
       start: lastKey,
     });
 
     this.lastKnownKey = cursor;
+
     // Iteratively add posts
     let posts = {};
     for (let child of data) {
       posts[child.key] = child;
     }
-    console.log (posts);
     this.addPosts(posts);
 
     // Finish loading, this will stop the refreshing animation.

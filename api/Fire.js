@@ -8,7 +8,7 @@ const firebase = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
-const collectionName = 'snack-SJucFknGX';
+const collectionName = 'routes';
 
 class Fire {
   constructor() {
@@ -33,28 +33,25 @@ class Fire {
 
   // Download Data
   getPaged = async ({ size, start }) => {
-    let ref = this.collection.orderBy('timestamp', 'desc').limit(size);
+    console.log('in getpage: ', 'Size:', size, 'start', start);
+    let ref = this.collection;
     try {
-      if (start) {
-        ref = ref.startAfter(start);
-      }
-
+      // if (start) {
+      //   ref = ref.startAfter(start);
+      // }
       const querySnapshot = await ref.get();
       const data = [];
       querySnapshot.forEach(function(doc) {
         if (doc.exists) {
           const post = doc.data() || {};
-
-          // Reduce the name
           const user = post.user || {};
-
           const name = user.deviceName;
-          const reduced = {
+          const route = {
             key: doc.id,
-            name: (name || 'Secret Duck').trim(),
+            name: (name || 'Desconocido').trim(),
             ...post,
           };
-          data.push(reduced);
+          data.push(route);
         }
       });
 
