@@ -1,6 +1,5 @@
 import React from 'react';
 import { Avatar } from 'react-native-elements';
-import ImagePickers from '../components/ImagePicker';
 import List from '../components/List';
 import {
   Image,
@@ -32,10 +31,6 @@ export default class PerfilScreen extends React.Component {
         </View>
       </ScrollView>
     );
-  }
-
-  pressButton(){
-    new ImagePickers()._pickImage()
   }
 }
 

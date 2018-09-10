@@ -12,9 +12,8 @@ export default class Footer extends React.Component {
         underlayColor={'#eeeeee'}
         {...props}
         onPress={this.onPress}
-        style={[styles.touchable, style]}
-      >
-        <Text style={styles.text}>Load More...</Text>
+        style={[styles.touchable, style]}>
+        <Text style={styles.text}>Cargar más..</Text>
       </TouchableHighlight>
     );
   }

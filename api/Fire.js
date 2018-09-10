@@ -8,8 +8,6 @@ const firebase = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
-const collectionName = 'routes';
-
 class Fire {
   constructor() {
     firebase.initializeApp({
@@ -31,10 +29,10 @@ class Fire {
     });
   }
 
-  // Download Data
+  // Download Data Route
   getPaged = async ({ size, start }) => {
     console.log('in getpage: ', 'Size:', size, 'start', start);
-    let ref = this.collection;
+    let ref = this.collectionRoutes;
     try {
       // if (start) {
       //   ref = ref.startAfter(start);
@@ -44,17 +42,17 @@ class Fire {
       querySnapshot.forEach(function(doc) {
         if (doc.exists) {
           const post = doc.data() || {};
-          const user = post.user || {};
-          const name = user.deviceName;
+          const title = post.title;
+          const img = post.image;
           const route = {
             key: doc.id,
-            name: (name || 'Desconocido').trim(),
+            image: (img || "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg"),
+            name: (title || 'Desconocido').trim(),
             ...post,
           };
           data.push(route);
         }
       });
-
       const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
       return { data, cursor: lastVisible };
     } catch ({ message }) {
@@ -62,9 +60,14 @@ class Fire {
     }
   };
 
+
+ // Download Data User
+  getInfoUser =
+
+
   // Upload Data
   uploadPhotoAsync = async uri => {
-    const path = `${collectionName}/${this.uid}/${uuid.v4()}.jpg`;
+    const path = `${'routes'}/${this.uid}/${uuid.v4()}.jpg`;
     return uploadPhoto(uri, path);
   };
 
@@ -75,7 +78,7 @@ class Fire {
       );
 
       const remoteUri = await this.uploadPhotoAsync(reducedImage);
-      this.collection.add({
+      this.collectionRoutes.add({
         text,
         uid: this.uid,
         timestamp: this.timestamp,
@@ -90,9 +93,14 @@ class Fire {
   };
 
   // Helpers
-  get collection() {
-    return firebase.firestore().collection(collectionName);
+  get collectionRoutes() {
+    return firebase.firestore().collection('routes');
   }
+
+  get collectionUsers() {
+    return firebase.firestore().collection('users');
+  }
+
 
   get uid() {
     return (firebase.auth().currentUser || {}).uid;

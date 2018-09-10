@@ -92,7 +92,6 @@ makeRemoteRequest = async lastKey => {
   onPressFooter = () => this.makeRemoteRequest(this.lastKnownKey);
 
   render() {
-    // Let's make everything purrty by calling this method which animates layout changes.
     LayoutAnimation.easeInEaseOut();
     return (
       <List

@@ -1,4 +1,6 @@
 import firebase from 'firebase';
+
+
 function uploadPhoto(uri, uploadUri) {
   return new Promise(async (res, rej) => {
     const response = await fetch(uri);
