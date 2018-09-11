@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "RutaCaninaRN",
+    "name": "Ruta Canina",
     "description": "A very interesting project.",
     "slug": "RutaCaninaRN",
     "privacy": "public",
@@ -8,11 +8,12 @@
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "paddingHorizontal":30
     },
     "updates": {
       "fallbackToCacheTimeout": 0

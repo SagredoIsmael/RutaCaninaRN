@@ -1,18 +1,34 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { ExpoLinksView } from '@expo/samples';
+import { Avatar } from 'react-native-elements';
+import List from '../components/List';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 export default class PerfilScreen extends React.Component {
   static navigationOptions = {
-    title: 'Links',
+    header: null
   };
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        {/* Go ahead and delete ExpoLinksView and replace it with your
-           * content, we just wanted to provide you with some helpful links */}
-        <ExpoLinksView />
+        <View>
+          <Avatar
+            xlarge
+            rounded
+            source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg"}}
+            onPress={() => this.pressButton() }
+            activeOpacity={0.7}
+            containerStyle={{flex: 2, marginLeft: 20, marginTop: 20}}
+          />
+        </View>
       </ScrollView>
     );
   }
@@ -23,5 +39,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 15,
     backgroundColor: '#69a5b0',
+  },
+  photoUser: {
+    marginTop: 60,
+    marginBottom: 20,
   },
 });

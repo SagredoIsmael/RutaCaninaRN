@@ -3,10 +3,16 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
+
 export default class App extends React.Component {
-  state = {
-    isLoadingComplete: false,
-  };
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isLoadingComplete : false,
+    }
+  }
+
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -30,8 +36,7 @@ export default class App extends React.Component {
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
+        require('./assets/images/logo.png'),
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
