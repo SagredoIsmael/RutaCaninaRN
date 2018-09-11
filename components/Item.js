@@ -18,7 +18,7 @@ export default class Item extends React.Component {
   }
 
   render() {
-    const { text, title, imageWidth, imageHeight, uid, image, description } = this.props;
+    const { user, text, title, imageWidth, imageHeight, uid, image, description } = this.props;
 
     // Reduce the name to something
     const imgW = imageWidth || this.state.width;
@@ -27,7 +27,7 @@ export default class Item extends React.Component {
 
     return (
       <View>
-        <Header image={{ uri: image }} name={title} />
+        <Header image={{ uri: image }} name={user.name} />
         <Image
           resizeMode="contain"
           style={{

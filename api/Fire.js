@@ -30,13 +30,48 @@ class Fire {
   }
 
   // Download Data Route
-  getPaged = async ({ size, start }) => {
+  getRoutes = async ({ size, start }) => {
     console.log('in getpage: ', 'Size:', size, 'start', start);
+    //Get all users
+    const users = await this.getUsers();
     let ref = this.collectionRoutes;
     try {
       // if (start) {
       //   ref = ref.startAfter(start);
       // }
+      const querySnapshot = await ref.get();
+      const data = [];
+      querySnapshot.forEach(function(doc) {
+        if (doc.exists) {
+          const post = doc.data() || {};
+          const title = post.title;
+          const img = post.image;
+          for (let userProp of users["data"]) {
+            if (post.creatorUser == userProp.key){
+              const route = {
+                user: userProp,
+                key: doc.id,
+                image: (img || "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg"),
+                name: (title || 'Desconocido').trim(),
+                ...post,
+              };
+              data.push(route);
+            }
+          };
+        }
+      });
+      const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+      return { data, cursor: lastVisible };
+    } catch ({ message }) {
+      alert(message);
+    }
+  };
+
+
+ // Download Data User
+  getUsers = async () => {
+    let ref = this.collectionUsers;
+    try {
       const querySnapshot = await ref.get();
       const data = [];
       querySnapshot.forEach(function(doc) {
@@ -53,16 +88,11 @@ class Fire {
           data.push(route);
         }
       });
-      const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-      return { data, cursor: lastVisible };
+      return { data };
     } catch ({ message }) {
       alert(message);
     }
   };
-
-
- // Download Data User
-  getInfoUser =
 
 
   // Upload Data

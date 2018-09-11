@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import Footer from './Footer';
 import Item from './Item';
@@ -17,8 +17,25 @@ class List extends React.Component {
         )}
         renderItem={this.renderItem}
         {...props}
+        ItemSeparatorComponent={this.renderSeparator}
       />
     );
   }
+
+  renderSeparator = () => {
+    return (
+      <View
+        style={{
+          height: 1.5,
+          backgroundColor: "#b8e2cb",
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginLeft: "14%",
+          marginRight: "14%",
+        }}
+      />
+    );
+  };
+
 }
 export default List;

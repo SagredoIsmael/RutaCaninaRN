@@ -50,7 +50,7 @@ makeRemoteRequest = async lastKey => {
     this.setState({ loading: true });
 
     // The data prop will be an array of posts, the cursor will be used for pagination.
-    const { data, cursor } = await Fire.shared.getPaged({
+    const { data, cursor } = await Fire.shared.getRoutes({
       size: 20,
       start: lastKey,
     });
