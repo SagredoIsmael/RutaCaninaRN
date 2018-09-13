@@ -1,6 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import Btn from 'react-native-micro-animated-button';
 
 const profileImageSize = 36;
 const padding = 12;
@@ -68,7 +69,12 @@ const Icon = ({ name }) => (
 const IconBar = () => (
   <View style={styles.row}>
     <View style={styles.row}>
-      <Icon name="ios-heart-outline" />
+    <Btn
+      label="Submit"
+      onPress={() => this.btn.success()}
+      ref={ref => (this.btn = ref)}
+      successIcon="check"
+    />
       <Icon name="ios-chatbubbles-outline" />
       <Icon name="ios-send-outline" />
     </View>

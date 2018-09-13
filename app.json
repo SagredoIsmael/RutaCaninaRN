@@ -1,7 +1,6 @@
 {
   "expo": {
     "name": "Ruta Canina",
-    "description": "A very interesting project.",
     "slug": "RutaCaninaRN",
     "privacy": "public",
     "sdkVersion": "29.0.0",
@@ -22,7 +21,11 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.ismaelsagredo.RutaCaninaRN",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.ismaelsagredo.RutaCaninaRN"
     }
   }
 }
