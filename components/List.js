@@ -10,7 +10,7 @@ class List extends React.Component {
   render() {
     const { onPressFooter, ...props } = this.props;
     return (
-      <FlatList
+      <FlatList style={{ paddingTop: 10 }}
         keyExtractor={this.keyExtractor}
         ListFooterComponent={footerProps => (
           <Footer {...footerProps} onPress={onPressFooter} />
@@ -27,7 +27,7 @@ class List extends React.Component {
       <View
         style={{
           height: 1.5,
-          backgroundColor: "#b8e2cb",
+          backgroundColor: 'rgba(232, 147, 142, 1)',
           alignItems: 'center',
           justifyContent: 'center',
           marginLeft: "14%",

@@ -11,13 +11,14 @@ import {
   View,
   TouchableHighlight,
   Text,
+  StatusBar,
 } from 'react-native';
 
 
 export default class RutasScreen extends React.Component {
   static navigationOptions = {
-    title: 'Rutas cerca de mí',
-  };
+   header:null
+}
 
   state = {
     loading: false,

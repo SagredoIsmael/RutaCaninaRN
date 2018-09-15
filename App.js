@@ -28,6 +28,14 @@ export default class App extends React.Component {
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
+          <StatusBar
+     backgroundColor="blue"
+     barStyle="light-content"
+   />
+   <View>
+     <StatusBar hidden={true} />
+     ...
+   </View>
         </View>
       );
     }
@@ -62,6 +70,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#69a5b0',
+    backgroundColor: '#bedce2',
   },
 });

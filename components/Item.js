@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import Btn from 'react-native-micro-animated-button';
 
 const profileImageSize = 36;
 const padding = 12;
@@ -19,7 +18,7 @@ export default class Item extends React.Component {
   }
 
   render() {
-    const { user, text, title, imageWidth, imageHeight, uid, image, description } = this.props;
+    const { text, title, imageWidth, imageHeight, uid, image, description } = this.props;
 
     // Reduce the name to something
     const imgW = imageWidth || this.state.width;
@@ -28,11 +27,11 @@ export default class Item extends React.Component {
 
     return (
       <View>
-        <Header image={{ uri: image }} name={user.name} />
+        <Header image={{ uri: image }} name={title} />
         <Image
           resizeMode="contain"
           style={{
-            backgroundColor: '#D8D8D8',
+            backgroundColor: 'rgb(238, 238, 238)',
             width: '100%',
             aspectRatio: aspect,
           }}
@@ -63,18 +62,13 @@ const Header = ({ name, image }) => (
 );
 
 const Icon = ({ name }) => (
-  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color="black" />
+  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color='rgb(238, 238, 238)' />
 );
 
 const IconBar = () => (
   <View style={styles.row}>
     <View style={styles.row}>
-    <Btn
-      label="Submit"
-      onPress={() => this.btn.success()}
-      ref={ref => (this.btn = ref)}
-      successIcon="check"
-    />
+      <Icon name="ios-heart-outline" />
       <Icon name="ios-chatbubbles-outline" />
       <Icon name="ios-send-outline" />
     </View>
@@ -97,7 +91,7 @@ const styles = StyleSheet.create({
   },
   avatar: {
     aspectRatio: 1,
-    backgroundColor: '#D8D8D8',
+    backgroundColor: 'rgb(238, 238, 238)',
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#979797',
     borderRadius: profileImageSize / 2,

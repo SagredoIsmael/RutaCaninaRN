@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgba(0,0,0,0.3)',
+    borderTopColor: 'rgb(238, 238, 238)',
   },
   text: { fontWeight: 'bold', fontSize: 16 },
 });
