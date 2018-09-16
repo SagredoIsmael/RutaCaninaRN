@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
+import Colors from '../constants/Colors';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
 const profileImageSize = 36;
@@ -31,7 +32,7 @@ export default class Item extends React.Component {
         <Image
           resizeMode="contain"
           style={{
-            backgroundColor: 'rgb(238, 238, 238)',
+            backgroundColor: Colors.whiteCrudo,
             width: '100%',
             aspectRatio: aspect,
           }}
@@ -62,7 +63,7 @@ const Header = ({ name, image }) => (
 );
 
 const Icon = ({ name }) => (
-  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color='rgb(238, 238, 238)' />
+  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color= {Colors.whiteCrudo} />
 );
 
 const IconBar = () => (
@@ -91,9 +92,9 @@ const styles = StyleSheet.create({
   },
   avatar: {
     aspectRatio: 1,
-    backgroundColor: 'rgb(238, 238, 238)',
+    backgroundColor: Colors.whiteCrudo,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: '#979797',
+    borderColor: Colors.whiteCrudo,
     borderRadius: profileImageSize / 2,
     width: profileImageSize,
     height: profileImageSize,

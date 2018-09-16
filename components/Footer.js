@@ -1,4 +1,5 @@
 import React from 'react';
+import Colors from '../constants/Colors';
 import { StyleSheet, Text, TouchableHighlight } from 'react-native';
 
 export default class Footer extends React.Component {
@@ -9,7 +10,7 @@ export default class Footer extends React.Component {
     const { onPress, style, ...props } = this.props;
     return (
       <TouchableHighlight
-        underlayColor={'#eeeeee'}
+        underlayColor={Colors.whiteCrudo}
         {...props}
         onPress={this.onPress}
         style={[styles.touchable, style]}>
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: 'rgb(238, 238, 238)',
+    borderTopColor: Colors.whiteCrudo,
   },
   text: { fontWeight: 'bold', fontSize: 16 },
 });

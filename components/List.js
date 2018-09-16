@@ -1,6 +1,6 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
-
+import Colors from '../constants/Colors';
 import Footer from './Footer';
 import Item from './Item';
 
@@ -27,7 +27,7 @@ class List extends React.Component {
       <View
         style={{
           height: 1.5,
-          backgroundColor: 'rgba(232, 147, 142, 1)',
+          backgroundColor: Colors.whiteCrudo,
           alignItems: 'center',
           justifyContent: 'center',
           marginLeft: "14%",
