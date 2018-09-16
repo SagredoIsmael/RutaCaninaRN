@@ -12,6 +12,6 @@ export default {
   noticeBackground: tintColor,
   noticeText: '#fff',
   whiteCrudo: 'rgb(238, 238, 238)',
-  pickChicle: 'rgba(232, 147, 142, 1)',
+  pinkChicle: 'rgba(232, 147, 142, 1)',
   fontPrefer: 'Noteworthy-Bold'
 };

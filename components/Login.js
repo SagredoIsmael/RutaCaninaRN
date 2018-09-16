@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import firebase from 'firebase';
+import Fire from '../api/Fire';
 import {
   StyleSheet,
   View,
@@ -91,16 +93,37 @@ export default class Login extends Component {
       email,
       password,
     } = this.state;
-    this.setState({ isLoading: true });
-    // Simulate an API call
-    setTimeout(() => {
-      LayoutAnimation.easeInEaseOut();
+    // Comprobe email and password
+    LayoutAnimation.easeInEaseOut();
+    if (this.validateEmail(email)){
+      this.setState({
+        isEmailValid: true,
+        isLoading: true,
+      });
+      if (password.length >= 8){
+        this.setState({
+          isPasswordValid: true,
+          isLoading: true,
+        });
+        //API call
+        const { dataUser } = Fire.shared.signIn({
+          email: email,
+          password: password,
+        });
+      }else{
+        this.passwordInput.shake()
+        this.setState({
+          isLoading: false,
+          isPasswordValid: false,
+        });
+      }
+    }else{
+      this.emailInput.shake()
       this.setState({
         isLoading: false,
-        isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-        isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
+        isEmailValid: false,
       });
-    }, 1500);
+    }
   }
 
   signUp() {
@@ -110,17 +133,49 @@ export default class Login extends Component {
       passwordConfirmation,
       name,
     } = this.state;
-    this.setState({ isLoading: true });
-    // Simulate an API call
-    setTimeout(() => {
-      LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.easeInEaseOut();
+    if (this.validateEmail(email)){
+      this.setState({
+        isEmailValid: true,
+        isLoading: true,
+      });
+      if (password.length >= 8){
+        this.setState({
+          isPasswordValid: true,
+          isLoading: true,
+        });
+        if (password == passwordConfirmation){
+          this.setState({
+            isConfirmationValid: true,
+            isLoading: true,
+          });
+          // API call
+          const { dataUser } = Fire.shared.signUp({
+            email: email,
+            password: password,
+            name: name,
+          });
+        }else{
+          this.confirmationInput.shake()
+          this.setState({
+            isLoading: false,
+            isConfirmationValid: false,
+          });
+        }
+      }else{
+        this.passwordInput.shake()
+        this.setState({
+          isLoading: false,
+          isPasswordValid: false,
+        });
+      }
+    }else{
+      this.emailInput.shake()
       this.setState({
         isLoading: false,
-        isEmailValid: this.validateEmail(email) || this.emailInput.shake(),
-        isPasswordValid: password.length >= 8 || this.passwordInput.shake(),
-        isConfirmationValid: password == passwordConfirmation || this.confirmationInput.shake(),
+        isEmailValid: false,
       });
-    }, 1500);
+    }
   }
 
   render() {
@@ -251,14 +306,14 @@ export default class Login extends Component {
                       ref={input => this.confirmationInput = input}
                       onSubmitEditing={this.signUp}
                       onChangeText={passwordConfirmation => this.setState({ passwordConfirmation })}
-                      errorMessage={isConfirmationValid ? null : 'Por favor introduce una contraseña'}
+                      errorMessage={isConfirmationValid ? null : 'Ambas contraseñas no coinciden'}
                     />}
                     {isSignUpPage &&
                       <Input
                         value={name}
                         secureTextEntry={false}
                         keyboardAppearance='light'
-                        autoCapitalize='Words'
+                        autoCapitalize='words'
                         autoCorrect={false}
                         keyboardType='default'
                         returnKeyType={'done'}
@@ -268,7 +323,7 @@ export default class Login extends Component {
                         placeholder={'Tu nombre'}
                         ref={input => this.confirmationInput = input}
                         onSubmitEditing={this.signUp}
-                        //onChangeText = this.setState({ name });  //TODO
+                        onChangeText={name => this.setState({ name })}
                       />}
                     <Button
                       buttonStyle={styles.loginButton}

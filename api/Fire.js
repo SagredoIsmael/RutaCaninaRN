@@ -3,13 +3,13 @@ import uuid from 'uuid';
 import getUserInfo from '../utils/getUserInfo';
 import shrinkImageAsync from '../utils/shrinkImageAsync';
 import uploadPhoto from '../utils/uploadPhoto';
-
 const firebase = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
 class Fire {
-  constructor() {
+  constructor(props) {
+
     firebase.initializeApp({
       apiKey: "AIzaSyBN6ndtrkgfg4sDr3EVrAUWvd_fv7PVgj0",
       authDomain: "rutacaninarn.firebaseapp.com",
@@ -25,9 +25,39 @@ class Fire {
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) {
         await firebase.auth().signInAnonymously();
+        console.log('UID user: anónimo');
+      }else{
+        console.log('UID user: ',user.uid);
       }
     });
   }
+
+  getUid() {
+    const uidUser = this.uid;
+    console.log('hasta aqui llego con uid: ', uidUser);
+    return (uidUser);
+  }
+
+  signUp = async ({ email, password, name }) => {
+    try{
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+    }catch(error){
+      console.log(error.toString());
+    }
+  }
+
+
+  signIn = async ({ email, password }) => {
+    try{
+      console.log(email, password);
+      firebase.auth().signInWithEmailAndPassword(email, password).then(function (user){
+        console.log('Sesión iniciada, usuario:', user.uid);
+      })
+    }catch(error){
+      console.log(error.toString());
+    }
+  }
+
 
   // Download Data Route
   getRoutes = async ({ size, start }) => {

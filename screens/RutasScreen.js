@@ -1,5 +1,4 @@
 import React from 'react';
-import firebase from 'firebase';
 import Fire from '../api/Fire';
 import List from '../components/List';
 import getPermission from '../utils/getPermission';

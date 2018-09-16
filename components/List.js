@@ -27,7 +27,7 @@ class List extends React.Component {
       <View
         style={{
           height: 1.5,
-          backgroundColor: Colors.whiteCrudo,
+          backgroundColor: Colors.pinkChicle,
           alignItems: 'center',
           justifyContent: 'center',
           marginLeft: "14%",
