@@ -29,13 +29,10 @@ export default class App extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
           <StatusBar
-     backgroundColor="blue"
-     barStyle="light-content"
-   />
-   <View>
-     <StatusBar hidden={true} />
-     ...
-   </View>
+            backgroundColor="blue"
+            barStyle="light-content"
+          />
+        <StatusBar hidden={true} />
         </View>
       );
     }

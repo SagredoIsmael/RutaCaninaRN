@@ -48,12 +48,12 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      email: '',
-      password: '',
+      email: undefined,
+      password: undefined,
       fontLoaded: false,
       selectedCategory: 0,
       isLoading: false,
-      name:'',
+      name:undefined,
       isEmailValid: true,
       isPasswordValid: true,
       isConfirmationValid: true,

@@ -16,11 +16,9 @@ export default class MisRutasScreen extends React.Component {
 
   render() {
     return (
-
         <View style={styles.container}>
 
         </View>
-
     );
   }
 }

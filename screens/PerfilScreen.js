@@ -18,19 +18,11 @@ export default class PerfilScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
-  state = { currentUser: null };
-
-  componentDidMount() {
-    const { currentUser } = Fire.shared.getUid();
-    this.setState = currentUser
-    console.log('soy el perfil..y tengo uid:', currentUser);
-  }
 
   render() {
     return (
       <ScrollView style={styles.container}>
         <View>
-          if
           <Login></Login>
         </View>
       </ScrollView>
