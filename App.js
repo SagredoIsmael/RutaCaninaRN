@@ -1,4 +1,7 @@
 import React from 'react';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import Reducers from './reducers'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
@@ -25,15 +28,17 @@ export default class App extends React.Component {
       );
     } else {
       return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-          <StatusBar
-            backgroundColor="blue"
-            barStyle="light-content"
-          />
-        <StatusBar hidden={true} />
-        </View>
+        <Provider store={createStore(Reducers)}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+            <AppNavigator />
+            <StatusBar
+              backgroundColor="blue"
+              barStyle="light-content"
+            />
+          <StatusBar hidden={true} />
+          </View>
+        </Provider>
       );
     }
   }

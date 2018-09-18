@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar } from 'react-native-elements';
 import Fire from '../api/Fire';
 import Colors from '../constants/Colors';
-import Login from '../components/Login.js'
+import Login from '../components/Login.js';
 import List from '../components/List';
 import {
   Image,
