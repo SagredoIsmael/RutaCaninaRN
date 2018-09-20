@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 import {
   Image,
   Platform,
@@ -7,9 +9,10 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 
-export default class MisRutasScreen extends React.Component {
+ class MisRutasScreen extends React.Component {
   static navigationOptions = {
     title: 'Mis Rutas',
   };
@@ -17,10 +20,20 @@ export default class MisRutasScreen extends React.Component {
   render() {
     return (
         <View style={styles.container}>
+          <Button
+            onPress={() => console.log(this.props.dataRoutes[0].name)}
+            title={'Pincha'}
+          />
         </View>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {dataRoutes : state.dataRoutes}
+}
+
+export default connect(mapStateToProps, actions)(MisRutasScreen)
 
 let styles = StyleSheet.create({
   container: {

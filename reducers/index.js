@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux'
-import superheroesReducer from './superheroesReducers'
+import getRoutes from './getRoutesReducer'
 
 export default combineReducers({
-  superheroes: superheroesReducer
+  dataRoutes: getRoutes
 })
