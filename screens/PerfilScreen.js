@@ -1,5 +1,7 @@
 import React from 'react';
 import { Avatar } from 'react-native-elements';
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 import Fire from '../api/Fire';
 import Colors from '../constants/Colors';
 import Login from '../components/Login.js';
@@ -12,21 +14,43 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
 } from 'react-native';
 
-export default class PerfilScreen extends React.Component {
+class PerfilScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
 
   render() {
+    if (this.props.keyUser == ''){
+      return (
+        <ScrollView style={styles.container}>
+          <View>
+            <Login></Login>
+          </View>
+        </ScrollView>
+      );
+    }
     return (
       <ScrollView style={styles.container}>
         <View>
-          <Login></Login>
+        <Button
+          title={'Desconectar'}
+          onPress={this.onButtonPress}
+        />
+        <Button
+          title={'Ver props'}
+          onPress={() => console.log(this.props)}
+        />
         </View>
       </ScrollView>
     );
+
+  }
+
+  onButtonPress = () => {
+    this.props.insert_user('')
   }
 }
 
@@ -37,3 +61,13 @@ const styles = StyleSheet.create({
   },
 
 });
+
+
+const mapStateToProps = state => {
+  return {
+    dataRoutes : state.dataRoutes,
+    keyUser : state.keyUser,
+  }
+}
+
+export default connect(mapStateToProps, actions)(PerfilScreen)

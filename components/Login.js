@@ -339,7 +339,7 @@ export default class Login extends Component {
               </KeyboardAvoidingView>
             </View>
           :
-          <Text>Loading...</Text>
+          <Text>Cargando...</Text>
         }
         </ImageBackground>
       </View>

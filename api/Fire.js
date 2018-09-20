@@ -1,4 +1,7 @@
 import uuid from 'uuid';
+import React from 'react';
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 import getUserInfo from '../utils/getUserInfo';
 import shrinkImageAsync from '../utils/shrinkImageAsync';
 import uploadPhoto from '../utils/uploadPhoto';
@@ -6,13 +9,10 @@ const firebase = require('firebase');
 // Required for side-effects
 require('firebase/firestore');
 
-class Fire {
-  state = {
-    jejeje: 'oleeeeeetiritritirtirit'
-  };
+class Fire extends React.Component {
 
-  constructor(props) {
-
+  constructor() {
+    super()
     firebase.initializeApp({
       apiKey: "AIzaSyBN6ndtrkgfg4sDr3EVrAUWvd_fv7PVgj0",
       authDomain: "rutacaninarn.firebaseapp.com",
@@ -29,10 +29,21 @@ class Fire {
       if (!user) {
         await firebase.auth().signInAnonymously();
         console.log('UID user: anónimo');
+        this.props.insert_user('')
       }else{
+        console.log('las propiedades en el autentificate son: ', this.props);
         console.log('UID user: ',user.uid);
+        this.props.insert_user(user.uid)
       }
     });
+  }
+
+  render() {
+    //this.props.insert_user('jeeeee')
+    return (
+        <View style={styles.container}>
+        </View>
+    );
   }
 
   getUid() {
@@ -175,4 +186,11 @@ class Fire {
 
 Fire.shared = new Fire();
 
-export default Fire
+const mapStateToProps = state => {
+  return {
+    dataRoutes : state.dataRoutes,
+    keyUser : state.keyUser,
+  }
+}
+
+export default connect(mapStateToProps, actions)(Fire)

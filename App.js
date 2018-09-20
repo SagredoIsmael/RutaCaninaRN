@@ -26,21 +26,20 @@ export default class App extends React.Component {
           onFinish={this._handleFinishLoading}
         />
       );
-    } else {
-      return (
-        <Provider store={createStore(Reducers)}>
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-            <AppNavigator />
-            <StatusBar
-              backgroundColor="blue"
-              barStyle="light-content"
-            />
-          <StatusBar hidden={true} />
-          </View>
-        </Provider>
-      );
     }
+    return (
+      <Provider store={createStore(Reducers)}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+          <StatusBar
+            backgroundColor="blue"
+            barStyle="light-content"
+          />
+        <StatusBar hidden={true} />
+        </View>
+      </Provider>
+    );
   }
 
   _loadResourcesAsync = async () => {

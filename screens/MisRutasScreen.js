@@ -18,10 +18,11 @@ import {
   };
 
   render() {
+    this.props.insert_user('jeeeee')
     return (
         <View style={styles.container}>
           <Button
-            onPress={() => console.log(this.props.dataRoutes[0].name)}
+            onPress={() => console.log('hola soy el bueno', this.props)}
             title={'Pincha'}
           />
         </View>
@@ -30,7 +31,10 @@ import {
 }
 
 const mapStateToProps = state => {
-  return {dataRoutes : state.dataRoutes}
+  return {
+    dataRoutes : state.dataRoutes,
+    keyUser : state.keyUser,
+  }
 }
 
 export default connect(mapStateToProps, actions)(MisRutasScreen)

@@ -95,7 +95,6 @@ makeRemoteRequest = async lastKey => {
   onPressFooter = () => this.makeRemoteRequest(this.lastKnownKey);
 
   render() {
-    console.log(this.props);
     LayoutAnimation.easeInEaseOut();
     return (
       <List
