@@ -1,5 +1,4 @@
 import uuid from 'uuid';
-
 import getUserInfo from '../utils/getUserInfo';
 import shrinkImageAsync from '../utils/shrinkImageAsync';
 import uploadPhoto from '../utils/uploadPhoto';
@@ -8,6 +7,10 @@ const firebase = require('firebase');
 require('firebase/firestore');
 
 class Fire {
+  state = {
+    jejeje: 'oleeeeeetiritritirtirit'
+  };
+
   constructor(props) {
 
     firebase.initializeApp({
@@ -34,7 +37,6 @@ class Fire {
 
   getUid() {
     const uidUser = this.uid;
-    console.log('hasta aqui llego con uid: ', uidUser);
     return (uidUser);
   }
 
@@ -172,4 +174,5 @@ class Fire {
 }
 
 Fire.shared = new Fire();
-export default Fire;
+
+export default Fire

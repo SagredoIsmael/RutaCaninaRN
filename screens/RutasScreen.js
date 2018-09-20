@@ -1,5 +1,7 @@
 import React from 'react';
 import Fire from '../api/Fire';
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 import List from '../components/List';
 import getPermission from '../utils/getPermission';
 import {
@@ -14,10 +16,10 @@ import {
 } from 'react-native';
 
 
-export default class RutasScreen extends React.Component {
+class RutasScreen extends React.Component {
   static navigationOptions = {
    header:null
-}
+  }
 
   state = {
     loading: false,
@@ -81,6 +83,7 @@ makeRemoteRequest = async lastKey => {
         posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp),
       };
     });
+    this.props.insert_dataRoutes(this.state.posts)
   };
 
 
@@ -92,6 +95,7 @@ makeRemoteRequest = async lastKey => {
   onPressFooter = () => this.makeRemoteRequest(this.lastKnownKey);
 
   render() {
+    console.log(this.props);
     LayoutAnimation.easeInEaseOut();
     return (
       <List
@@ -107,3 +111,9 @@ makeRemoteRequest = async lastKey => {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {dataRoutes : state.dataRoutes}
+}
+
+export default connect(mapStateToProps, actions)(RutasScreen)
