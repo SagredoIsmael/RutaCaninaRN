@@ -18,12 +18,15 @@ import {
   };
 
   render() {
-    this.props.insert_user('jeeeee')
     return (
         <View style={styles.container}>
           <Button
-            onPress={() => console.log('hola soy el bueno', this.props)}
-            title={'Pincha'}
+            onPress={() => this.props.insert_user('jeeeee')}
+            title={'Logeeado'}
+          />
+          <Button
+            onPress={() => this.props.insert_user('')}
+            title={'Deslogeado'}
           />
         </View>
     );

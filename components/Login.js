@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import firebase from 'firebase';
 import Fire from '../api/Fire';
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 import {
   StyleSheet,
   View,
@@ -11,6 +13,7 @@ import {
   LayoutAnimation,
   UIManager,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import { Font } from 'expo';
 import { Input, Button } from 'react-native-elements'
@@ -39,7 +42,7 @@ TabSelector.propTypes = {
   selected: PropTypes.bool.isRequired,
 };
 
-export default class Login extends Component {
+ class Login extends Component {
   static navigationOptions = {
     header:null,
   };
@@ -88,7 +91,7 @@ export default class Login extends Component {
     return re.test(email);
   }
 
-  login() {
+  login = async () => {
     const {
       email,
       password,
@@ -106,10 +109,21 @@ export default class Login extends Component {
           isLoading: true,
         });
         //API call
-        const { dataUser } = Fire.shared.signIn({
-          email: email,
-          password: password,
-        });
+        Fire.shared.loginUser(email, password)
+        .then(user => {
+          this.props.insert_user(user.user.uid)
+          this.setState({ isLoading: false})
+        })
+        .catch(function(error) {
+          Alert.alert(
+            '¡Wuau!',
+            'Usuario o contraseña incorrectos',
+            [
+              {text: 'Aceptar'},
+            ],
+            { cancelable: false }
+          )
+        })
       }else{
         this.passwordInput.shake()
         this.setState({
@@ -150,11 +164,22 @@ export default class Login extends Component {
             isLoading: true,
           });
           // API call
-          const { dataUser } = Fire.shared.signUp({
-            email: email,
-            password: password,
-            name: name,
-          });
+          Fire.shared.registryUser(email, password, name)
+          .then(user => {
+            this.props.insert_user(user.user.uid)
+            isLoading: false
+          })
+          .catch(function(error) {
+            Alert.alert(
+              '¡Wuau!',
+              'Este email ya está registrado',
+              [
+                {text: 'Aceptar'},
+              ],
+              { cancelable: false }
+            )
+          })
+          this.setState({ isLoading: false })
         }else{
           this.confirmationInput.shake()
           this.setState({
@@ -346,6 +371,15 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    dataRoutes : state.dataRoutes,
+    keyUser : state.keyUser,
+  }
+}
+
+export default connect(mapStateToProps, actions)(Login)
 
 const styles = StyleSheet.create({
   container: {

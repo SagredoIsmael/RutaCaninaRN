@@ -15,14 +15,20 @@ import {
   TouchableOpacity,
   View,
   Button,
+  Alert,
 } from 'react-native';
 
 class PerfilScreen extends React.Component {
   static navigationOptions = {
     header: null
   };
+  constructor(props) {
+    super(props);
+    this.props.insert_user(Fire.shared.uid)
+  }
 
   render() {
+
     if (this.props.keyUser == ''){
       return (
         <ScrollView style={styles.container}>
@@ -37,7 +43,7 @@ class PerfilScreen extends React.Component {
         <View>
         <Button
           title={'Desconectar'}
-          onPress={this.onButtonPress}
+          onPress={this.LogOutOnButtonPress}
         />
         <Button
           title={'Ver props'}
@@ -46,11 +52,19 @@ class PerfilScreen extends React.Component {
         </View>
       </ScrollView>
     );
-
   }
 
-  onButtonPress = () => {
-    this.props.insert_user('')
+
+  LogOutOnButtonPress = () => {
+    Alert.alert(
+      'Cerrar sesión',
+      '¿Esta seguro?',
+      [
+        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Aceptar', onPress: () => this.props.insert_user('')},
+      ],
+      { cancelable: false }
+    )
   }
 }
 
