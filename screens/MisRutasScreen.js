@@ -20,14 +20,6 @@ import {
   render() {
     return (
         <View style={styles.container}>
-          <Button
-            onPress={() => this.props.insert_user('jeeeee')}
-            title={'Logeeado'}
-          />
-          <Button
-            onPress={() => this.props.insert_user('')}
-            title={'Deslogeado'}
-          />
         </View>
     );
   }

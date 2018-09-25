@@ -24,11 +24,12 @@ class PerfilScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    this.props.insert_user(Fire.shared.uid)
+    if (Fire.shared.uid != undefined){
+        this.props.insert_user(Fire.shared.uid)
+    }
   }
 
   render() {
-
     if (this.props.keyUser == ''){
       return (
         <ScrollView style={styles.container}>
@@ -61,12 +62,20 @@ class PerfilScreen extends React.Component {
       '¿Esta seguro?',
       [
         {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Aceptar', onPress: () => this.props.insert_user('')},
+        {text: 'Aceptar', onPress: () => this.logOut() },
       ],
       { cancelable: false }
     )
   }
+
+
+  logOut = () => {
+    this.props.insert_user('')
+    Fire.shared.logOutUser()
+  }
+
 }
+
 
 const styles = StyleSheet.create({
   container: {

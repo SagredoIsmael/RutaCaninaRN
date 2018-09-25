@@ -47,6 +47,10 @@ class Fire extends React.Component {
     return firebase.auth().signInWithEmailAndPassword(email,password)
   }
 
+  logOutUser () {
+    return firebase.auth().signOut()
+  }
+
 
   // Download Data Route
   getRoutes = async ({ size, start }) => {

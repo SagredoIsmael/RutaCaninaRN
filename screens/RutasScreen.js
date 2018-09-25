@@ -84,7 +84,6 @@ makeRemoteRequest = async lastKey => {
       };
     });
     this.props.insert_dataRoutes(this.state.posts)
-    this.props.insert_user(Fire.shared.uid)
   };
 
 

@@ -167,7 +167,7 @@ TabSelector.propTypes = {
           Fire.shared.registryUser(email, password, name)
           .then(user => {
             this.props.insert_user(user.user.uid)
-            isLoading: false
+            this.setState({ isLoading: false})
           })
           .catch(function(error) {
             Alert.alert(
@@ -179,7 +179,6 @@ TabSelector.propTypes = {
               { cancelable: false }
             )
           })
-          this.setState({ isLoading: false })
         }else{
           this.confirmationInput.shake()
           this.setState({
