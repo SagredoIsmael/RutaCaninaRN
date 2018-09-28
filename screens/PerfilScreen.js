@@ -1,11 +1,11 @@
 import React from 'react';
-import { Avatar } from 'react-native-elements';
+import { Avatar } from 'react-native-elements'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
-import Fire from '../api/Fire';
-import Colors from '../constants/Colors';
-import Login from '../components/Login.js';
-import List from '../components/List';
+import Fire from '../api/Fire'
+import Colors from '../constants/Colors'
+import Login from '../components/Login.js'
+import Profile from '../components/Profile.js'
 import {
   Image,
   Platform,
@@ -40,18 +40,9 @@ class PerfilScreen extends React.Component {
       );
     }
     return (
-      <ScrollView style={styles.container}>
-        <View>
-        <Button
-          title={'Desconectar'}
-          onPress={this.LogOutOnButtonPress}
-        />
-        <Button
-          title={'Ver props'}
-          onPress={() => console.log(this.props)}
-        />
-        </View>
-      </ScrollView>
+      <View>
+        <Profile></Profile>
+      </View>
     );
   }
 
