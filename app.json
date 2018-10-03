@@ -22,10 +22,29 @@
     ],
     "ios": {
       "bundleIdentifier": "com.ismaelsagredo.RutaCaninaRN",
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "¿Permites usar la cámara para tomar fotos de tus canes?"
+      },
     },
     "android": {
-      "package": "com.ismaelsagredo.RutaCaninaRN"
+      "package": "com.ismaelsagredo.RutaCaninaRN",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "MANAGE_DOCUMENTS",
+        "READ_CONTACTS",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR",
+        "READ_EXTERNAL_STORAGE",
+        "READ_PHONE_STATE",
+        "RECORD_AUDIO",
+        "USE_FINGERPRINT",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "WRITE_EXTERNAL_STORAGE",
+      ],
     }
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import * as actions from '../actions'
-import Cameras from '../components/Cameras'
+import Camera from '../components/Camera'
 import {
   Image,
   Platform,
@@ -20,7 +20,9 @@ import {
 
   render() {
     return (
-        <Cameras> </Cameras>
+        <View style={styles.container}>
+          <Camera> </Camera>
+        </View>
     );
   }
 }
