@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Permissions, ImagePicker } from 'expo'
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
 import {
@@ -18,21 +19,56 @@ class Profile extends React.Component {
   constructor(props){
     super(props);
   }
+  state = {
+    image: null,
+    hasCameraPermission: null
+  }
+  
+  async componentWillMount() {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      this.setState({ hasCameraPermission: status === 'granted' });
+  }
 
   render() {
+    let { image } = this.state;
+    const { hasCameraPermission } = this.state;
+    // if ((hasCameraPermission === null) || (hasCameraPermission === false)) {
+    //   return
+    //      <View style={styles.container}>
+    //        <Text>No tiene permisos para acceder a la galería</Text>
+    //      </View>
+    // } else {
     return (
-      <View style={styles.container}>
+      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
         <Button
            style={styles.logOutButton}
            title={'Desconectar'}
            onPress={this.LogOutOnButtonPress}
          />
+        <Button
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
+        />
+        {image &&
+          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       </View>
     )
   }
 
 
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    })
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+  }
 
   LogOutOnButtonPress = () => {
     Alert.alert(
@@ -68,8 +104,8 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderColor: "white",
     marginBottom:10,
-    alignSelf:'center',
-    position: 'absolute',
+    alignSelf: 'center',
+    position: 'relative',
     marginTop:130
   },
 });
