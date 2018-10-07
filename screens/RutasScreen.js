@@ -45,7 +45,6 @@ class RutasScreen extends React.Component {
 
 
 makeRemoteRequest = async lastKey => {
-    // If we are currently getting posts, then bail out..
     if (this.state.loading) {
       return;
     }

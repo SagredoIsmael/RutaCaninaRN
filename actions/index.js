@@ -11,3 +11,10 @@ export const insert_user = (keyUser) => {
     payload: keyUser
   }
 }
+
+export const insert_dataUser = (dataUser) => {
+  return {
+    type: 'insert_dataUser',
+    payload: dataUser
+  }
+}

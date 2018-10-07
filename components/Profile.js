@@ -11,6 +11,7 @@ import {
   Button,
   ScrollView,
   Image,
+  TouchableHighlight,
 } from 'react-native'
 import * as actions from '../actions'
 import Colors from '../constants/Colors'
@@ -21,17 +22,46 @@ class Profile extends React.Component {
   }
   state = {
     image: null,
-    hasCameraPermission: null
+    hasCameraPermission: null,
   }
-  
+
+
+  userRequest = async () => {
+      const { dataUser } = await Fire.shared.getInfoMyUser()
+      this.props.insert_dataUser(dataUser)
+      //
+      // // Iteratively add posts
+      // let posts = {};
+      // for (let child of data) {
+      //   posts[child.key] = child;
+      // }
+      // this.addPosts(posts);
+      //
+      // // Finish loading, this will stop the refreshing animation.
+      // this.setState({ loading: false });
+    };
+
+
   async componentWillMount() {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
       this.setState({ hasCameraPermission: status === 'granted' });
+      this.userRequest();
+  }
+
+
+  renderImageProfile() {
+    return (
+      <Image
+        style={ styles.avatar }
+        source={{uri: this.props.dataUser.image }}
+      />
+    );
   }
 
   render() {
     let { image } = this.state;
     const { hasCameraPermission } = this.state;
+    console.log('aver?', this.state.fontLoaded);
     // if ((hasCameraPermission === null) || (hasCameraPermission === false)) {
     //   return
     //      <View style={styles.container}>
@@ -39,20 +69,27 @@ class Profile extends React.Component {
     //      </View>
     // } else {
     return (
-      <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-        <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar6.png'}}/>
-        <Button
-           style={styles.logOutButton}
-           title={'Desconectar'}
-           onPress={this.LogOutOnButtonPress}
-         />
-        <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
-        />
-        {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-      </View>
+      <ScrollView style={styles.container}>
+        <View style={styles.viewGeneral}>
+          <TouchableHighlight onPress={()=>this._pickImage()}>
+            {this.renderImageProfile()}
+          </TouchableHighlight>
+          (<Text style={{ fontSize: 30 }}>
+            {this.props.dataUser.name}
+          </Text>)
+          <Button
+             style={styles.logOutButton}
+             title={'Desconectar'}
+             onPress={this.LogOutOnButtonPress}
+           />
+          <Button
+            title="Pick an image from camera roll"
+            onPress={this._pickImage}
+          />
+          {image &&
+            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+        </View>
+      </ScrollView>
     )
   }
 
@@ -62,11 +99,8 @@ class Profile extends React.Component {
       allowsEditing: true,
       aspect: [4, 3],
     })
-
-    console.log(result);
-
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+      //TODO: upload de foto perfil a firebase y cambiar la url del user: depues : 1. intentar que firebase escuche automatico y actualice todo solo, 2. meter la url a mano en this.props.dataUser.image
     }
   }
 
@@ -89,10 +123,16 @@ class Profile extends React.Component {
 
 }
 
+
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.pinkChicle,
-    flex: 1,
+    backgroundColor: '#bedce2',
+  },
+  viewGeneral:{
+    backgroundColor: '#bedce2',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   logOutButton: {
     backgroundColor: Colors.pinkChicle
@@ -101,19 +141,19 @@ const styles = StyleSheet.create({
     width: 130,
     height: 130,
     borderRadius: 63,
-    borderWidth: 4,
-    borderColor: "white",
+    borderWidth: 3,
+    borderColor: Colors.pinkChicle,
     marginBottom:10,
     alignSelf: 'center',
     position: 'relative',
-    marginTop:130
+    marginTop:60
   },
 });
 
 const mapStateToProps = state => {
   return {
-    dataRoutes : state.dataRoutes,
     keyUser : state.keyUser,
+    dataUser : state.dataUser,
   }
 }
 

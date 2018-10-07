@@ -117,6 +117,31 @@ class Fire extends React.Component {
     }
   };
 
+  getInfoMyUser = async () => {
+    let ref = this.firestoreMyUser;
+    try {
+        const queryData = await ref.get()
+          if (queryData.exists) {
+            const post = queryData.data() || {};
+            const title = post.title;
+            const img = post.image;
+            const dataUser = {
+              key: queryData.id,
+              image: (img || "https://bootdey.com/img/Content/avatar/avatar6.png"),
+              name: (title || 'Desconocido').trim(),
+              ...post,
+            };
+            return {dataUser}
+          }else{
+            console.log("No se puede obtener la infoMyUser");
+          }
+
+    } catch ({ message }) {
+      console.log("No se puede obtener la infoMyUser");
+      alert(message);
+    }
+  }
+
 
   // Upload Data
   uploadPhotoAsync = async uri => {
@@ -152,6 +177,10 @@ class Fire extends React.Component {
 
   get collectionUsers() {
     return firebase.firestore().collection('users');
+  }
+
+  get firestoreMyUser() {
+    return firebase.firestore().collection('users').doc(this.uid)
   }
 
   get uid() {
