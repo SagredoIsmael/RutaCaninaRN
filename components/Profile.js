@@ -101,6 +101,7 @@ class Profile extends React.Component {
     })
     if (!result.cancelled) {
       //TODO: upload de foto perfil a firebase y cambiar la url del user: depues : 1. intentar que firebase escuche automatico y actualice todo solo, 2. meter la url a mano en this.props.dataUser.image
+     uploadUrl = await Fire.shared.uploadImageAsync(result.uri);
     }
   }
 

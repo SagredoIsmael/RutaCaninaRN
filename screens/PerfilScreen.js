@@ -46,25 +46,6 @@ class PerfilScreen extends React.Component {
     );
   }
 
-
-  LogOutOnButtonPress = () => {
-    Alert.alert(
-      'Cerrar sesión',
-      '¿Esta seguro?',
-      [
-        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Aceptar', onPress: () => this.logOut() },
-      ],
-      { cancelable: false }
-    )
-  }
-
-
-  logOut = () => {
-    this.props.insert_user('')
-    Fire.shared.logOutUser()
-  }
-
 }
 
 

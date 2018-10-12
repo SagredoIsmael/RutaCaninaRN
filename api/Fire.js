@@ -145,30 +145,41 @@ class Fire extends React.Component {
 
   // Upload Data
   uploadPhotoAsync = async uri => {
-    const path = `${'routes'}/${this.uid}/${uuid.v4()}.jpg`;
+    const path = `${'test'}/${this.uid}/${uuid.v4()}.jpg`;
     return uploadPhoto(uri, path);
   };
 
-  post = async ({ text, image: localUri }) => {
+  uploadPhotoProfile = async ({ text, image: localUri }) => {
     try {
-      const { uri: reducedImage, width, height } = await shrinkImageAsync(
-        localUri,
-      );
-
-      const remoteUri = await this.uploadPhotoAsync(reducedImage);
-      this.collectionRoutes.add({
-        text,
-        uid: this.uid,
-        timestamp: this.timestamp,
-        imageWidth: width,
-        imageHeight: height,
-        image: remoteUri,
-        user: getUserInfo(),
-      });
+      // const { uri: reducedImage, width, height } = await shrinkImageAsync(
+      //   localUri,
+      // );
+      const remoteUri = await this.uploadPhotoAsync(localUri);
+      // this.collectionRoutes.add({
+      //   text,
+      //   uid: this.uid,
+      //   timestamp: this.timestamp,
+      //   imageWidth: width,
+      //   imageHeight: height,
+      //   image: remoteUri,
+      //   user: getUserInfo(),
+      // });
     } catch ({ message }) {
       alert(message);
     }
   };
+
+  uploadImageAsync= async uri => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(uuid.v4());
+
+    const snapshot = await ref.put(blob);
+  return snapshot.downloadURL;
+}
 
   // Helpers
   get collectionRoutes() {
