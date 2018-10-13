@@ -140,7 +140,8 @@ TabSelector.propTypes = {
     }
   }
 
-  signUp() {
+
+  signUp = async () => {
     const {
       email,
       password,
@@ -164,12 +165,14 @@ TabSelector.propTypes = {
             isLoading: true,
           });
           // API call
-          Fire.shared.registryUser(email, password, name)
+          Fire.shared.registryUser(email, password)
           .then(user => {
+            const createNameUser = Fire.shared.updateNameUser(name)
             this.props.insert_user(user.user.uid)
             this.setState({ isLoading: false})
           })
           .catch(function(error) {
+            //TODO: cuando salte alert, cambiar el setstate a false
             Alert.alert(
               '¡Wuau!',
               'Este email ya está registrado',
@@ -201,6 +204,8 @@ TabSelector.propTypes = {
       });
     }
   }
+
+
 
   render() {
     const {

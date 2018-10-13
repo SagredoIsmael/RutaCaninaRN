@@ -37,8 +37,9 @@ class Fire extends React.Component {
   }
 
 
-  registryUser (email, password, name){
+  registryUser = async (email, password) => {
     return firebase.auth().createUserWithEmailAndPassword(email,password)
+
   }
 
   loginUser (email, password){
@@ -157,7 +158,15 @@ updateURLPhotoUser = urlPhoto => {
   var setAda = ref.set({
   image: urlPhoto
   }, { merge: true });
-  return 'sisi'
+  return urlPhoto
+}
+
+updateNameUser = async (name) => {
+  let ref = this.firestoreMyUser;
+  var setAda = await ref.set({
+  name: name
+  }, { merge: true });
+  return name
 }
 
   // Helpers
