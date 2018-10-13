@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Permissions, ImagePicker } from 'expo'
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
+import BouncingPreloader from 'react-native-bouncing-preloader'
 import {
   AppRegistry,
   StyleSheet,
@@ -16,6 +17,13 @@ import {
 import * as actions from '../actions'
 import Colors from '../constants/Colors'
 
+const icons = [
+  require('../assets/images/bone.png'),
+  require('../assets/images/dog.png'),
+  require('../assets/images/paws.png'),
+  require('../assets/images/toys.png'),
+];
+
 class Profile extends React.Component {
   constructor(props){
     super(props);
@@ -23,22 +31,13 @@ class Profile extends React.Component {
   state = {
     image: null,
     hasCameraPermission: null,
+    isLoading:false,
   }
 
 
   userRequest = async () => {
       const { dataUser } = await Fire.shared.getInfoMyUser()
       this.props.insert_dataUser(dataUser)
-      //
-      // // Iteratively add posts
-      // let posts = {};
-      // for (let child of data) {
-      //   posts[child.key] = child;
-      // }
-      // this.addPosts(posts);
-      //
-      // // Finish loading, this will stop the refreshing animation.
-      // this.setState({ loading: false });
     };
 
 
@@ -81,8 +80,12 @@ class Profile extends React.Component {
              title={'Desconectar'}
              onPress={this.LogOutOnButtonPress}
            />
-          {image &&
-            <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+          {(this.state.isLoading) ? <BouncingPreloader
+            icons={icons}
+            leftDistance={-100}
+            rightDistance={-150}
+            speed={1000}
+          /> : null}
         </View>
       </ScrollView>
     )
@@ -95,12 +98,14 @@ class Profile extends React.Component {
       aspect: [4, 3],
     })
     if (!result.cancelled) {
+    this.setState({ isLoading: true });
      uploadUrl = await Fire.shared.uploadImageUserAsync(result.uri)
      uploadUrl? this.userRequest() :   Alert.alert(
          '¡Wuau!',
          'Error al cargar la foto', [ {text: 'Aceptar'}, ],
          { cancelable: false })
     }
+    this.setState({ isLoading: false });
   }
 
   LogOutOnButtonPress = () => {
