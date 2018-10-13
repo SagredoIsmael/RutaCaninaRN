@@ -43,9 +43,9 @@ class Profile extends React.Component {
 
 
   async componentWillMount() {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      this.setState({ hasCameraPermission: status === 'granted' });
-      this.userRequest();
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+      this.setState({ hasCameraPermission: status === 'granted' })
+      this.userRequest()
   }
 
 
@@ -61,7 +61,6 @@ class Profile extends React.Component {
   render() {
     let { image } = this.state;
     const { hasCameraPermission } = this.state;
-    console.log('aver?', this.state.fontLoaded);
     // if ((hasCameraPermission === null) || (hasCameraPermission === false)) {
     //   return
     //      <View style={styles.container}>
@@ -71,7 +70,7 @@ class Profile extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.viewGeneral}>
-          <TouchableHighlight onPress={()=>this._pickImage()}>
+          <TouchableHighlight style={styles.buttonGeneral} onPress={()=>this._pickImage()}>
             {this.renderImageProfile()}
           </TouchableHighlight>
           (<Text style={{ fontSize: 30 }}>
@@ -82,10 +81,6 @@ class Profile extends React.Component {
              title={'Desconectar'}
              onPress={this.LogOutOnButtonPress}
            />
-          <Button
-            title="Pick an image from camera roll"
-            onPress={this._pickImage}
-          />
           {image &&
             <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
         </View>
@@ -100,8 +95,11 @@ class Profile extends React.Component {
       aspect: [4, 3],
     })
     if (!result.cancelled) {
-      //TODO: upload de foto perfil a firebase y cambiar la url del user: depues : 1. intentar que firebase escuche automatico y actualice todo solo, 2. meter la url a mano en this.props.dataUser.image
-     uploadUrl = await Fire.shared.uploadImageAsync(result.uri);
+     uploadUrl = await Fire.shared.uploadImageUserAsync(result.uri)
+     uploadUrl? this.userRequest() :   Alert.alert(
+         '¡Wuau!',
+         'Error al cargar la foto', [ {text: 'Aceptar'}, ],
+         { cancelable: false })
     }
   }
 
@@ -148,6 +146,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'relative',
     marginTop:60
+  },
+   buttonGeneral: {
+    backgroundColor: '#859a9b',
+    borderRadius: 20,
+    padding: 10,
+    marginBottom: 20,
+    shadowColor: '#303838',
+    shadowOffset: { width: 0, height: 5 },
+    shadowRadius: 10,
+    shadowOpacity: 0.35,
   },
 });
 

@@ -7,9 +7,7 @@ import {connect} from 'react-redux'
 import * as actions from '../actions'
 import getUserInfo from '../utils/getUserInfo';
 import shrinkImageAsync from '../utils/shrinkImageAsync';
-import uploadPhoto from '../utils/uploadPhoto';
 const firebase = require('firebase');
-// Required for side-effects
 require('firebase/firestore');
 
 class Fire extends React.Component {
@@ -142,43 +140,24 @@ class Fire extends React.Component {
     }
   }
 
-
-  // Upload Data
-  uploadPhotoAsync = async uri => {
-    const path = `${'test'}/${this.uid}/${uuid.v4()}.jpg`;
-    return uploadPhoto(uri, path);
-  };
-
-  uploadPhotoProfile = async ({ text, image: localUri }) => {
-    try {
-      // const { uri: reducedImage, width, height } = await shrinkImageAsync(
-      //   localUri,
-      // );
-      const remoteUri = await this.uploadPhotoAsync(localUri);
-      // this.collectionRoutes.add({
-      //   text,
-      //   uid: this.uid,
-      //   timestamp: this.timestamp,
-      //   imageWidth: width,
-      //   imageHeight: height,
-      //   image: remoteUri,
-      //   user: getUserInfo(),
-      // });
-    } catch ({ message }) {
-      alert(message);
-    }
-  };
-
-  uploadImageAsync= async uri => {
+uploadImageUserAsync= async uri => {
     const response = await fetch(uri);
     const blob = await response.blob();
     const ref = firebase
       .storage()
       .ref()
-      .child(uuid.v4());
-
+      .child('usersPhotos').child(this.uid).child('photo')
     const snapshot = await ref.put(blob);
-  return snapshot.downloadURL;
+    const urlPhoto = await snapshot.ref.getDownloadURL()
+  return this.updateURLPhotoUser(urlPhoto)
+}
+
+updateURLPhotoUser = urlPhoto => {
+  let ref = this.firestoreMyUser;
+  var setAda = ref.set({
+  image: urlPhoto
+  }, { merge: true });
+  return 'sisi'
 }
 
   // Helpers
@@ -201,6 +180,7 @@ class Fire extends React.Component {
   get timestamp() {
     return Date.now();
   }
+
 }
 
 Fire.shared = new Fire();
