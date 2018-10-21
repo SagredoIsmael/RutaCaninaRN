@@ -115,6 +115,7 @@ TabSelector.propTypes = {
           this.setState({ isLoading: false})
         })
         .catch(function(error) {
+          //TODO: cuando salte alert, cambiar el setstate a false
           Alert.alert(
             '¡Wuau!',
             'Usuario o contraseña incorrectos',

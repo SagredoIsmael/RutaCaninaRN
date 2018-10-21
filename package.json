@@ -22,6 +22,7 @@
     "react-firebase-firestore": "0.0.3",
     "react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz",
     "react-native-bouncing-preloader": "^1.0.1",
+    "react-native-bouncy-drawer": "^1.0.1",
     "react-native-elements": "1.0.0-beta5",
     "react-native-is-iphonex": "^1.0.1",
     "react-native-micro-animated-button": "^0.0.27",

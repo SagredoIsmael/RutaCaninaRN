@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Permissions, ImagePicker } from 'expo'
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
+import MenuOptions from './MenuOptions/Menu.js'
 import BouncingPreloader from 'react-native-bouncing-preloader'
 import {
   AppRegistry,
@@ -16,6 +17,8 @@ import {
 } from 'react-native'
 import * as actions from '../actions'
 import Colors from '../constants/Colors'
+
+AppRegistry.registerComponent('MenuOptions', () => MenuOptions);
 
 const icons = [
   require('../assets/images/bone.png'),
@@ -75,17 +78,13 @@ class Profile extends React.Component {
           (<Text style={{ fontSize: 30 }}>
             {this.props.dataUser.name}
           </Text>)
-          <Button
-             style={styles.logOutButton}
-             title={'Desconectar'}
-             onPress={this.LogOutOnButtonPress}
-           />
           {(this.state.isLoading) ? <BouncingPreloader
             icons={icons}
             leftDistance={-100}
             rightDistance={-150}
             speed={1000}
           /> : null}
+          <MenuOptions/>
         </View>
       </ScrollView>
     )
@@ -108,23 +107,6 @@ class Profile extends React.Component {
     this.setState({ isLoading: false });
   }
 
-  LogOutOnButtonPress = () => {
-    Alert.alert(
-      'Cerrar sesión',
-      '¿Esta seguro?',
-      [
-        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Aceptar', onPress: () => this.logOut() },
-      ],
-      { cancelable: false }
-    )
-  }
-
-  logOut = () => {
-    this.props.insert_user('')
-    Fire.shared.logOutUser()
-  }
-
 }
 
 
@@ -134,7 +116,6 @@ const styles = StyleSheet.create({
   },
   viewGeneral:{
     backgroundColor: '#bedce2',
-    justifyContent: 'space-between',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -147,15 +128,16 @@ const styles = StyleSheet.create({
     borderRadius: 63,
     borderWidth: 3,
     borderColor: Colors.pinkChicle,
-    marginBottom:10,
+    marginBottom:20,
     alignSelf: 'center',
     position: 'relative',
-    marginTop:60
+    marginTop:20
   },
    buttonGeneral: {
     backgroundColor: '#859a9b',
     borderRadius: 20,
     padding: 10,
+    marginTop:80,
     marginBottom: 20,
     shadowColor: '#303838',
     shadowOffset: { width: 0, height: 5 },
