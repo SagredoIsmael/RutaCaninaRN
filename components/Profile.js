@@ -80,7 +80,10 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({
+      'georgia': require('../assets/fonts/Georgia.ttf'),
       'regular': require('../assets/fonts/Montserrat-Regular.ttf'),
+      'light': require('../assets/fonts/Montserrat-Light.ttf'),
+      'bold': require('../assets/fonts/Montserrat-Bold.ttf'),
     });
 
     this.setState({ fontLoaded: true });
@@ -189,48 +192,90 @@ class Profile extends React.Component {
     return (
       <ScrollView style={styles.container}>
         {this.state.fontLoaded ?
-          <View style={styles.viewGeneral}>
-            <TouchableHighlight style={styles.buttonGeneral} onPress={()=>this._pickImage()}>
-              {this.renderImageProfile()}
-            </TouchableHighlight>
-            <Text style={{ fontSize: 30 }}>
-              {this.props.dataUser.name}
-            </Text>
-            {(this.state.isLoading) ? <BouncingPreloader
-              icons={icons}
-              leftDistance={-100}
-              rightDistance={-150}
-              speed={1000}
-            /> : null}
-            <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
-              <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <View style={{flex: 1}}>
-                <Button
-                  title='Mis canes'
-                  buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(222, 223, 226, 1)', borderRadius: 5}}
-                  titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'gray'}}
-                  onPress={() => console.log('aye')}
-                  underlayColor="transparent"
-                />
+          <ScrollView style={{flex: 1, marginBottom: 20, marginTop:0}}>
+              <View style={{flex: 1, flexDirection: 'column', backgroundColor: Colors.whiteCrudo, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10}}>
+                <View style={{flex: 3, flexDirection: 'row'}}>
+                  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                     <TouchableHighlight width={145} height={145} activeOpacity={0.7} overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
+                        {this.renderImageProfile()}
+                      </TouchableHighlight>
+                  </View>
+                  <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <View style={{ flex: 1, marginTop: 50, justifyContent: 'center'}}>
+                      <Text style={{ fontFamily: 'bold', fontSize: 25, color: 'rgba(98,93,144,1)', marginLeft: -15}}>
+                        {this.props.dataUser.name}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
+                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{flex: 1}}>
+                    <Text style={{color: 'rgba(113, 154, 112, 1)', fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Mis canes'}</Text>
+                  </View>
+                  <View style={{flex: 1}}>
+                    <Button
+                      title='Agregar perrete'
+                      buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(113, 154, 112, 1)', borderRadius: 5}}
+                      titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
+                      onPress={() => console.log('aye')}
+                      underlayColor="transparent"
+                    />
+                  </View>
+                </View>
               </View>
-              <View style={{flex: 1}}>
-                <Button
-                  title='Agregar perrete'
-                  buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(113, 154, 112, 1)', borderRadius: 5}}
-                  titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
-                  onPress={() => console.log('aye')}
-                  underlayColor="transparent"
-                />
-              </View>
-            </View>
-            {this.renderListCards()}
-            <MenuOptions/>
-        </View> :
+              {this.renderListCards()}
+              <MenuOptions/>
+            </ScrollView>
+           :
         <Text>Loading...</Text>
         }
       </ScrollView>
     )
   }
+
+
+
+
+//
+//   <View style={styles.viewGeneral}>
+//     <TouchableHighlight style={styles.buttonGeneral} onPress={()=>this._pickImage()}>
+//       {this.renderImageProfile()}
+//     </TouchableHighlight>
+//     <Text style={{ fontSize: 30 }}>
+//       {this.props.dataUser.name}
+//     </Text>
+//     {(this.state.isLoading) ? <BouncingPreloader
+//       icons={icons}
+//       leftDistance={-100}
+//       rightDistance={-150}
+//       speed={1000}
+//     /> : null}
+//     <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
+//       <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+//       <View style={{flex: 1}}>
+//         <Button
+//           title='Mis canes'
+//           buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(222, 223, 226, 1)', borderRadius: 5}}
+//           titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'gray'}}
+//           onPress={() => console.log('aye')}
+//           underlayColor="transparent"
+//         />
+//       </View>
+//       <View style={{flex: 1}}>
+//         <Button
+//           title='Agregar perrete'
+//           buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(113, 154, 112, 1)', borderRadius: 5}}
+//           titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
+//           onPress={() => console.log('aye')}
+//           underlayColor="transparent"
+//         />
+//       </View>
+//     </View>
+//     {this.renderListCards()}
+//     <MenuOptions/>
+// </View>
+
 
 
   _pickImage = async () => {
@@ -264,28 +309,6 @@ const styles = StyleSheet.create({
   logOutButton: {
     backgroundColor: Colors.pinkChicle
    },
-   avatar: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
-    borderWidth: 3,
-    borderColor: Colors.pinkChicle,
-    marginBottom:20,
-    alignSelf: 'center',
-    position: 'relative',
-    marginTop:20
-  },
-   buttonGeneral: {
-    backgroundColor: '#859a9b',
-    borderRadius: 20,
-    padding: 10,
-    marginTop:80,
-    marginBottom: 20,
-    shadowColor: '#303838',
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 10,
-    shadowOpacity: 0.35,
-  },
 });
 
 const mapStateToProps = state => {
