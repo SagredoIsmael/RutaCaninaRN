@@ -84,8 +84,8 @@ class Menu extends Component {
           defaultCloseButtonIconColor="#fff"
           renderContent={this.renderContent}
           openedHeaderStyle={{ backgroundColor: '#3F3C4C' }}
-          openButtonPosition='left'
-          closeButtonPosition='left'
+          openButtonPosition='right'
+          closeButtonPosition='right'
         />
     );
   }
