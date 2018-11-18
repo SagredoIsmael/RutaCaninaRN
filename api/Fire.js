@@ -124,10 +124,17 @@ class Fire extends React.Component {
             const post = queryData.data() || {};
             const title = post.title;
             const img = post.image;
+            const { data } = await this.getDogsByUser();
+            // Iteratively add dogs
+            let dogs = {};
+            for (let child of data) {
+              dogs[child.key] = child;
+            }
             const dataUser = {
               key: queryData.id,
               image: (img || "https://bootdey.com/img/Content/avatar/avatar6.png"),
               name: (title || 'Desconocido').trim(),
+              dogs: (dogs || []),
               ...post,
             };
             return {dataUser}
@@ -140,6 +147,34 @@ class Fire extends React.Component {
       alert(message);
     }
   }
+
+  // Download Data Dogs by User
+   getDogsByUser = async () => {
+     let ref = this.firestoreMysDogsByUser;
+     try {
+       const querySnapshot = await ref.get();
+       const data = [];
+       querySnapshot.forEach(function(doc) {
+         if (doc.exists) {
+           const post = doc.data() || {};
+           const title = post.title;
+           const img = post.image;
+           const route = {
+             key: doc.id,
+             image: (img || "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg"),
+             name: (title || 'Desconocido').trim(),
+             ...post,
+           };
+           data.push(route);
+         }
+       });
+       return { data };
+     } catch ({ message }) {
+       alert(message);
+     }
+   };
+
+
 
 uploadImageUserAsync= async uri => {
     const response = await fetch(uri);
@@ -180,6 +215,10 @@ updateNameUser = async (name) => {
 
   get firestoreMyUser() {
     return firebase.firestore().collection('users').doc(this.uid)
+  }
+
+  get firestoreMysDogsByUser() {
+    return firebase.firestore().collection('users').doc(this.uid).collection('dogs');
   }
 
   get uid() {
