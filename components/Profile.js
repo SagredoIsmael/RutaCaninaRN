@@ -29,44 +29,6 @@ const icons = [
   require('../assets/images/toys.png'),
 ];
 
-const USERS = [
-  {
-    name: 'Johh Smith',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-    value: '- 164'
-  },
-  {
-    name: 'Sarah Parker',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/evagiselle/128.jpg',
-    value: '+ 203',
-    positive: true
-  },
-  {
-    name: 'Paul Allen',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jsa/128.jpg',
-    value: '+ 464',
-    positive: true
-  },
-  {
-    name: 'Terry Andrews',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/talhaconcepts/128.jpg',
-    value: '- 80',
-    positive: false
-  },
-  {
-    name: 'Andy Vitale',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/andyvitale/128.jpg',
-    value: '- 230',
-    positive: false
-  },
-  {
-    name: 'Katy Friedson',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/kfriedson/128.jpg',
-    value: '+ 160',
-    positive: true
-  },
-];
-
 class Profile extends React.Component {
   constructor(props){
     super(props);
@@ -108,6 +70,17 @@ class Profile extends React.Component {
       <Image
         style={ styles.avatar }
         source={{uri: this.props.dataUser.image }}
+      />
+    );
+  }
+
+  renderLoading() {
+    return (
+      <BouncingPreloader
+        icons={icons}
+        leftDistance={-100}
+        rightDistance={-150}
+        speed={1000}
       />
     );
   }
@@ -167,13 +140,11 @@ class Profile extends React.Component {
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 10 }}>
           {this.renderValue(user)}
-          <View style={{ backgroundColor: 'rgba(222,222,222,1)', width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
-            <Icon
-              name='md-person-add'
-              color='gray'
-              size={20}
-            />
-          </View>
+          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.gotoDogScreen()}>
+            <View style={{ backgroundColor: 'rgba(222,222,222,1)', width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
+              <Icon name='md-settings' color='gray' size={20}/>
+            </View>
+          </TouchableHighlight>
         </View>
       </View>
     );
@@ -195,7 +166,7 @@ class Profile extends React.Component {
               <View style={{flex: 1, flexDirection: 'column', backgroundColor: Colors.whiteCrudo, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 80}}>
                 <View style={{flex: 3, flexDirection: 'row'}}>
                   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                     <TouchableHighlight width={145} height={145} activeOpacity={0.7} overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
+                     <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor='rgba(73,182,77,1,0.9)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
                         {this.renderImageProfile()}
                       </TouchableHighlight>
                   </View>
@@ -217,22 +188,27 @@ class Profile extends React.Component {
                       title='Agregar perrete'
                       buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(113, 154, 112, 1)', borderRadius: 5}}
                       titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
-                      onPress={() => console.log('aye')}
+                      onPress={()=>this.gotoDogScreen()}
                       underlayColor="transparent"
                     />
                   </View>
                 </View>
               </View>
               {this.renderListCards()}
-              <MenuOptions/>
+              {(this.state.isLoading) ? this.renderLoading() : null }
             </ScrollView>
            :
         <Text>Loading...</Text>
         }
+        <MenuOptions/>
       </ScrollView>
     )
   }
 
+
+  gotoDogScreen = () => {
+    console.log("oleeee dog screen");
+  }
 
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -256,11 +232,7 @@ class Profile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#bedce2',
-  },
-  viewGeneral:{
-    backgroundColor: '#bedce2',
-    alignItems: 'center',
-    justifyContent: 'center'
+    height: '100%'
   },
   logOutButton: {
     backgroundColor: Colors.pinkChicle
