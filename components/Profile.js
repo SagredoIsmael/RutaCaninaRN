@@ -151,7 +151,7 @@ class Profile extends React.Component {
             <Text style={{color: 'green', fontFamily: 'regular', fontSize: 13, marginLeft: 5}}>Info</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.gotoDogScreen(user)}>
+          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.props.gotoDogScreen}>
             <View style={{ backgroundColor: 'rgba(222,222,222,1)', width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
               <Icon name='md-settings' color='gray' size={20}/>
             </View>
@@ -221,7 +221,7 @@ class Profile extends React.Component {
 
 
   gotoDogScreen = (user) => {
-    console.log("oleeee dog screen", user.name);
+    this.props.navigation.navigate('Dogs')
   }
 
 
