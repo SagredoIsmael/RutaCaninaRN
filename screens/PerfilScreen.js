@@ -41,17 +41,12 @@ class PerfilScreen extends React.Component {
     }
     return (
       <View>
-        <Profile>
-          mapStateToProps(state, this.gotoDogScreen)
-          gotoDogScreen={this.gotoDogScreen}
+        <Profile nav={this.props.navigation}>
         </Profile>
       </View>
     );
   }
 
-  gotoDogScreen = () => {
-   this.props.navigation.navigate('Dogs')
-  }
 
 
 }
