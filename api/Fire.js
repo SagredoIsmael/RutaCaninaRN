@@ -188,10 +188,30 @@ uploadImageUserAsync= async uri => {
   return this.updateURLPhotoUser(urlPhoto)
 }
 
+uploadImageDogAsync= async (uri, keyDog) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child('dogsPhotos').child(this.uid).child(keyDog)
+    const snapshot = await ref.put(blob);
+    const urlPhoto = await snapshot.ref.getDownloadURL()
+  return this.updateURLPhotoDog(urlPhoto, keyDog)
+}
+
 updateURLPhotoUser = urlPhoto => {
   let ref = this.firestoreMyUser;
   var setAda = ref.set({
   image: urlPhoto
+  }, { merge: true });
+  return urlPhoto
+}
+
+updateURLPhotoDog = (urlPhoto, keyDog) => {
+  let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog);
+  var setAda = ref.set({
+  avatar: urlPhoto
   }, { merge: true });
   return urlPhoto
 }

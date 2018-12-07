@@ -3,12 +3,12 @@ import { Permissions, ImagePicker, Font, Constants } from 'expo'
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
 import MenuOptions from './MenuOptions/Menu.js'
-import BouncingPreloader from 'react-native-bouncing-preloader'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 import { Avatar, Button } from 'react-native-elements'
 import PopupDialog, { SlideAnimation } from './react-native-popup-dialog';
 import { PortalProvider, BlackPortal, WhitePortal } from 'react-native-portal';
+import LoadingIcons from './LoadingIcons.js'
 import {
   AppRegistry,
   StyleSheet,
@@ -25,13 +25,6 @@ import * as actions from '../actions'
 import Colors from '../constants/Colors'
 
 AppRegistry.registerComponent('MenuOptions', () => MenuOptions);
-
-const icons = [
-  require('../assets/images/bone.png'),
-  require('../assets/images/dog.png'),
-  require('../assets/images/paws.png'),
-  require('../assets/images/toys.png'),
-];
 
 class Profile extends React.Component {
   constructor(props){
@@ -60,6 +53,7 @@ class Profile extends React.Component {
   userRequest = async () => {
       const { dataUser } = await Fire.shared.getInfoMyUser()
       this.props.insert_dataUser(dataUser)
+      this.setState({ isLoading: false });
     };
 
 
@@ -79,16 +73,6 @@ class Profile extends React.Component {
     );
   }
 
-  renderLoading() {
-    return (
-      <BouncingPreloader
-        icons={icons}
-        leftDistance={-100}
-        rightDistance={-150}
-        speed={1000}
-      />
-    );
-  }
 
   renderListCards() {
     return _.map(this.props.dataUser.dogs, (user, index) => {
@@ -156,7 +140,7 @@ class Profile extends React.Component {
             <Text style={{color: 'green', fontFamily: 'regular', fontSize: 13, marginLeft: 5}}>Info</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.gotoDogScreen(dog, dog.name)}>
+          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.gotoDogScreen(dog.key, dog.name)}>
             <View style={{ backgroundColor: 'rgba(222,222,222,1)', width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
               <Icon name='md-settings' color='gray' size={20}/>
             </View>
@@ -212,7 +196,7 @@ class Profile extends React.Component {
                   </View>
                 </View>
                 {this.renderListCards()}
-                {(this.state.isLoading) ? this.renderLoading() : null }
+                {(this.state.isLoading) ? <LoadingIcons></LoadingIcons> : null }
               </ScrollView>
              :
           <Text>Loading...</Text>
@@ -225,8 +209,8 @@ class Profile extends React.Component {
   }
 
 
-  gotoDogScreen = (dog, action) => {
-    this.props.nav.navigate('Dogs', {dogInfo: dog, titleHeader:action});
+  gotoDogScreen = (keyDog, action) => {
+    this.props.nav.navigate('Dogs', {keyDog: keyDog, titleHeader:action});
   }
 
 
@@ -248,7 +232,6 @@ class Profile extends React.Component {
          'Error al cargar la foto', [ {text: 'Aceptar'}, ],
          { cancelable: false })
     }
-    this.setState({ isLoading: false });
   }
 
 }
