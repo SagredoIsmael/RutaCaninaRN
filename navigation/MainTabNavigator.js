@@ -28,7 +28,7 @@ RutasStack.navigationOptions = {
 };
 
 const PerfilStack = createStackNavigator({
-  Links: PerfilScreen,
+  Perfil: PerfilScreen,
 });
 
 PerfilStack.navigationOptions = {
@@ -44,7 +44,7 @@ PerfilStack.navigationOptions = {
 };
 
 const MisRutasStack = createStackNavigator({
-  Settings: MisRutasScreen,
+  MisRutas: MisRutasScreen,
 });
 
 MisRutasStack.navigationOptions = {

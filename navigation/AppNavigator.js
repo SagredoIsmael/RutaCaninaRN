@@ -1,13 +1,18 @@
 import React from 'react';
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
+import {createStackNavigator} from 'react-navigation';
 import MainTabNavigator from './MainTabNavigator';
 import DogScreen from '../screens/DogScreen';
 
-const DogStack = createStackNavigator({
-  Dog : DogScreen,
+const AppStackNavigator = createStackNavigator ({
+    Main: {
+           screen:MainTabNavigator,
+           navigationOptions: {
+                header: null
+              }
+         },
+    Dogs: {
+           screen:DogScreen
+          },
 })
 
-export default createSwitchNavigator({
-  Main: MainTabNavigator,
-  Dogs: DogStack
-});
+export default AppStackNavigator
