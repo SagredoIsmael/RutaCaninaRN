@@ -105,7 +105,7 @@ class Profile extends React.Component {
                 <Text style={{ fontFamily: 'bold', fontSize: 20, color: 'rgba(98,93,144,1)', marginTop: 5, textAlign: 'center'}}>
                   {("¡Hola soy " + this.state.dogSelect.name +"!")}</Text>
                 <Text style={{fontFamily: 'regular', fontSize: 15,  marginTop: 10, marginLeft: 10, marginRight:10, textAlign: 'center', color: 'gray'}}>
-                  {("Tengo " + this.state.dogSelect.age  + " años y mis padres dicen que soy " + this.state.dogSelect.breed + ", aunque yo me veo más chic.")}</Text>
+                  {("Soy " + this.state.dogSelect.gender + " de " + this.state.dogSelect.age  + " años y mis padres dicen que parezco " + this.state.dogSelect.breed + ", aunque yo me veo más chic.")}</Text>
                 <Text style={{fontFamily: 'regular', fontSize: 15,  marginTop: 10, marginLeft: 10, marginRight:10, textAlign: 'center', color: 'gray'}}>
                   {("Me considero algo " + this.state.dogSelect.conduct + ", a la vez que " + this.state.dogSelect.temperament + ". ¡Tendrías que conocerme!")}</Text>
               </ImageBackground>
@@ -134,13 +134,13 @@ class Profile extends React.Component {
           </Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 10 }}>
-          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.infoDogs(dog)}>
+          <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.infoDogs(dog)}>
             <View style={{ backgroundColor: 'rgba(220,230,218,1)', width: 70, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginLeft: 10}}>
               <Icon name='md-information-circle' color='green' size={25} />
             <Text style={{color: 'green', fontFamily: 'regular', fontSize: 13, marginLeft: 5}}>Info</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor='rgba(73,182,77,1,0.9)' onPress={()=>this.gotoDogScreen(dog.key, dog.name)}>
+          <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.gotoDogScreen(dog.key, dog.name, 'Eliminar')}>
             <View style={{ backgroundColor: 'rgba(222,222,222,1)', width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
               <Icon name='md-settings' color='gray' size={20}/>
             </View>
@@ -167,7 +167,7 @@ class Profile extends React.Component {
                 <View style={{flex: 1, flexDirection: 'column', backgroundColor: Colors.whiteCrudo, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 80}}>
                   <View style={{flex: 3, flexDirection: 'row'}}>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                       <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor='rgba(73,182,77,1,0.9)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
+                       <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
                           {this.renderImageProfile()}
                         </TouchableHighlight>
                     </View>
@@ -189,7 +189,7 @@ class Profile extends React.Component {
                         title='Agregar perrete'
                         buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(113, 154, 112, 1)', borderRadius: 5}}
                         titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
-                        onPress={()=>this.gotoDogScreen(null, 'Nuevo can')}
+                        onPress={()=>this.gotoDogScreen(null, 'Nuevo can', 'Guardar')}
                         underlayColor="transparent"
                       />
                     </View>
@@ -209,8 +209,8 @@ class Profile extends React.Component {
   }
 
 
-  gotoDogScreen = (keyDog, action) => {
-    this.props.nav.navigate('Dogs', {keyDog: keyDog, titleHeader:action});
+  gotoDogScreen = (keyDog, action, rightButton) => {
+    this.props.nav.navigate('Dogs', {keyDog:keyDog, titleHeader:action, rightButton:rightButton});
   }
 
 
@@ -242,15 +242,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#bedce2',
     height: '100%'
   },
-  logOutButton: {
-    backgroundColor: Colors.pinkChicle
-   },
    avatar: {
     width: 130,
     height: 130,
     borderRadius: 63,
     borderWidth: 3,
-    borderColor: Colors.pinkChicle,
+    borderColor: Colors.verdeOscuro,
     marginBottom:20,
     alignSelf: 'center',
     position: 'relative',
@@ -261,7 +258,7 @@ const styles = StyleSheet.create({
    height: 130,
    borderRadius: 63,
    borderWidth: 3,
-   borderColor: Colors.pinkChicle,
+   borderColor: Colors.verdeOscuro,
    marginTop:10,
    alignSelf: 'center',
    position: 'relative',
