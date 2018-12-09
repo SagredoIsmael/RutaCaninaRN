@@ -2,10 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
 import { Permissions, ImagePicker } from 'expo'
-import BouncingPreloader from 'react-native-bouncing-preloader'
 import _ from 'lodash'
 import * as actions from '../actions'
-import LoadingIcons from '../components/LoadingIcons.js'
+import Loader from '../components/Loader'
 import Colors from '../constants/Colors'
 import {Hoshi, Makiko } from 'react-native-textinput-effects'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -298,7 +297,7 @@ class DogScreen extends React.Component {
                 labelStyle={'#db786d'}
               />
             <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => console.log('Has clickado eliminar can')}>Eliminar can</AwesomeButtonRick>
-              {(this.state.isLoading) ? <LoadingIcons></LoadingIcons> : null }
+            <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
             </View>
           :
 

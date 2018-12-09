@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   avatar: {
     aspectRatio: 1,
-    backgroundColor: Colors.pinkChicle,
+    backgroundColor: Colors.whiteCrudo,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: Colors.pinkChicle,
     borderRadius: profileImageSize / 2,

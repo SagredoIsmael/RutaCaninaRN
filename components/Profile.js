@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { Avatar, Button } from 'react-native-elements'
 import PopupDialog, { SlideAnimation } from './react-native-popup-dialog';
 import { PortalProvider, BlackPortal, WhitePortal } from 'react-native-portal';
-import LoadingIcons from './LoadingIcons.js'
+import Loader from './Loader'
 import {
   AppRegistry,
   StyleSheet,
@@ -196,7 +196,7 @@ class Profile extends React.Component {
                   </View>
                 </View>
                 {this.renderListCards()}
-                {(this.state.isLoading) ? <LoadingIcons></LoadingIcons> : null }
+                <Loader loading={this.state.isLoading} size={'large'} color="#ff66be" />
               </ScrollView>
              :
           <Text>Loading...</Text>
