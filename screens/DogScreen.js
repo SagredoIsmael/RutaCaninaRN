@@ -13,8 +13,10 @@ import SwitchSelector from 'react-native-switch-selector'
 import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import CustomMarker1 from '../components/CustomMarker1'
 import CustomMarker2 from '../components/CustomMarker2'
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import {
   StyleSheet,
+  TouchableOpacity,
   Alert,
   Slider,
   Text,
@@ -24,18 +26,19 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
+  BackHandler,
 } from 'react-native';
 
-const optionsConduct = ['Granuja y sinvergüenza', 'Con ganas de jugar', 'Pasota total']
-const optionsTemperament = ['Dulce y con cariño', 'Apacible y amigable', 'Independiente y libre', 'Prudente y pedante', 'Con malas pulgas']
-
+const optionsConduct = ['granuja y sinvergüenza', 'torbellino', 'pasota total']
+const optionsTemperament = ['muy dulce', 'apacible y amigable', 'independiente y libre', 'prudente y pedante', 'alterable e irritable']
 
 class DogScreen extends React.Component {
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('titleHeader', 'Mis canes'),
       headerTitleStyle: {
-        color: Colors.whiteCrudo,
+        color: Colors.verdeOscuro,
         fontSize: 28
       },
       headerStyle: {
@@ -44,12 +47,13 @@ class DogScreen extends React.Component {
       headerRight: (
       <Button
         onPress={() => alert('This is a button!')}
-        title={navigation.getParam('rightButton', 'Cancelar')}
+        title='Guardar'
         color= {Colors.azuliOS}
         />
       ),
     }
   }
+
 
   state = {
     image: null,
@@ -57,17 +61,15 @@ class DogScreen extends React.Component {
     isLoading:false,
     sliderOneChangingConduct: false,
     sliderOneChangingTemperament: false,
-    newValueGender: '',
+    isEditingDog:false,
     newValueConductDog: [2],
     newValueTemperamentDog: [4],
-    newValueNameDog: '',
-    newValueAgeDog: '',
-    newValueBreedDog: '',
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
     if (dog !== undefined && dog !== null){
+      this.setState({ isEditingDog: true })
       this.setState({ newValueConductDog: [this.conductToInt(dog.conduct)] })
       this.setState({ newValueTemperamentDog: [this.temperamentToInt(dog.temperament)] })
       this.setState({ newValueNameDog: dog.name })
@@ -78,19 +80,19 @@ class DogScreen extends React.Component {
   }
 
 
-_pickImage = async (keyDog) => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    })
-    if (!result.cancelled) {
-    this.setState({ isLoading: true });
-     uploadUrl = await Fire.shared.uploadImageDogAsync(result.uri, keyDog)
-     uploadUrl? this.userRequest() :   Alert.alert(
-         '¡Wuau!',
-         'Error al cargar la foto', [ {text: 'Aceptar'}, ],
-         { cancelable: false })
-    }
+  _pickImage = async (keyDog) => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3],
+      })
+      if (!result.cancelled) {
+      this.setState({ isLoading: true });
+       uploadUrl = await Fire.shared.uploadImageDogAsync(result.uri, keyDog)
+       uploadUrl? this.userRequest() :   Alert.alert(
+           '¡Wuau!',
+           'Error al cargar la foto', [ {text: 'Aceptar'}, ],
+           { cancelable: false })
+      }
   }
 
   userRequest = async () => {
@@ -174,9 +176,9 @@ _pickImage = async (keyDog) => {
     return (
         <ScrollView style={styles.container}>
           <ImageBackground
-            source={require('../assets/images/backgroundPaw.png')}
+            source={require('../assets/images/background.png')}
             style={{width: '100%', height: '100%'}}>
-          {dog?
+          {this.state.isEditingDog?
             <View>
               <View style={{flex: 2, flexDirection: 'row', alignItems: 'center', marginTop:10}}>
                 <View style={{marginLeft: 15}}>
@@ -187,14 +189,14 @@ _pickImage = async (keyDog) => {
                 <View style={{flex: 2, flexDirection: 'column'}}>
                   <Hoshi
                     label={'Nombre del can'}
-                    value={dog.name}
+                    value={this.state.newValueNameDog}
                     style={{fontSize: 15, marginLeft: 15, marginRight: 15}}
                     borderColor={'#db786d'}
                     labelStyle={'#db786d'}
                   />
                   <Hoshi
                     label={'Edad del can'}
-                    value={dog.age}
+                    value={this.state.newValueAgeDog}
                     style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:15}}
                     borderColor={'#db786d'}
                     labelStyle={'#db786d'}
@@ -204,7 +206,7 @@ _pickImage = async (keyDog) => {
               <SwitchSelector options={[
                   { label: '  Hembra', value: 'hembra', customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
                   { label: '  Macho', value: 'macho', customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
-              ]} initial={0} buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} initial={this.genderToInt(dog.gender)} onPress={value => console.log(`Call onPress with value: ${value}`)} />
+              ]} buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} initial={this.genderToInt(this.state.newValueGender)} onPress={value => console.log(`Call onPress with value: ${value}`)} />
 
               <View style={styles.sliders}>
                 <View style={styles.sliderOne}>
@@ -220,7 +222,7 @@ _pickImage = async (keyDog) => {
                 </View>
                 <MultiSlider
                   min={0}
-                  max={5}
+                  max={4}
                   values={this.state.newValueTemperamentDog}
                   sliderLength={280}
                   onValuesChangeStart={this.sliderOneValuesChangeStartTemperament}
@@ -260,7 +262,7 @@ _pickImage = async (keyDog) => {
               </View>
               <MultiSlider
                 min={0}
-                max={3}
+                max={2}
                 values={this.state.newValueConductDog}
                 sliderLength={280}
                 onValuesChangeStart={this.sliderOneValuesChangeStartConduct}
@@ -291,10 +293,11 @@ _pickImage = async (keyDog) => {
               <Hoshi
                 style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
                 label={'Raza del can'}
-                value={dog.breed}
+                value={this.state.newValueBreedDog}
                 borderColor={'#db786d'}
                 labelStyle={'#db786d'}
-                />
+              />
+            <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => console.log('Has clickado eliminar can')}>Eliminar can</AwesomeButtonRick>
               {(this.state.isLoading) ? <LoadingIcons></LoadingIcons> : null }
             </View>
           :
@@ -336,11 +339,12 @@ let styles = StyleSheet.create({
   sliders: {
     marginTop:40,
     alignSelf: 'center',
-    width: '70%',
   },
   text: {
     alignSelf: 'center',
     paddingVertical: 20,
+    fontWeight: 'bold',
+    fontSize: 16
   },
   title: {
     fontSize: 30,

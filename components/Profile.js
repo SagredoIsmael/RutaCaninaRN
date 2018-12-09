@@ -107,7 +107,7 @@ class Profile extends React.Component {
                 <Text style={{fontFamily: 'regular', fontSize: 15,  marginTop: 10, marginLeft: 10, marginRight:10, textAlign: 'center', color: 'gray'}}>
                   {("Soy " + this.state.dogSelect.gender + " de " + this.state.dogSelect.age  + " años y mis padres dicen que parezco " + this.state.dogSelect.breed + ", aunque yo me veo más chic.")}</Text>
                 <Text style={{fontFamily: 'regular', fontSize: 15,  marginTop: 10, marginLeft: 10, marginRight:10, textAlign: 'center', color: 'gray'}}>
-                  {("Me considero algo " + this.state.dogSelect.conduct + ", a la vez que " + this.state.dogSelect.temperament + ". ¡Tendrías que conocerme!")}</Text>
+                  {("Me considero " + this.state.dogSelect.conduct + ", a la vez que " + this.state.dogSelect.temperament + ". ¡Tendrías que conocerme!")}</Text>
               </ImageBackground>
 
             </View>
@@ -129,20 +129,20 @@ class Profile extends React.Component {
           <View style={{marginLeft: 15}}>
             <Avatar small rounded source={{ uri: avatar}} activeOpacity={0.7}/>
           </View>
-          <Text style={{fontFamily: 'regular', fontSize: 15, marginLeft: 10, color: 'gray'}}>
+          <Text style={{fontFamily: 'regular', fontSize: 15, marginLeft: 10, color: Colors.verdeOscuro}}>
             {name}
           </Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'center', marginRight: 10 }}>
           <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.infoDogs(dog)}>
-            <View style={{ backgroundColor: 'rgba(220,230,218,1)', width: 70, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginLeft: 10}}>
-              <Icon name='md-information-circle' color='green' size={25} />
-            <Text style={{color: 'green', fontFamily: 'regular', fontSize: 13, marginLeft: 5}}>Info</Text>
+            <View style={{ backgroundColor: Colors.verdeOscuro, width: 70, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', marginLeft: 10}}>
+              <Icon name='md-information-circle' color={Colors.whiteCrudo} size={25} />
+            <Text style={{color: 'white', fontFamily: 'regular', fontSize: 13, marginLeft: 5}}>Info</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.gotoDogScreen(dog.key, dog.name, 'Eliminar')}>
-            <View style={{ backgroundColor: 'rgba(222,222,222,1)', width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
-              <Icon name='md-settings' color='gray' size={20}/>
+          <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.gotoDogScreen(dog.key, dog.name)}>
+            <View style={{ backgroundColor: Colors.pinkChicle, width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
+              <Icon name='md-settings' color='white' size={20}/>
             </View>
           </TouchableHighlight>
         </View>
@@ -172,8 +172,8 @@ class Profile extends React.Component {
                         </TouchableHighlight>
                     </View>
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                      <View style={{ flex: 1, marginTop: 50, justifyContent: 'center'}}>
-                        <Text style={{ fontFamily: 'bold', fontSize: 25, color: 'rgba(98,93,144,1)', marginLeft: -15}}>
+                      <View style={{ flex: 1, marginTop: 40, justifyContent: 'center'}}>
+                        <Text style={{ fontFamily: 'bold', fontSize: 25, color: Colors.verdeOscuro, marginLeft: -15}}>
                           {this.props.dataUser.name}
                         </Text>
                       </View>
@@ -182,14 +182,14 @@ class Profile extends React.Component {
                   <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
                   <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
                     <View style={{flex: 1}}>
-                      <Text style={{color: 'rgba(113, 154, 112, 1)', fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Mis canes'}</Text>
+                      <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Mis canes'}</Text>
                     </View>
                     <View style={{flex: 1}}>
                       <Button
                         title='Agregar perrete'
-                        buttonStyle={{height: 33, width: 120, backgroundColor: 'rgba(113, 154, 112, 1)', borderRadius: 5}}
+                        buttonStyle={{height: 33, width: 120, backgroundColor: Colors.pinkChicle, borderRadius: 5}}
                         titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
-                        onPress={()=>this.gotoDogScreen(null, 'Nuevo can', 'Guardar')}
+                        onPress={()=>this.gotoDogScreen(null, 'Nuevo can')}
                         underlayColor="transparent"
                       />
                     </View>
@@ -209,8 +209,8 @@ class Profile extends React.Component {
   }
 
 
-  gotoDogScreen = (keyDog, action, rightButton) => {
-    this.props.nav.navigate('Dogs', {keyDog:keyDog, titleHeader:action, rightButton:rightButton});
+  gotoDogScreen = (keyDog, action) => {
+    this.props.nav.navigate('Dogs', {keyDog:keyDog, titleHeader:action});
   }
 
 

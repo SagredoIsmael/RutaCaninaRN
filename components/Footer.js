@@ -10,7 +10,7 @@ export default class Footer extends React.Component {
     const { onPress, style, ...props } = this.props;
     return (
       <TouchableHighlight
-        underlayColor={Colors.whiteCrudo}
+        underlayColor={Colors.pinkChicle}
         {...props}
         onPress={this.onPress}
         style={[styles.touchable, style]}>
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: Colors.whiteCrudo,
+    borderTopColor: Colors.pinkChicle,
   },
   text: { fontWeight: 'bold', fontSize: 16 },
 });

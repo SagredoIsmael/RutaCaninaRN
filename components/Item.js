@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import Colors from '../constants/Colors';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View, ImageBackground } from 'react-native';
 
 const profileImageSize = 36;
 const padding = 12;
@@ -28,17 +28,21 @@ export default class Item extends React.Component {
 
     return (
       <View>
-        <Header image={{ uri: image }} name={title} />
-        <Image
-          resizeMode="contain"
-          style={{
-            backgroundColor: Colors.whiteCrudo,
-            width: '100%',
-            aspectRatio: aspect,
-          }}
-          source={{ uri: image }}
-        />
-        <Metadata name={title} description={description} />
+        <ImageBackground
+          source={require('../assets/images/background.png')}
+          style={{width: '100%'}}>
+          <Header image={{ uri: image }} name={title} />
+          <Image
+            resizeMode="contain"
+            style={{
+              backgroundColor: Colors.whiteCrudo,
+              width: '100%',
+              aspectRatio: aspect,
+            }}
+            source={{ uri: image }}
+          />
+          <Metadata name={title} description={description} />
+        </ImageBackground>
       </View>
     );
   }
@@ -63,7 +67,7 @@ const Header = ({ name, image }) => (
 );
 
 const Icon = ({ name }) => (
-  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color= {Colors.whiteCrudo} />
+  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color= {Colors.pinkChicle} />
 );
 
 const IconBar = () => (
@@ -92,9 +96,9 @@ const styles = StyleSheet.create({
   },
   avatar: {
     aspectRatio: 1,
-    backgroundColor: Colors.whiteCrudo,
+    backgroundColor: Colors.pinkChicle,
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: Colors.whiteCrudo,
+    borderColor: Colors.pinkChicle,
     borderRadius: profileImageSize / 2,
     width: profileImageSize,
     height: profileImageSize,
