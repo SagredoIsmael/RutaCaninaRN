@@ -32,6 +32,11 @@ const optionsConduct = ['granuja y sinvergüenza', 'torbellino', 'pasota total']
 const optionsTemperament = ['muy dulce', 'apacible y amigable', 'independiente y libre', 'prudente y pedante', 'alterable e irritable']
 
 class DogScreen extends React.Component {
+  static ourself = null;
+  constructor() {
+    super();
+    ourself = this;
+  }
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -45,7 +50,7 @@ class DogScreen extends React.Component {
       },
       headerRight: (
       <Button
-        onPress={() => alert('This is a button!')}
+        onPress={() => ourself.comprobeChanges()}
         title='Guardar'
         color= {Colors.azuliOS}
         />
@@ -61,8 +66,10 @@ class DogScreen extends React.Component {
     sliderOneChangingConduct: false,
     sliderOneChangingTemperament: false,
     isEditingDog:false,
-    newValueConductDog: [2],
-    newValueTemperamentDog: [4],
+    newValueConductDog: [1],
+    newValueTemperamentDog: [2],
+    newValueAvatarDog: '',
+    newValueGender:0,
   }
 
   componentDidMount() {
@@ -75,9 +82,27 @@ class DogScreen extends React.Component {
       this.setState({ newValueAgeDog: dog.age })
       this.setState({ newValueBreedDog: dog.breed })
       this.setState({ newValueGender: this.genderToInt(dog.gender) })
+      this.setState({ newValueAvatarDog: dog.avatar })
+      this.setState({ newValueKeyDog: dog.key })
     }
   }
 
+
+  comprobeChanges = () => {
+     this.showAlert('¿Seguro que quiere salir sin guardar?')
+  }
+
+  showAlert = (title,  text) => {
+    Alert.alert(
+      title,
+      text,
+      [
+        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Salir', onPress: () => this.props.navigation.goBack(null)},
+      ],
+      { cancelable: true }
+    )
+  }
 
   _pickImage = async (keyDog) => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -101,12 +126,13 @@ class DogScreen extends React.Component {
   }
 
   renderImageDog(urlPhotoDog) {
+    if (urlPhotoDog == '') urlPhotoDog = 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277'
     return (
       <Image
         style={ styles.avatar }
         source={{uri: urlPhotoDog}}
       />
-    );
+    )
   }
 
   findDogByKey(keyDog) {
@@ -170,19 +196,16 @@ class DogScreen extends React.Component {
 
 
   render() {
-    const { navigation } = this.props
-    const dog = this.findDogByKey(navigation.getParam('keyDog'))
     return (
         <ScrollView style={styles.container}>
           <ImageBackground
             source={require('../assets/images/background.png')}
             style={{width: '100%', height: '100%'}}>
-          {this.state.isEditingDog?
             <View>
               <View style={{flex: 2, flexDirection: 'row', alignItems: 'center', marginTop:10}}>
                 <View style={{marginLeft: 15}}>
-                  <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage(dog.key)}>
-                    {this.renderImageDog(dog.avatar)}
+                  <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage(this.state.newValueKeyDog)}>
+                    {this.renderImageDog(this.state.newValueAvatarDog)}
                   </TouchableHighlight>
                 </View>
                 <View style={{flex: 2, flexDirection: 'column'}}>
@@ -296,13 +319,9 @@ class DogScreen extends React.Component {
                 borderColor={'#db786d'}
                 labelStyle={'#db786d'}
               />
-            <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => console.log('Has clickado eliminar can')}>Eliminar can</AwesomeButtonRick>
+            {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => console.log('Has clickado eliminar can')}>Eliminar can</AwesomeButtonRick> : null }
             <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
             </View>
-          :
-
-            <Text> me quieren agregarrrrr¡¡¡¡</Text>
-          }
           </ImageBackground>
         </ScrollView>
     );
