@@ -101,7 +101,7 @@ class Profile extends React.Component {
               <ImageBackground
                 source={require('../assets/images/background.png')}
                 style={{width: '100%', height: '100%'}}>
-                <Image style={ styles.avatarDogs } source={{uri: this.state.dogSelect.avatar }}/>
+                <Image style={ styles.avatarDogs } source={this.state.dogSelect.avatar? {uri: this.state.dogSelect.avatar } : {uri: urlPhotoDog = 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277' }}/>
                 <Text style={{ fontFamily: 'bold', fontSize: 20, color: 'rgba(98,93,144,1)', marginTop: 5, textAlign: 'center'}}>
                   {("¡Hola soy " + this.state.dogSelect.name +"!")}</Text>
                 <Text style={{fontFamily: 'regular', fontSize: 15,  marginTop: 10, marginLeft: 10, marginRight:10, textAlign: 'center', color: 'gray'}}>
@@ -127,7 +127,7 @@ class Profile extends React.Component {
       <View key={index} style={{height: 60, marginHorizontal: 20, marginTop: 10, backgroundColor: 'white', borderRadius: 5, alignItems: 'center', flexDirection: 'row'}}>
         <View style={{flex: 2, flexDirection: 'row', alignItems: 'center'}}>
           <View style={{marginLeft: 15}}>
-            <Avatar small rounded source={{ uri: avatar}} activeOpacity={0.7}/>
+            <Avatar small rounded source={ avatar? { uri: avatar} : {uri: urlPhotoDog = 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277' }} activeOpacity={0.7}/>
           </View>
           <Text style={{fontFamily: 'regular', fontSize: 15, marginLeft: 10, color: Colors.verdeOscuro}}>
             {name}

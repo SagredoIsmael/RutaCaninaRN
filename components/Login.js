@@ -168,7 +168,10 @@ TabSelector.propTypes = {
           // API call
           Fire.shared.registryUser(email, password)
           .then(user => {
-            const createNameUser = Fire.shared.updateNameUser(name)
+            const attributesDicc = {
+              name: name
+            }
+            Fire.shared.updateAttributeUser(attributesDicc)
             this.props.insert_user(user.user.uid)
             this.setState({ isLoading: false})
           })

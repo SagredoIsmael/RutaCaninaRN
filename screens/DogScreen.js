@@ -16,6 +16,7 @@ import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/ric
 import {
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
   Alert,
   Slider,
   Text,
@@ -30,6 +31,7 @@ import {
 
 const optionsConduct = ['granuja y sinvergüenza', 'torbellino', 'pasota total']
 const optionsTemperament = ['muy dulce', 'apacible y amigable', 'independiente y libre', 'prudente y pedante', 'alterable e irritable']
+
 
 class DogScreen extends React.Component {
   static ourself = null;
@@ -50,8 +52,15 @@ class DogScreen extends React.Component {
       },
       headerRight: (
       <Button
-        onPress={() => ourself.comprobeChanges()}
+        onPress={() => ourself.comprobeChanges('guardar')}
         title='Guardar'
+        color= {Colors.azuliOS}
+        />
+      ),
+      headerLeft: (
+      <Button
+        onPress={() => ourself.comprobeChanges('volver')}
+        title='Volver'
         color= {Colors.azuliOS}
         />
       ),
@@ -63,13 +72,17 @@ class DogScreen extends React.Component {
     image: null,
     hasCameraPermission: null,
     isLoading:false,
+    isFirstLoading:true,
     sliderOneChangingConduct: false,
     sliderOneChangingTemperament: false,
     isEditingDog:false,
     newValueConductDog: [1],
     newValueTemperamentDog: [2],
     newValueAvatarDog: '',
-    newValueGender:0,
+    newValueGenderDog:0,
+    newValueNameDog:'',
+    newValueAgeDog:'',
+    newValueBreedDog:'',
   }
 
   componentDidMount() {
@@ -81,15 +94,65 @@ class DogScreen extends React.Component {
       this.setState({ newValueNameDog: dog.name })
       this.setState({ newValueAgeDog: dog.age })
       this.setState({ newValueBreedDog: dog.breed })
-      this.setState({ newValueGender: this.genderToInt(dog.gender) })
+      this.setState({ newValueGenderDog: this.genderToInt(dog.gender)})
       this.setState({ newValueAvatarDog: dog.avatar })
       this.setState({ newValueKeyDog: dog.key })
     }
+    this.setState({ isFirstLoading: false })
   }
 
 
-  comprobeChanges = () => {
-     this.showAlert('¿Seguro que quiere salir sin guardar?')
+  comprobeChanges = async (textButton) => {
+    const attributesDicc = this.prepareAttributes()
+    if (Object.keys(attributesDicc).length != 0){
+      console.log(attributesDicc);
+      switch(textButton){
+
+        case 'volver':
+          await this.showAlert('¡Wuau!', '¿Seguro que quiere salir sin guardar?')
+          break
+
+        case 'guardar':
+          this.setState({ isLoading: true });
+          if (this.state.isEditingDog){
+            await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+          }else{
+            await Fire.shared.createNewDogWithAttributes(attributesDicc)
+          }
+          this.userRequest()
+          this.goToBack()
+          break
+
+         default:
+           console.log('button not identify');
+           break
+       }
+    }else{
+      this.goToBack()
+    }
+  }
+
+  prepareAttributes = () => {
+    var attributes = {}
+    if (this.state.isEditingDog){
+      const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
+      if (this.state.newValueNameDog != dog.name) attributes.name = this.state.newValueNameDog
+      if (this.state.newValueAgeDog != dog.age) attributes.age = this.state.newValueAgeDog
+      if (this.intToGender(this.state.newValueGenderDog) != dog.gender) attributes.gender = this.intToGender(this.state.newValueGenderDog)
+      if (this.state.newValueBreedDog != dog.breed) attributes.breed = this.state.newValueBreedDog
+      if (optionsTemperament[this.state.newValueTemperamentDog] != dog.temperament) attributes.temperament = optionsTemperament[this.state.newValueTemperamentDog]
+      if (optionsConduct[this.state.newValueConductDog] != dog.conduct) attributes.conduct = optionsConduct[this.state.newValueConductDog]
+    }else{
+      attributes = {
+        name: this.state.newValueNameDog,
+        age: this.state.newValueAgeDog,
+        gender: this.intToGender(this.state.newValueGenderDog),
+        temperament: optionsTemperament[this.state.newValueTemperamentDog],
+        conduct: optionsConduct[this.state.newValueConductDog],
+        breed: this.state.newValueBreedDog,
+      }
+    }
+    return attributes
   }
 
   showAlert = (title,  text) => {
@@ -98,10 +161,14 @@ class DogScreen extends React.Component {
       text,
       [
         {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'Salir', onPress: () => this.props.navigation.goBack(null)},
+        {text: 'Salir', onPress: () => {this.goToBack()}},
       ],
       { cancelable: true }
     )
+  }
+
+  goToBack(){
+    this.props.navigation.goBack(null)
   }
 
   _pickImage = async (keyDog) => {
@@ -130,9 +197,27 @@ class DogScreen extends React.Component {
     return (
       <Image
         style={ styles.avatar }
-        source={{uri: urlPhotoDog}}
+        source={urlPhotoDog? {uri: urlPhotoDog} : {uri: 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277'}}
       />
     )
+  }
+
+  showAlertDelete = () => {
+    Alert.alert(
+      'Eliminar can',
+      '¿Seguro que desea eliminar este can?',
+      [
+        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Eliminar', onPress: () => this.deleteDog()},
+      ],
+      { cancelable: true }
+    )
+  }
+
+  deleteDog = async () => {
+    await Fire.shared.deleteCompletDog(this.state.newValueKeyDog)
+    this.userRequest()
+    this.goToBack()
   }
 
   findDogByKey(keyDog) {
@@ -142,8 +227,13 @@ class DogScreen extends React.Component {
   }
 
   genderToInt(gender){
-    if (gender == 'hembra') {return 0}
+    if (gender == 'hembra') return 0
     return 1
+  }
+
+  intToGender(value){
+    if (value == 0) return 'hembra'
+    return 'macho'
   }
 
   conductToInt(conduct){
@@ -196,81 +286,90 @@ class DogScreen extends React.Component {
 
 
   render() {
+    if (this.state.isFirstLoading){
+      return <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
+    }
     return (
-        <ScrollView style={styles.container}>
-          <ImageBackground
-            source={require('../assets/images/background.png')}
-            style={{width: '100%', height: '100%'}}>
-            <View>
-              <View style={{flex: 2, flexDirection: 'row', alignItems: 'center', marginTop:10}}>
-                <View style={{marginLeft: 15}}>
-                  <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage(this.state.newValueKeyDog)}>
-                    {this.renderImageDog(this.state.newValueAvatarDog)}
-                  </TouchableHighlight>
-                </View>
-                <View style={{flex: 2, flexDirection: 'column'}}>
-                  <Hoshi
-                    label={'Nombre del can'}
-                    value={this.state.newValueNameDog}
-                    style={{fontSize: 15, marginLeft: 15, marginRight: 15}}
-                    borderColor={'#db786d'}
-                    labelStyle={'#db786d'}
-                  />
-                  <Hoshi
-                    label={'Edad del can'}
-                    value={this.state.newValueAgeDog}
-                    style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:15}}
-                    borderColor={'#db786d'}
-                    labelStyle={'#db786d'}
-                  />
-                </View>
+      <ScrollView style={styles.container}>
+        <ImageBackground
+          source={require('../assets/images/background.png')}
+          style={{width: '100%', height: '100%'}}>
+           <View>
+            <View style={{flex: 2, flexDirection: 'row', alignItems: 'center', marginTop:10}}>
+              <View style={{marginLeft: 15}}>
+                <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage(this.state.newValueKeyDog)}>
+                  {this.renderImageDog(this.state.newValueAvatarDog)}
+                </TouchableHighlight>
               </View>
-              <SwitchSelector options={[
-                  { label: '  Hembra', value: 'hembra', customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
-                  { label: '  Macho', value: 'macho', customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
-              ]} buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} initial={this.genderToInt(this.state.newValueGender)} onPress={value => console.log(`Call onPress with value: ${value}`)} />
-
-              <View style={styles.sliders}>
-                <View style={styles.sliderOne}>
-                  <Text style={styles.text}>Temperamento: </Text>
-                  <Text
-                    style={[
-                      styles.text,
-                      this.state.sliderOneChangingTemperament && { color: '#db786d' },
-                    ]}
-                  >
-                    {optionsTemperament[this.state.newValueTemperamentDog]}
-                  </Text>
-                </View>
-                <MultiSlider
-                  min={0}
-                  max={4}
-                  values={this.state.newValueTemperamentDog}
-                  sliderLength={280}
-                  onValuesChangeStart={this.sliderOneValuesChangeStartTemperament}
-                  onValuesChange={this.sliderOneValuesChangeTemperament}
-                  onValuesChangeFinish={this.sliderOneValuesChangeFinishTemperament}
-                  selectedStyle={{
-                    backgroundColor: 'gold',
-                  }}
-                  unselectedStyle={{
-                    backgroundColor: Colors.background,
-                  }}
-                  containerStyle={{
-                    height: 40,
-                  }}
-                  trackStyle={{
-                    height: 10,
-                    backgroundColor: Colors.background  ,
-                  }}
-                  touchDimensions={{
-                    height: 40,
-                    width: 40,
-                    borderRadius: 20,
-                    slipDisplacement: 40,
-                  }}
-                  customMarker={CustomMarker1}
+              <View style={{flex: 2, flexDirection: 'column'}}>
+                <Hoshi
+                  label={'Nombre del can'}
+                  value={this.state.newValueNameDog}
+                  onChangeText={(text) => { this.setState({newValueNameDog: text}) }}
+                  style={{fontSize: 15, marginLeft: 15, marginRight: 15}}
+                  borderColor={'#db786d'}
+                  labelStyle={'#db786d'}
                 />
+                <Hoshi
+                  label={'Edad del can'}
+                  value={this.state.newValueAgeDog}
+                  keyboardType= {'number-pad'}
+                  onChangeText={(text) => { this.setState({newValueAgeDog: text}) }}
+                  style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:15}}
+                  borderColor={'#db786d'}
+                  labelStyle={'#db786d'}
+                />
+              </View>
+            </View>
+            <SwitchSelector options={ this.state.newValueGenderDog == 0 ? [
+                { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
+                { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
+            ] :
+            [   { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
+                { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
+            ]
+          } buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} onPress={value => this.setState({ newValueGenderDog: value })} />
+            <View style={styles.sliders}>
+              <View style={styles.sliderOne}>
+                <Text style={styles.text}>Temperamento: </Text>
+                <Text
+                  style={[
+                    styles.text,
+                    this.state.sliderOneChangingTemperament && { color: '#db786d' },
+                  ]}
+                >
+                  {optionsTemperament[this.state.newValueTemperamentDog]}
+                </Text>
+              </View>
+              <MultiSlider
+                min={0}
+                max={4}
+                values={this.state.newValueTemperamentDog}
+                sliderLength={280}
+                onValuesChangeStart={this.sliderOneValuesChangeStartTemperament}
+                onValuesChange={this.sliderOneValuesChangeTemperament}
+                onValuesChangeFinish={this.sliderOneValuesChangeFinishTemperament}
+                selectedStyle={{
+                  backgroundColor: 'gold',
+                }}
+                unselectedStyle={{
+                  backgroundColor: Colors.background,
+                }}
+                containerStyle={{
+                  height: 40,
+                }}
+                trackStyle={{
+                  height: 10,
+                  backgroundColor: Colors.background  ,
+                }}
+                touchDimensions={{
+                  height: 40,
+                  width: 40,
+                  borderRadius: 20,
+                  slipDisplacement: 40,
+                }}
+                customMarker={CustomMarker1}
+              />
               <View style={styles.sliderOne}>
                 <Text style={styles.text}>Conducta: </Text>
                 <Text
@@ -312,16 +411,19 @@ class DogScreen extends React.Component {
                 customMarker={CustomMarker2}
               />
               </View>
-              <Hoshi
-                style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
-                label={'Raza del can'}
-                value={this.state.newValueBreedDog}
-                borderColor={'#db786d'}
-                labelStyle={'#db786d'}
-              />
-            {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => console.log('Has clickado eliminar can')}>Eliminar can</AwesomeButtonRick> : null }
-            <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
-            </View>
+              <KeyboardAvoidingView contentContainerStyle={styles.loginContainer} behavior='position'>
+                <Hoshi
+                  style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
+                  label={'Raza del can'}
+                  value={this.state.newValueBreedDog}
+                  onChangeText={(text) => { this.setState({newValueBreedDog: text}) }}
+                  borderColor={'#db786d'}
+                  labelStyle={'#db786d'}
+                />
+              </KeyboardAvoidingView>
+              {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.showAlertDelete()}>Eliminar can</AwesomeButtonRick> : null }
+              <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
+              </View>
           </ImageBackground>
         </ScrollView>
     );

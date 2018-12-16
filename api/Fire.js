@@ -185,7 +185,10 @@ uploadImageUserAsync= async uri => {
       .child('usersPhotos').child(this.uid).child('photo')
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL()
-  return this.updateURLPhotoUser(urlPhoto)
+    const attributesDicc = {
+      image: urlPhoto
+    }
+  return this.updateAttributeUser(attributesDicc)
 }
 
 uploadImageDogAsync= async (uri, keyDog) => {
@@ -197,31 +200,31 @@ uploadImageDogAsync= async (uri, keyDog) => {
       .child('dogsPhotos').child(this.uid).child(keyDog)
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL()
-  return this.updateURLPhotoDog(urlPhoto, keyDog)
+    const attributesDicc = {
+      image: urlPhoto
+    }
+  return this.updateURLPhotoDog(attributesDicc, keyDog)
 }
 
-updateURLPhotoUser = urlPhoto => {
-  let ref = this.firestoreMyUser;
-  var setAda = ref.set({
-  image: urlPhoto
-  }, { merge: true });
-  return urlPhoto
-}
 
-updateURLPhotoDog = (urlPhoto, keyDog) => {
+updateAttributeDog = async (attributesDicc, keyDog) => {
   let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog);
-  var setAda = ref.set({
-  avatar: urlPhoto
-  }, { merge: true });
-  return urlPhoto
+  await ref.set(attributesDicc, { merge: true });
 }
 
-updateNameUser = async (name) => {
+updateAttributeUser = async (attributesDicc) => {
   let ref = this.firestoreMyUser;
-  var setAda = await ref.set({
-  name: name
-  }, { merge: true });
-  return name
+  await ref.set(attributesDicc , { merge: true });
+}
+
+createNewDogWithAttributes = async (attributesDicc, keyDog) => {
+  let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs')
+  await ref.add(attributesDicc);
+}
+
+deleteCompletDog = async (keyDog) => {
+  let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog)
+  await ref.delete();
 }
 
   // Helpers
