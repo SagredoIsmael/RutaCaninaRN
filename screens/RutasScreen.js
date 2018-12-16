@@ -1,9 +1,11 @@
-import React from 'react';
-import Fire from '../api/Fire';
+import React from 'react'
+import Fire from '../api/Fire'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
-import List from '../components/List';
-import getPermission from '../utils/getPermission';
+import List from '../components/List'
+import getPermission from '../utils/getPermission'
+import ActionButton from 'react-native-action-button'
+import Colors from '../constants/Colors'
 import {
   LayoutAnimation,
   RefreshControl,
@@ -96,16 +98,20 @@ makeRemoteRequest = async lastKey => {
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
-      <List
-        refreshControl={
-          <RefreshControl
-            refreshing={this.state.loading}
-            onRefresh={this._onRefresh}
-          />
-        }
-        onPressFooter={this.onPressFooter}
-        data={this.state.posts}
-      />
+      <View>
+        <List
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.loading}
+              onRefresh={this._onRefresh}
+            />
+          }
+          onPressFooter={this.onPressFooter}
+          data={this.state.posts}
+        />
+      {}
+      <ActionButton buttonColor={Colors.pinkChicle} onPress={() => { this.props.navigation.navigate('NewRoute')}} size = { this.state.loading? 0 : 50} />
+      </View>
     );
   }
 }
