@@ -16,7 +16,6 @@ import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/ric
 import {
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Alert,
   Slider,
   Text,
@@ -67,7 +66,6 @@ class DogScreen extends React.Component {
     }
   }
 
-
   state = {
     image: null,
     hasCameraPermission: null,
@@ -83,9 +81,14 @@ class DogScreen extends React.Component {
     newValueNameDog:'',
     newValueAgeDog:'',
     newValueBreedDog:'',
+    newValueKeyDog:'',
   }
 
   componentDidMount() {
+    this.setNewStates()
+  }
+
+  setNewStates = () => {
     const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
     if (dog !== undefined && dog !== null){
       this.setState({ isEditingDog: true })
@@ -117,7 +120,7 @@ class DogScreen extends React.Component {
           if (this.state.isEditingDog){
             await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
           }else{
-            await Fire.shared.createNewDogWithAttributes(attributesDicc)
+            await Fire.shared.createNewDogWithAttributes(attributesDicc, this.state.newValueAvatarDog)
           }
           this.userRequest()
           this.goToBack()
@@ -177,19 +180,24 @@ class DogScreen extends React.Component {
         aspect: [4, 3],
       })
       if (!result.cancelled) {
-      this.setState({ isLoading: true });
-       uploadUrl = await Fire.shared.uploadImageDogAsync(result.uri, keyDog)
-       uploadUrl? this.userRequest() :   Alert.alert(
-           '¡Wuau!',
-           'Error al cargar la foto', [ {text: 'Aceptar'}, ],
-           { cancelable: false })
+        if (keyDog != ''){   //updating photo dog
+          this.setState({ isLoading: true })
+           uploadUrl = await Fire.shared.uploadImageDogAsync(result.uri, keyDog)
+           uploadUrl? this.userRequest() :   Alert.alert(
+               '¡Wuau!',
+               'Error al cargar la foto', [ {text: 'Aceptar', onPress: () => {this.setState({ isLoading: false })}} ],
+               { cancelable: false })
+        }else{ // create new dog first
+          this.setState({ newValueAvatarDog: result.uri });
+        }
       }
   }
 
   userRequest = async () => {
       const { dataUser } = await Fire.shared.getInfoMyUser()
       this.props.insert_dataUser(dataUser)
-      this.setState({ isLoading: false });
+      this.setNewStates()
+      this.setState({ isLoading: false })
   }
 
   renderImageDog(urlPhotoDog) {
@@ -411,16 +419,14 @@ class DogScreen extends React.Component {
                 customMarker={CustomMarker2}
               />
               </View>
-              <KeyboardAvoidingView contentContainerStyle={styles.loginContainer} behavior='position'>
-                <Hoshi
-                  style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
-                  label={'Raza del can'}
-                  value={this.state.newValueBreedDog}
-                  onChangeText={(text) => { this.setState({newValueBreedDog: text}) }}
-                  borderColor={'#db786d'}
-                  labelStyle={'#db786d'}
-                />
-              </KeyboardAvoidingView>
+              <Hoshi
+                style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
+                label={'Raza del can'}
+                value={this.state.newValueBreedDog}
+                onChangeText={(text) => { this.setState({newValueBreedDog: text}) }}
+                borderColor={'#db786d'}
+                labelStyle={'#db786d'}
+              />
               {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.showAlertDelete()}>Eliminar can</AwesomeButtonRick> : null }
               <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
               </View>

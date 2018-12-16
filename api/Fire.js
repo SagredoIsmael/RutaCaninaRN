@@ -191,7 +191,7 @@ uploadImageUserAsync= async uri => {
   return this.updateAttributeUser(attributesDicc)
 }
 
-uploadImageDogAsync= async (uri, keyDog) => {
+uploadImageDogAsync = async (uri, keyDog) => {
     const response = await fetch(uri);
     const blob = await response.blob();
     const ref = firebase
@@ -201,26 +201,35 @@ uploadImageDogAsync= async (uri, keyDog) => {
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL()
     const attributesDicc = {
-      image: urlPhoto
+      avatar: urlPhoto
     }
-  return this.updateURLPhotoDog(attributesDicc, keyDog)
+  return this.updateAttributeDog(attributesDicc, keyDog)
 }
 
 
 updateAttributeDog = async (attributesDicc, keyDog) => {
   let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog);
   await ref.set(attributesDicc, { merge: true });
+  return true
 }
 
 updateAttributeUser = async (attributesDicc) => {
   let ref = this.firestoreMyUser;
   await ref.set(attributesDicc , { merge: true });
+  return true
 }
 
-createNewDogWithAttributes = async (attributesDicc, keyDog) => {
+createNewDogWithAttributes = async (attributesDicc, newValuePhotoPathDog) => {
   let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs')
-  await ref.add(attributesDicc);
+  await ref.add(attributesDicc)
+  .then((data) => {
+    return this.uploadImageDogAsync(newValuePhotoPathDog, data.id)
+  })
+  .catch(function(error) {
+    console.error("Error adding new dog: ", error);
+  })
 }
+
 
 deleteCompletDog = async (keyDog) => {
   let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog)
