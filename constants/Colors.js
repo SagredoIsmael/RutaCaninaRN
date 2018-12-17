@@ -2,6 +2,7 @@ const tintColor = '#2f95dc';
 
 export default {
   background: '#bedce2',
+  verdePistacho: '#d5ffed',
   azuliOS: '#0D61FE',
   tintColor,
   tabIconDefault: '#ccc',

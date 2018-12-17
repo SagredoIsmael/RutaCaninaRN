@@ -35,7 +35,7 @@ const optionsTemperament = ['muy dulce', 'apacible y amigable', 'independiente y
 class DogScreen extends React.Component {
   static ourself = null;
   constructor() {
-    super();
+    super()
     ourself = this;
   }
 
@@ -255,8 +255,8 @@ class DogScreen extends React.Component {
   sliderOneValuesChangeStartConduct = () => {
     this.setState({
       sliderOneChangingConduct: true,
-    });
-  };
+    })
+  }
 
   sliderOneValuesChangeConduct = values => {
     let newValues = [0];

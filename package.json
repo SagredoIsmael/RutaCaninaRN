@@ -31,6 +31,8 @@
     "react-native-micro-animated-button": "^0.0.27",
     "react-native-portal": "1.2.1",
     "react-native-really-awesome-button": "^0.8.3",
+    "react-native-step-indicator": "0.0.9",
+    "react-native-swiper": "^1.5.14",
     "react-native-switch-selector": "^1.1.10",
     "react-native-textinput-effects": "^0.4.2",
     "react-native-ui-kitten": "^3.0.1",
