@@ -53,8 +53,7 @@ class Fire extends React.Component {
 
   // Download Data Route
   getRoutes = async ({ size, start }) => {
-    console.log('in getpage: ', 'Size:', size, 'start', start);
-    //Get all users
+    console.log('in getpage: ', 'Size:', size, 'start', start)
     const users = await this.getUsers();
     let ref = this.collectionRoutes;
     try {
@@ -68,18 +67,13 @@ class Fire extends React.Component {
           const post = doc.data() || {};
           const title = post.title;
           const img = post.image;
-          for (let userProp of users["data"]) {
-            if (post.creatorUser == userProp.key){
-              const route = {
-                user: userProp,
-                key: doc.id,
-                image: (img || "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg"),
-                name: (title || 'Desconocido').trim(),
-                ...post,
-              };
-              data.push(route);
-            }
+          const route = {
+            key: doc.id,
+            image: (img || "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg"),
+            name: (title || 'Desconocido').trim(),
+            ...post,
           };
+          data.push(route);
         }
       });
       const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -101,23 +95,23 @@ class Fire extends React.Component {
           const post = doc.data() || {};
           const title = post.title;
           const img = post.image;
-          const route = {
+          const user = {
             key: doc.id,
             image: (img || "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg"),
             name: (title || 'Desconocido').trim(),
             ...post,
           };
-          data.push(route);
+          data.push(user);
         }
       });
-      return { data };
+      return { data }
     } catch ({ message }) {
-      alert(message);
+      alert(message)
     }
-  };
+  }
 
-  getInfoMyUser = async () => {
-    let ref = this.firestoreMyUser;
+  getInfoUser = async (keyUser) => {
+    let ref = firebase.firestore().collection('users').doc(keyUser)
     try {
         const queryData = await ref.get()
           if (queryData.exists) {
@@ -147,6 +141,7 @@ class Fire extends React.Component {
       alert(message);
     }
   }
+
 
   // Download Data Dogs by User
    getDogsByUser = async () => {
@@ -208,7 +203,7 @@ uploadImageDogAsync = async (uri, keyDog) => {
 
 
 updateAttributeDog = async (attributesDicc, keyDog) => {
-  let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog);
+  let ref = firebase.firestore().collection('users').doc(this.uid).collection('dogs').doc(keyDog)
   await ref.set(attributesDicc, { merge: true });
   return true
 }

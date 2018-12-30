@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import Colors from '../constants/Colors';
-import { Image, StyleSheet, Text, View, ImageBackground } from 'react-native';
+import { Image, StyleSheet, Text, View, ImageBackground, Alert, TouchableHighlight } from 'react-native';
 
 const profileImageSize = 36;
 const padding = 12;
@@ -18,8 +18,12 @@ export default class Item extends React.Component {
     }
   }
 
+  goToProfile = (keyUserr) => {
+    this.props.nav.navigate('Profile', {keyUser:keyUserr})
+  }
+
   render() {
-    const { text, title, imageWidth, imageHeight, uid, image, description } = this.props;
+    const {keyCreator, nameCreator, imageCreator, title, imageWidth, imageHeight, uid, image, description } = this.props;
 
     // Reduce the name to something
     const imgW = imageWidth || this.state.width;
@@ -31,7 +35,12 @@ export default class Item extends React.Component {
         <ImageBackground
           source={require('../assets/images/background.png')}
           style={{width: '100%'}}>
-          <Header image={{ uri: image }} name={title} />
+          <View>
+            <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)'
+              overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={() => this.goToProfile(keyCreator)}>
+              <Header image={{ uri: imageCreator }} name={nameCreator} />
+            </TouchableHighlight>
+          </View>
           <Image
             resizeMode="contain"
             style={{

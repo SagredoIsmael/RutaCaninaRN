@@ -108,6 +108,7 @@ makeRemoteRequest = async lastKey => {
           }
           onPressFooter={this.onPressFooter}
           data={this.state.posts}
+          nav={this.props.navigation}
         />
       {}
       <ActionButton buttonColor={Colors.pinkChicle} onPress={() => { this.props.navigation.navigate('NewRoute')}} size = { this.state.loading? 0 : 50} />

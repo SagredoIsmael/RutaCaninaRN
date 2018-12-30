@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Permissions, ImagePicker, Font, Constants } from 'expo'
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
-import MenuOptions from './MenuOptions/Menu.js'
 import Icon from 'react-native-vector-icons/Ionicons'
 import _ from 'lodash'
 import { Avatar, Button } from 'react-native-elements'
@@ -24,12 +23,11 @@ import {
 import * as actions from '../actions'
 import Colors from '../constants/Colors'
 
-AppRegistry.registerComponent('MenuOptions', () => MenuOptions);
-
 class Profile extends React.Component {
   constructor(props){
     super(props);
   }
+
   state = {
     image: null,
     hasCameraPermission: null,
@@ -45,13 +43,12 @@ class Profile extends React.Component {
       'light': require('../assets/fonts/Montserrat-Light.ttf'),
       'bold': require('../assets/fonts/Montserrat-Bold.ttf'),
     });
-
     this.setState({ fontLoaded: true });
   }
 
 
   userRequest = async () => {
-      const { dataUser } = await Fire.shared.getInfoMyUser()
+      const { dataUser } = await Fire.shared.getInfoUser(this.props.dataUser.key)
       this.props.insert_dataUser(dataUser)
       this.setState({ isLoading: false });
     };
@@ -60,7 +57,6 @@ class Profile extends React.Component {
   async componentWillMount() {
       const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
       this.setState({ hasCameraPermission: status === 'granted' })
-      this.userRequest()
   }
 
 
@@ -140,14 +136,50 @@ class Profile extends React.Component {
             <Text style={{color: 'white', fontFamily: 'regular', fontSize: 13, marginLeft: 5}}>Info</Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.gotoDogScreen(dog.key, dog.name)}>
-            <View style={{ backgroundColor: Colors.pinkChicle, width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
-              <Icon name='md-settings' color='white' size={20}/>
-            </View>
-          </TouchableHighlight>
+          {this.renderButtonSettings(dog)}
         </View>
       </View>
     );
+  }
+
+  renderButtonSettings(dog){
+    if (this.props.isMyProfile)
+      return (
+        <TouchableHighlight underlayColor='rgba(98,93,144,0)' onPress={()=>this.gotoDogScreen(dog.key, dog.name)}>
+          <View style={{ backgroundColor: Colors.pinkChicle, width: 35, height: 28, borderRadius: 5, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10}}>
+            <Icon name='md-settings' color='white' size={20}/>
+          </View>
+        </TouchableHighlight>
+      )
+  }
+
+  renderAddDogButton(){
+    if (this.props.isMyProfile)
+      return (
+        <View style={{flex: 1}}>
+          <Button
+            title='Agregar perrete'
+            buttonStyle={{height: 33, width: 120, backgroundColor: Colors.pinkChicle, borderRadius: 5}}
+            titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
+            onPress={()=>this.gotoDogScreen(null, 'Nuevo can')}
+            underlayColor="transparent"
+          />
+        </View>
+      )
+  }
+
+  renderTextCanes(){
+    if (this.props.isMyProfile)
+      return (
+        <View style={{flex: 1}}>
+          <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Mis canes'}</Text>
+        </View>
+      )
+    return (
+      <View style={{flex: 1}}>
+        <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Sus canes'}</Text>
+      </View>
+    )
   }
 
   render() {
@@ -181,18 +213,8 @@ class Profile extends React.Component {
                   </View>
                   <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
                   <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={{flex: 1}}>
-                      <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Mis canes'}</Text>
-                    </View>
-                    <View style={{flex: 1}}>
-                      <Button
-                        title='Agregar perrete'
-                        buttonStyle={{height: 33, width: 120, backgroundColor: Colors.pinkChicle, borderRadius: 5}}
-                        titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
-                        onPress={()=>this.gotoDogScreen(null, 'Nuevo can')}
-                        underlayColor="transparent"
-                      />
-                    </View>
+                    {this.renderTextCanes()}
+                    {this.renderAddDogButton()}
                   </View>
                 </View>
                 {this.renderListCards()}
@@ -201,7 +223,6 @@ class Profile extends React.Component {
              :
           <Text>Loading...</Text>
           }
-          <MenuOptions/>
           {this.renderDialogPopup()}
         </ScrollView>
       </PortalProvider>
@@ -291,7 +312,6 @@ const slideAnimation = new SlideAnimation({
 
 const mapStateToProps = state => {
   return {
-    keyUser : state.keyUser,
     dataUser : state.dataUser,
   }
 }

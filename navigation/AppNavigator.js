@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation'
 import MainTabNavigator from './MainTabNavigator'
 import DogScreen from '../screens/DogScreen'
 import NewRouteScreen from '../screens/NewRouteScreen'
+import Profile from '../screens/PerfilScreen'
 
 const AppStackNavigator = createStackNavigator ({
     Main: {
@@ -17,6 +18,9 @@ const AppStackNavigator = createStackNavigator ({
     NewRoute: {
           screen:NewRouteScreen
           },
+    Profile: {
+          screen:Profile
+    }
 
 })
 

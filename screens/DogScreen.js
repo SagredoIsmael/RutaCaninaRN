@@ -25,7 +25,6 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
-  BackHandler,
 } from 'react-native';
 
 const optionsConduct = ['granuja y sinvergüenza', 'torbellino', 'pasota total']
@@ -194,7 +193,7 @@ class DogScreen extends React.Component {
   }
 
   userRequest = async () => {
-      const { dataUser } = await Fire.shared.getInfoMyUser()
+      const { dataUser } = await Fire.shared.getInfoUser(this.props.dataUser.key)
       this.props.insert_dataUser(dataUser)
       this.setNewStates()
       this.setState({ isLoading: false })

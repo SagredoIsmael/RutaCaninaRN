@@ -3,7 +3,7 @@ import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 import RutasScreen from '../screens/RutasScreen';
-import PerfilScreen from '../screens/PerfilScreen';
+import LoginScreen from '../screens/LoginScreen';
 import MisRutasScreen from '../screens/MisRutasScreen';
 
 import { Ionicons } from '@expo/vector-icons';
@@ -28,7 +28,7 @@ RutasStack.navigationOptions = {
 };
 
 const PerfilStack = createStackNavigator({
-  Perfil: PerfilScreen,
+  Login: LoginScreen,
 });
 
 PerfilStack.navigationOptions = {
