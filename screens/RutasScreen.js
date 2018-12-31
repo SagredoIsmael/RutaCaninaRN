@@ -15,6 +15,7 @@ import {
   TouchableHighlight,
   Text,
   StatusBar,
+  Alert,
 } from 'react-native';
 
 
@@ -87,6 +88,27 @@ makeRemoteRequest = async lastKey => {
     this.props.insert_dataRoutes(this.state.posts)
   };
 
+  goToNewRoute = () => {
+    if (Fire.shared.uid != undefined){
+        this.props.insert_user(Fire.shared.uid)
+        this.props.navigation.navigate('NewRoute')
+    }else{
+      this.showAlertLogIn()
+    }
+  }
+
+  showAlertLogIn = () => {
+    Alert.alert(
+      'Nueva ruta',
+      'Es necesario iniciar sesión previamente',
+      [
+        {text: 'Cancelar', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Iniciar sesión', onPress: () => this.props.navigation.navigate('PerfilStack')},
+      ],
+      { cancelable: true }
+    )
+  }
+
 
   // Because we want to get the most recent items, don't pass the cursor back.
   // This will make the data base pull the most recent items.
@@ -111,14 +133,17 @@ makeRemoteRequest = async lastKey => {
           nav={this.props.navigation}
         />
       {}
-      <ActionButton buttonColor={Colors.pinkChicle} onPress={() => { this.props.navigation.navigate('NewRoute')}} size = { this.state.loading? 0 : 50} />
+      <ActionButton buttonColor={Colors.pinkChicle} onPress={() => { this.goToNewRoute()}} size = { this.state.loading? 0 : 50} />
       </View>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return {dataRoutes : state.dataRoutes}
+  return {
+    dataRoutes : state.dataRoutes,
+    keyUser : state.keyUser
+  }
 }
 
 export default connect(mapStateToProps, actions)(RutasScreen)

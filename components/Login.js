@@ -114,13 +114,12 @@ TabSelector.propTypes = {
           this.props.insert_user(user.user.uid)
           this.setState({ isLoading: false})
         })
-        .catch(function(error) {
-          //TODO: cuando salte alert, cambiar el setstate a false
+        .catch(error => {
           Alert.alert(
             '¡Wuau!',
             'Usuario o contraseña incorrectos',
             [
-              {text: 'Aceptar'},
+              {text: 'Aceptar', onPress: () => this.setState({ isLoading: false})},
             ],
             { cancelable: false }
           )
@@ -175,13 +174,12 @@ TabSelector.propTypes = {
             this.props.insert_user(user.user.uid)
             this.setState({ isLoading: false})
           })
-          .catch(function(error) {
-            //TODO: cuando salte alert, cambiar el setstate a false
+          .catch(error => {
             Alert.alert(
               '¡Wuau!',
               'Este email ya está registrado',
               [
-                {text: 'Aceptar'},
+                {text: 'Aceptar', onPress: () => this.setState({ isLoading: false})},
               ],
               { cancelable: false }
             )
