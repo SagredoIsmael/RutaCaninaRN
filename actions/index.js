@@ -25,3 +25,10 @@ export const insert_dataMyUser = (dataMyUser) => {
     payload: dataMyUser
   }
 }
+
+export const insert_dataNewRoute = (dataNewRoute) => {
+  return {
+    type: 'insert_dataNewRoute',
+    payload: dataNewRoute
+  }
+}

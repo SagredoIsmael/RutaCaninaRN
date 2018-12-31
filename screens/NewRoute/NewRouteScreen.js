@@ -1,8 +1,13 @@
 import React from 'react'
-import AutoTypingText from 'react-native-auto-typing-text'
-import Colors from '../constants/Colors'
+import Colors from '../../constants/Colors'
 import StepIndicator from 'react-native-step-indicator'
 import Swiper from 'react-native-swiper'
+import NameRoute from './NameRoute'
+import DetailRoute from './DetailRoute'
+import DateRoute from './DateRoute'
+import PhotoRoute from './PhotoRoute'
+import StartCoordRoute from './StartCoordRoute'
+import EndCoordRoute from './EndCoordRoute'
 import {
   Image,
   Platform,
@@ -22,7 +27,6 @@ class NewRouteScreen extends React.Component {
     super()
     this.state = {
         currentPosition: 0,
-        indexScreen: 0,
     }
   }
 
@@ -41,7 +45,6 @@ class NewRouteScreen extends React.Component {
 
   changeIndex = (index) => {
     this.setState({
-      indexScreen: index,
       currentPosition: index
     })
   }
@@ -50,7 +53,7 @@ class NewRouteScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ImageBackground
-          source={require('../assets/images/background.png')}
+          source={require('../../assets/images/background.png')}
           style={{width: '100%', height: '100%'}}>
           <View style={{marginTop:10}}>
             <StepIndicator
@@ -63,27 +66,22 @@ class NewRouteScreen extends React.Component {
           </View>
           <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
             <View style={styles.slide1}>
-              <AutoTypingText
-                text={'¿Te animas a crear una ruta? ¡Genial! \n Empecemos dándole un nombre..'}
-                charMovingTime={50}
-                delay={0}
-                style={{
-                  position: 'absolute',
-                  width: '90%',
-                  height: 100,
-                  fontSize: 20,
-                  color: Colors.verdeOscuro,
-                  margin: 20,
-                  marginTop: 20,
-                }}
-                onComplete={() => { console.log('done'); }}
-              />
+              <NameRoute currentPosition={this.state.currentPosition}/>
             </View>
             <View style={styles.slide1}>
-              <Text style={styles.text}>Beautiful</Text>
+              <DateRoute currentPosition={this.state.currentPosition}/>
             </View>
             <View style={styles.slide1}>
-              <Text style={styles.text}>And simple</Text>
+              <DetailRoute currentPosition={this.state.currentPosition}/>
+            </View>
+            <View style={styles.slide1}>
+              <PhotoRoute currentPosition={this.state.currentPosition}/>
+            </View>
+            <View style={styles.slide1}>
+              <StartCoordRoute currentPosition={this.state.currentPosition}/>
+            </View>
+            <View style={styles.slide1}>
+              <EndCoordRoute currentPosition={this.state.currentPosition}/>
             </View>
           </Swiper>
         </ImageBackground>

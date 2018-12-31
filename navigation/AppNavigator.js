@@ -2,7 +2,7 @@ import React from 'react'
 import {createStackNavigator} from 'react-navigation'
 import MainTabNavigator from './MainTabNavigator'
 import DogScreen from '../screens/DogScreen'
-import NewRouteScreen from '../screens/NewRouteScreen'
+import NewRouteScreen from '../screens/NewRoute/NewRouteScreen'
 import Profile from '../screens/PerfilScreen'
 
 const AppStackNavigator = createStackNavigator ({
