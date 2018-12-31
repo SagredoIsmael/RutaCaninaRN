@@ -48,8 +48,8 @@ class Profile extends React.Component {
 
 
   userRequest = async () => {
-      const { dataUser } = await Fire.shared.getInfoUser(this.props.dataUser.key)
-      this.props.insert_dataUser(dataUser)
+      const { dataUser } = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
+      this.props.insert_dataMyUser(dataUser)
       this.setState({ isLoading: false });
     };
 
@@ -61,19 +61,47 @@ class Profile extends React.Component {
 
 
   renderImageProfile() {
+    var image = null
+    if (this.props.isMyProfile){
+      image = this.props.dataMyUser.image
+    }else{
+      image = this.props.dataUser.image
+    }
     return (
       <Image
         style={ styles.avatar }
-        source={{uri: this.props.dataUser.image }}
+        source={{uri: image }}
       />
     );
   }
 
 
   renderListCards() {
-    return _.map(this.props.dataUser.dogs, (user, index) => {
+    var dogs = null
+    if (this.props.isMyProfile){
+      dogs = this.props.dataMyUser.dogs
+    }else{
+      dogs = this.props.dataUser.dogs
+    }
+    return _.map(dogs, (user, index) => {
       return this.renderCard(user, index);
     });
+  }
+
+  renderTitleUser(){
+    var name = ''
+    if (this.props.isMyProfile){
+      name = this.props.dataMyUser.name
+    }else{
+      name = this.props.dataUser.name
+    }
+    return (
+      <View style={{ flex: 1, marginTop: 40, justifyContent: 'center'}}>
+        <Text style={{ fontFamily: 'bold', fontSize: 25, color: Colors.verdeOscuro, marginLeft: -15}}>
+          {name}
+        </Text>
+      </View>
+    )
   }
 
   renderDialogPopup() {
@@ -169,15 +197,45 @@ class Profile extends React.Component {
   }
 
   renderTextCanes(){
+    var text = 'Mis canes'
+    var fontSize = 20
+    if (this.props.isMyProfile){
+      if (this.props.dataMyUser.dogs){
+        if (Object.keys(this.props.dataMyUser.dogs).length === 0){
+          text = 'Aún no tienes ningún can añadido'
+          fontSize = 10
+        }else{
+          text = 'Mis canes'
+        }
+      }
+    }else{
+      if (this.props.dataUser.dogs){
+        if (Object.keys(this.props.dataUser.dogs).length === 0){
+          text = 'No tiene canes añadidos'
+        }else{
+          text = 'Sus canes'
+        }
+      }
+    }
+    return (
+      <View style={{flex: 1}}>
+        <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: fontSize, marginLeft: 25}}>{text}</Text>
+      </View>
+    )
+  }
+
+  renderPhotoUser(){
     if (this.props.isMyProfile)
       return (
-        <View style={{flex: 1}}>
-          <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Mis canes'}</Text>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+           <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
+              {this.renderImageProfile()}
+            </TouchableHighlight>
         </View>
       )
     return (
-      <View style={{flex: 1}}>
-        <Text style={{color: Colors.verdeOscuro, fontFamily: 'regular', fontSize: 20, marginLeft: 25}}>{'Sus canes'}</Text>
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+         {this.renderImageProfile()}
       </View>
     )
   }
@@ -198,17 +256,9 @@ class Profile extends React.Component {
             <ScrollView style={{flex: 1, marginBottom: 20, marginTop:0}}>
                 <View style={{flex: 1, flexDirection: 'column', backgroundColor: Colors.whiteCrudo, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 80}}>
                   <View style={{flex: 3, flexDirection: 'row'}}>
+                    {this.renderPhotoUser()}
                     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                       <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage()}>
-                          {this.renderImageProfile()}
-                        </TouchableHighlight>
-                    </View>
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                      <View style={{ flex: 1, marginTop: 40, justifyContent: 'center'}}>
-                        <Text style={{ fontFamily: 'bold', fontSize: 25, color: Colors.verdeOscuro, marginLeft: -15}}>
-                          {this.props.dataUser.name}
-                        </Text>
-                      </View>
+                      {this.renderTitleUser()}
                     </View>
                   </View>
                   <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
@@ -313,6 +363,8 @@ const slideAnimation = new SlideAnimation({
 const mapStateToProps = state => {
   return {
     dataUser : state.dataUser,
+    dataMyUser : state.dataMyUser,
+    keyUser : state.keyUser,
   }
 }
 

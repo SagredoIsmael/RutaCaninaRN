@@ -118,7 +118,7 @@ class Fire extends React.Component {
             const post = queryData.data() || {};
             const title = post.title;
             const img = post.image;
-            const { data } = await this.getDogsByUser();
+            const { data } = await this.getDogsByUser(keyUser);
             // Iteratively add dogs
             let dogs = {};
             for (let child of data) {
@@ -144,8 +144,8 @@ class Fire extends React.Component {
 
 
   // Download Data Dogs by User
-   getDogsByUser = async () => {
-     let ref = this.firestoreMysDogsByUser;
+   getDogsByUser = async (keyUser) => {
+     let ref = firebase.firestore().collection('users').doc(keyUser).collection('dogs');
      try {
        const querySnapshot = await ref.get();
        const data = [];
@@ -233,23 +233,23 @@ deleteCompletDog = async (keyDog) => {
 
   // Helpers
   get collectionRoutes() {
-    return firebase.firestore().collection('routes');
+    return firebase.firestore().collection('routes')
   }
 
   get collectionUsers() {
-    return firebase.firestore().collection('users');
+    return firebase.firestore().collection('users')
   }
 
   get firestoreMyUser() {
     return firebase.firestore().collection('users').doc(this.uid)
   }
 
-  get firestoreMysDogsByUser() {
-    return firebase.firestore().collection('users').doc(this.uid).collection('dogs');
+  get firestoreMysDogsByMyUser() {
+    return firebase.firestore().collection('users').doc(this.uid).collection('dogs')
   }
 
   get uid() {
-    return (firebase.auth().currentUser || {}).uid;
+    return (firebase.auth().currentUser || {}).uid
   }
 
   get timestamp() {

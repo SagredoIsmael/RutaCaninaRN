@@ -64,7 +64,7 @@ class NewRouteScreen extends React.Component {
           <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
             <View style={styles.slide1}>
               <AutoTypingText
-                text={'¿Te animas a crear una ruta? ¡Genial! \n Empecemos por ponerle un nombre..'}
+                text={'¿Te animas a crear una ruta? ¡Genial! \n Empecemos dándole un nombre..'}
                 charMovingTime={50}
                 delay={0}
                 style={{

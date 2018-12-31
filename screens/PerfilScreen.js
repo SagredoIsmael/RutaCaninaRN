@@ -16,7 +16,15 @@ import {
 
 class PerfilScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    title: 'Su perfil',
+    headerTitleStyle: {
+     color: 'white',
+     fontSize: 20
+    },
+    backTitle: 'Volver',
+    headerStyle: {
+      backgroundColor: Colors.verdeOscuro
+    }
   }
 
   constructor(props) {
@@ -29,19 +37,21 @@ class PerfilScreen extends React.Component {
   }
 
   userRequest = async (keyUser) => {
-    const { dataUser } = await Fire.shared.getInfoUser(keyUser)
-    this.props.insert_dataUser(dataUser)
-    this.setState({ isLoading: false })
+
+
   }
 
   async componentWillMount() {
     if (this.props.navigation != null){
       const keyUser = this.props.navigation.getParam('keyUser', null)
-      this.userRequest(keyUser)
+      const { dataUser } = await Fire.shared.getInfoUser(keyUser)
+      this.props.insert_dataUser(dataUser)
       this.setState({ isMyProfile: false })
     }else{
-      this.userRequest(this.props.keyUser)
+      const { dataUser } = await Fire.shared.getInfoUser(this.props.keyUser)
+      this.props.insert_dataMyUser(dataUser)
     }
+    this.setState({ isLoading: false })
   }
 
   renderMenu(){
@@ -65,6 +75,7 @@ class PerfilScreen extends React.Component {
 const mapStateToProps = state => {
   return {
     dataUser : state.dataUser,
+    dataMyUser : state.dataMyUser,
   }
 }
 

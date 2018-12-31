@@ -18,3 +18,10 @@ export const insert_dataUser = (dataUser) => {
     payload: dataUser
   }
 }
+
+export const insert_dataMyUser = (dataMyUser) => {
+  return {
+    type: 'insert_dataMyUser',
+    payload: dataMyUser
+  }
+}

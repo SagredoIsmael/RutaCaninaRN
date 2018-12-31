@@ -193,8 +193,8 @@ class DogScreen extends React.Component {
   }
 
   userRequest = async () => {
-      const { dataUser } = await Fire.shared.getInfoUser(this.props.dataUser.key)
-      this.props.insert_dataUser(dataUser)
+      const { dataUser } = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
+      this.props.insert_dataMyUser(dataUser)
       this.setNewStates()
       this.setState({ isLoading: false })
   }
@@ -228,7 +228,7 @@ class DogScreen extends React.Component {
   }
 
   findDogByKey(keyDog) {
-  return _.map(this.props.dataUser.dogs).find((element) => {
+  return _.map(this.props.dataMyUser.dogs).find((element) => {
     return element.key === keyDog;
     })
   }
@@ -437,8 +437,7 @@ class DogScreen extends React.Component {
 
 const newValueTemperamentDogtateToProps = state => {
   return {
-    dataUser : state.dataUser,
-    keyUser : state.keyUser,
+    dataMyUser : state.dataMyUser,
   }
 }
 
