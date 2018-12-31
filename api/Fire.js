@@ -1,14 +1,15 @@
-import uuid from 'uuid';
-import React from 'react';
+import uuid from 'uuid'
+import React from 'react'
 import {
   Alert,
-} from 'react-native';
+} from 'react-native'
+import { ImageManipulator } from 'expo'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
-import getUserInfo from '../utils/getUserInfo';
-import shrinkImageAsync from '../utils/shrinkImageAsync';
-const firebase = require('firebase');
-require('firebase/firestore');
+import getUserInfo from '../utils/getUserInfo'
+import shrinkImageAsync from '../utils/shrinkImageAsync'
+const firebase = require('firebase')
+require('firebase/firestore')
 
 class Fire extends React.Component {
 
@@ -169,10 +170,18 @@ class Fire extends React.Component {
      }
    };
 
+resizeImage = async (uri) => {
+  const manipResult = await ImageManipulator.manipulate(
+  uri,
+  [{ resize: { width: 200, height: 200}}],
+  { format: 'jpeg' })
+  return manipResult.uri
+}
 
 
 uploadImageUserAsync= async uri => {
-    const response = await fetch(uri);
+    const image = await this.resizeImage(uri)
+    const response = await fetch(image);
     const blob = await response.blob();
     const ref = firebase
       .storage()
@@ -187,7 +196,8 @@ uploadImageUserAsync= async uri => {
 }
 
 uploadImageDogAsync = async (uri, keyDog) => {
-    const response = await fetch(uri);
+    const image = await this.resizeImage(uri)
+    const response = await fetch(image);
     const blob = await response.blob();
     const ref = firebase
       .storage()
