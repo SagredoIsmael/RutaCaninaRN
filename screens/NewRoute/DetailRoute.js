@@ -15,11 +15,11 @@ class DetailRoute extends React.Component {
   }
 
   render() {
-    if (this.props.currentPosition == 2){
+    if (this.props.currentPosition == 1){
       return (
         <ScrollView>
           <AutoTypingText
-            text={'¿Te animas a crear una ruta? ¡Genial! \n Empecemos dándole un nombre..'}
+            text={'soy el detalle'}
             charMovingTime={50}
             delay={0}
             style={{

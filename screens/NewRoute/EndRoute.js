@@ -9,17 +9,17 @@ import {
   View,
 } from 'react-native'
 
-class StartCoordRoute extends React.Component {
+class EndRoute extends React.Component {
   static navigationOptions = {
     header: null
   }
 
   render() {
-    if (this.props.currentPosition == 4){
+    if (this.props.currentPosition == 3){
       return (
         <ScrollView>
           <AutoTypingText
-            text={'¿Te animas a crear una ruta? ¡Genial! \n Empecemos dándole un nombre..'}
+            text={'soy el fin'}
             charMovingTime={50}
             delay={0}
             style={{
@@ -58,4 +58,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, actions)(StartCoordRoute)
+export default connect(mapStateToProps, actions)(EndRoute)

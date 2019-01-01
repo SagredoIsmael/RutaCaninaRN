@@ -9,18 +9,18 @@ import {
   View,
 } from 'react-native'
 
-class PhotoRoute extends React.Component {
+class MapRoute extends React.Component {
   static navigationOptions = {
     header: null
   }
 
   render() {
-    if (this.props.currentPosition == 3){
+    if (this.props.currentPosition == 2){
       return (
         <ScrollView>
           <AutoTypingText
-            text={'¿Te animas a crear una ruta? ¡Genial! \n Empecemos dándole un nombre..'}
-            charMovingTime={50}
+            text={'Soy el mapa'}
+            charMovingTime={40}
             delay={0}
             style={{
               position: 'absolute',
@@ -58,4 +58,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, actions)(PhotoRoute)
+export default connect(mapStateToProps, actions)(MapRoute)

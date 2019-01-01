@@ -1,13 +1,13 @@
 import React from 'react'
 import Colors from '../../constants/Colors'
 import StepIndicator from 'react-native-step-indicator'
+import * as actions from '../../actions'
 import Swiper from 'react-native-swiper'
-import NameRoute from './NameRoute'
+import StartRoute from './StartRoute'
 import DetailRoute from './DetailRoute'
-import DateRoute from './DateRoute'
-import PhotoRoute from './PhotoRoute'
-import StartCoordRoute from './StartCoordRoute'
-import EndCoordRoute from './EndCoordRoute'
+import MapRoute from './MapRoute'
+import EndRoute from './EndRoute'
+import {connect} from 'react-redux'
 import {
   Image,
   Platform,
@@ -44,6 +44,7 @@ class NewRouteScreen extends React.Component {
   }
 
   changeIndex = (index) => {
+    console.log(this.props.dataNewRoute);
     this.setState({
       currentPosition: index
     })
@@ -59,29 +60,23 @@ class NewRouteScreen extends React.Component {
             <StepIndicator
                customStyles={customStyles}
                style={{position: 'absolute'}}
-               stepCount={6}
+               stepCount={4}
                currentPosition={this.state.currentPosition}
                labels={labels}
             />
           </View>
           <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
             <View style={styles.slide1}>
-              <NameRoute currentPosition={this.state.currentPosition}/>
-            </View>
-            <View style={styles.slide1}>
-              <DateRoute currentPosition={this.state.currentPosition}/>
+              <StartRoute currentPosition={this.state.currentPosition}/>
             </View>
             <View style={styles.slide1}>
               <DetailRoute currentPosition={this.state.currentPosition}/>
             </View>
             <View style={styles.slide1}>
-              <PhotoRoute currentPosition={this.state.currentPosition}/>
+              <MapRoute currentPosition={this.state.currentPosition}/>
             </View>
             <View style={styles.slide1}>
-              <StartCoordRoute currentPosition={this.state.currentPosition}/>
-            </View>
-            <View style={styles.slide1}>
-              <EndCoordRoute currentPosition={this.state.currentPosition}/>
+              <EndRoute currentPosition={this.state.currentPosition}/>
             </View>
           </Swiper>
         </ImageBackground>
@@ -91,13 +86,12 @@ class NewRouteScreen extends React.Component {
 }
 
 
-export default NewRouteScreen
-
 let styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.whiteCrudo,
     height: '100%',
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
   },
   wrapper: {
   },
@@ -113,7 +107,7 @@ let styles = StyleSheet.create({
   }
 });
 
-const labels = ["Nombre","Fecha","Detalle","Foto","Inicio","Fin"];
+const labels = ["Inicio","Detalle","Mapa","Fin"];
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize:30,
@@ -127,7 +121,7 @@ const customStyles = {
   separatorUnFinishedColor: '#aaaaaa',
   stepIndicatorFinishedColor: Colors.verdeOscuro,
   stepIndicatorUnFinishedColor: '#ffffff',
-  stepIndicatorCurrentColor: '#ffffff',
+  stepIndicatorCurrentColor: '#f7e4e4',
   stepIndicatorLabelFontSize: 13,
   currentStepIndicatorLabelFontSize: 13,
   stepIndicatorLabelCurrentColor: Colors.verdeOscuro,
@@ -137,3 +131,11 @@ const customStyles = {
   labelSize: 13,
   currentStepLabelColor: Colors.verdeOscuro
 }
+
+const mapStateToProps = state => {
+  return {
+    dataNewRoute : state.dataNewRoute,
+  }
+}
+
+export default connect(mapStateToProps, actions)(NewRouteScreen)
