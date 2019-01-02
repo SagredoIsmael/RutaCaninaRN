@@ -29,6 +29,11 @@
     },
     "android": {
       "package": "com.ismaelsagredo.RutaCaninaRN",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCzkT15wVSNbFLhzoBdyQ0IdzY0ZltcbZE"
+        }
+      },
       "permissions": [
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",

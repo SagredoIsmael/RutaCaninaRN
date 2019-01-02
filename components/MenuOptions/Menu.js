@@ -78,7 +78,7 @@ class Menu extends Component {
           willClose={() => console.log('will close')}
           didClose={() => console.log('did close')}
           title="Mi perfil"
-          titleStyle={{ color: '#fff', fontFamily: 'Helvetica Neue', fontSize: 20, marginLeft: -3 }}
+          titleStyle={{ color: '#fff', fontSize: 20, marginLeft: -3 }}
           closedHeaderStyle={{ backgroundColor: '#859a9b' }}
           defaultOpenButtonIconColor="#fff"
           defaultCloseButtonIconColor="#fff"

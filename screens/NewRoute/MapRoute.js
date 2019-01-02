@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
 import AutoTypingText from 'react-native-auto-typing-text'
+import { MapView } from 'expo'
 import {
   ScrollView,
   StyleSheet,
@@ -17,9 +18,9 @@ class MapRoute extends React.Component {
   render() {
     if (this.props.currentPosition == 2){
       return (
-        <ScrollView>
+        <View style={styles.container}>
           <AutoTypingText
-            text={'Soy el mapa'}
+            text={'A continuación selecciona el punto de encuentro de la ruta'}
             charMovingTime={40}
             delay={0}
             style={{
@@ -33,7 +34,26 @@ class MapRoute extends React.Component {
             }}
             onComplete={() => { console.log('done'); }}
           />
-        </ScrollView>
+          <MapView
+            style={{height: '100%', width: '100%', marginTop:100}}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            showsUserLocation={true}
+            >
+            <MapView.Marker draggable
+              coordinate={{
+                latitude: 37.78825,
+                longitude: -122.4324
+              }}
+              title='Hello Map1s'
+              description='jejeje'
+            />
+          </MapView>
+        </View>
       )
     }
     return (
@@ -44,10 +64,9 @@ class MapRoute extends React.Component {
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.whiteCrudo,
-  },
+container: {
+  height: '100%',
+},
 
 });
 

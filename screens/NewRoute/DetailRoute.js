@@ -7,6 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  TextInput,
 } from 'react-native'
 
 class DetailRoute extends React.Component {
@@ -33,6 +34,14 @@ class DetailRoute extends React.Component {
             }}
             onComplete={() => { console.log('done'); }}
           />
+          <View style={styles.container}>
+           <TextInput
+              multiline = {true}
+              style={styles.textInput}
+              onChangeText={(text) => this.setState({text})}
+              value='hola que tal'
+            />
+          </View>
         </ScrollView>
       )
     }
@@ -45,9 +54,17 @@ class DetailRoute extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    height: '100%',
     flex: 1,
-    backgroundColor: Colors.whiteCrudo,
+    alignItems: 'center',
   },
+  textInput:{
+    backgroundColor: Colors.whiteCrudo,
+    marginTop: 70,
+    width:'80%',
+    borderColor: '#db786d',
+    borderWidth: 3,
+  }
 
 });
 
