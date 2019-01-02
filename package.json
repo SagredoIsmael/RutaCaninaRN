@@ -30,8 +30,6 @@
     "react-native-bouncy-drawer": "^1.0.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "1.0.0-beta5",
-    "react-native-is-iphonex": "^1.0.1",
-    "react-native-micro-animated-button": "^0.0.27",
     "react-native-portal": "1.2.1",
     "react-native-really-awesome-button": "^0.8.3",
     "react-native-step-indicator": "0.0.9",

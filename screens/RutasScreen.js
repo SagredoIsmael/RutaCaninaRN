@@ -120,7 +120,7 @@ makeRemoteRequest = async lastKey => {
   render() {
     LayoutAnimation.easeInEaseOut();
     return (
-      <View>
+      <View style={styles.container}>
         <List
           refreshControl={
             <RefreshControl
@@ -132,12 +132,19 @@ makeRemoteRequest = async lastKey => {
           data={this.state.posts}
           nav={this.props.navigation}
         />
-      {}
-      <ActionButton buttonColor={Colors.pinkChicle} onPress={() => { this.goToNewRoute()}} size = { this.state.loading? 0 : 50} />
+        <ActionButton buttonColor={Colors.pinkChicle} onPress={() => { this.goToNewRoute()}} size = { this.state.loading? 0 : 50} />
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+      height: '100%',
+      flex: 1,
+      alignItems: 'center',
+    },
+  })
 
 const mapStateToProps = state => {
   return {

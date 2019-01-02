@@ -19,8 +19,8 @@ class DetailRoute extends React.Component {
       return (
         <ScrollView>
           <AutoTypingText
-            text={'soy el detalle'}
-            charMovingTime={50}
+            text={'Añade una descripción de la ruta'}
+            charMovingTime={40}
             delay={0}
             style={{
               position: 'absolute',

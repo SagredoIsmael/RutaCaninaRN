@@ -54,7 +54,6 @@ class StartRoute extends React.Component {
             style={{
               position: 'absolute',
               width: '80%',
-              height: 100,
               fontSize: 20,
               color: Colors.verdeOscuro,
               margin: 20,
@@ -63,14 +62,16 @@ class StartRoute extends React.Component {
             onComplete={() => { this.setState({ isTypingName: false }) }}
           />
         {this.state.isTypingName? (null) : (
-          <Akira
-            label={'Nombre de la ruta'}
-            value={this.props.dataNewRoute.name}
-            onChangeText={(text) => { this.changeValueNewRoute('name', text) }}
-            style={{fontSize: 20, width: '80%', marginTop: 120, flex: 1, alignItems: 'center', marginLeft: 20, marginRight: 20}}
-            borderColor={'#db786d'}
-            labelStyle={'#db786d'}
-          />
+          <View style={styles.container}>
+            <Akira
+              label={'Nombre de la ruta'}
+              value={this.props.dataNewRoute.name}
+              onChangeText={(text) => { this.changeValueNewRoute('name', text) }}
+              style={{fontSize: 20, width: '80%', marginTop: 150, marginLeft: 20, marginRight: 20}}
+              borderColor={'#db786d'}
+              labelStyle={'#db786d'}
+            />
+          </View>
         )}
         {this.state.isTypingName? (null) : (
           <AutoTypingText
@@ -80,39 +81,40 @@ class StartRoute extends React.Component {
             style={{
               position: 'absolute',
               width: '80%',
-              height: 100,
               fontSize: 20,
               color: Colors.verdeOscuro,
               margin: 20,
-              marginTop: 40,
+              marginTop: 70,
             }}
             onComplete={() => { this.setState({ isTypingDate: false }) }}
           />
         )}
         {this.state.isTypingDate? null : (
-          <DatePicker
-            style={styles.datePicker}
-            mode="datetime"
-            date={this.state.dateSelect}
-            placeholder='Selecciona día y hora'
-            format="DD-MM-YYYY HH:mm"
-            minDate={this.nowDate()}
-            confirmBtnText="Aceptar"
-            cancelBtnText="Cancelar"
-            is24Hour={true}
-            customStyles={{
-              dateIcon: {
-                position: 'absolute',
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-            }}
-            onDateChange={(date) => { this.changeValueNewRoute('date', date)}}
-          />
+          <View style={styles.container}>
+            <DatePicker
+              style={styles.datePicker}
+              mode="datetime"
+              date={this.state.dateSelect}
+              placeholder='Selecciona día y hora'
+              format="DD-MM-YYYY HH:mm"
+              minDate={this.nowDate()}
+              confirmBtnText="Aceptar"
+              cancelBtnText="Cancelar"
+              is24Hour={true}
+              customStyles={{
+                dateIcon: {
+                  position: 'absolute',
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={(date) => { this.changeValueNewRoute('date', date)}}
+            />
+          </View>
         )}
         </ScrollView>
       )
@@ -126,18 +128,15 @@ class StartRoute extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-      backgroundColor: Colors.whiteCrudo,
       height: '100%',
       flex: 1,
       alignItems: 'center',
   },
   datePicker:{
     height: '100%',
-    flex: 1,
-    alignItems: 'center',
     marginLeft: 20,
     marginRight: 20,
-    marginTop: 120,
+    marginTop: 150,
     width: '80%',
   },
 })
