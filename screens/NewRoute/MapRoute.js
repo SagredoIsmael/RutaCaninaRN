@@ -15,6 +15,37 @@ class MapRoute extends React.Component {
     header: null
   }
 
+  state = {
+    latitude: -36.834047,
+    longitude: -2.463714,
+    culte: 1,
+    ecole: 1,
+    boutique: 1,
+    toggle: true,
+  }
+
+  componentDidMount() {
+    this._getLocation()
+   }
+
+   _getLocation = () => {
+     navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            error: null,
+          })
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: true, timeout: 2000, maximumAge: 1000 },
+      )
+   }
+
+  onMapPress = (e) => {
+    console.log(e)
+  }
+
   render() {
     if (this.props.currentPosition == 2){
       return (
@@ -37,12 +68,19 @@ class MapRoute extends React.Component {
           <MapView
             style={{height: '100%', width: '100%', marginTop:100}}
             initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+              latitudeDelta: 0.0022,
+              longitudeDelta: 0.0021,
             }}
+            onPress={(e) => this.onMapPress(e)}
+            showsMyLocationButton={true}
             showsUserLocation={true}
+            showsCompass={true}
+            compassStyle={{
+              bottom: 10,
+              left: 10,
+            }}
             >
             <MapView.Marker draggable
               coordinate={{
