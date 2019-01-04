@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native'
 
 class MapRoute extends React.Component {
@@ -16,38 +17,56 @@ class MapRoute extends React.Component {
   }
 
   state = {
-    latitude: -36.834047,
-    longitude: -2.463714,
-    culte: 1,
-    ecole: 1,
-    boutique: 1,
-    toggle: true,
+    me: {
+      location : {coords: {latitude: 36.834047,
+                          longitude:  -2.463714}}
+    },
+  }
+
+  _getLocationAsync = async() => {
+    let {status} = (await Expo.Permissions.askAsync(Expo.Permissions.LOCATION));
+
+    if( status !== 'granted') {
+      console.error('Location Permission Not Granted')
+      Alert('Es necesario permitir la localización')
+    }
+
+    let location = await Expo.Location.getCurrentPositionAsync()
+    //let almeria = (await Expo.Location.geocodeAsync('juan de la encina, Almería'))[0]
+    this.setState({ me:{ location:location }
+    /*  places:{
+        almeria,
+      }*/
+    })
   }
 
   componentDidMount() {
-    this._getLocation()
-   }
+    this._getLocationAsync()
+  }
 
-   _getLocation = () => {
-     navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.setState({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            error: null,
-          })
-        },
-        (error) => this.setState({ error: error.message }),
-        { enableHighAccuracy: true, timeout: 2000, maximumAge: 1000 },
-      )
-   }
+  setMarkerRef = (ref) => {
+    this.marker = ref
+  }
 
-  onMapPress = (e) => {
-    console.log(e)
+  onMapPress = async(coords) => {
+    this.setState({coordsMarker : coords.nativeEvent.coordinate})
+    this.changeValueNewRoute(coords.nativeEvent.coordinate)
+    let where = (await Expo.Location.reverseGeocodeAsync(coords.nativeEvent.coordinate))[0]
+    this.setState({descripMarker : where.name})
+    this.marker.showCallout()
+  }
+
+  changeValueNewRoute = (value) => {
+    this.props.dataNewRoute.coords = value
+    this.props.insert_dataNewRoute(this.props.dataNewRoute)
   }
 
   render() {
     if (this.props.currentPosition == 2){
+      if(!this.state.me.location) {
+        console.log('Permission not Granted')
+        return(<View />);
+      }
       return (
         <View style={styles.container}>
           <AutoTypingText
@@ -68,12 +87,14 @@ class MapRoute extends React.Component {
           <MapView
             style={{height: '100%', width: '100%', marginTop:100}}
             initialRegion={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-              latitudeDelta: 0.0022,
-              longitudeDelta: 0.0021,
+              latitude: this.state.me.location.coords.latitude,
+              longitude: this.state.me.location.coords.longitude,
+              longitudeDelta: 0.01211,
+              latitudeDelta: 0.01211,
+            //latitudeDelta: 0.0022,
+            //longitudeDelta: 0.0021,
             }}
-            onPress={(e) => this.onMapPress(e)}
+            onPress={(coords) => this.onMapPress(coords)}
             showsMyLocationButton={true}
             showsUserLocation={true}
             showsCompass={true}
@@ -82,14 +103,15 @@ class MapRoute extends React.Component {
               left: 10,
             }}
             >
-            <MapView.Marker draggable
-              coordinate={{
-                latitude: 37.78825,
-                longitude: -122.4324
-              }}
-              title='Hello Map1s'
-              description='jejeje'
-            />
+            {this.state.coordsMarker?
+              <Expo.MapView.Marker
+                ref={this.setMarkerRef}
+                coordinate = {this.state.coordsMarker}
+                description={this.state.descripMarker}
+                title='Punto de encuentro' />
+              :
+              null
+            }
           </MapView>
         </View>
       )
