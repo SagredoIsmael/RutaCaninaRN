@@ -6,11 +6,23 @@ import moment from 'react-moment'
 import AutoTypingText from 'react-native-auto-typing-text'
 import { Akira } from 'react-native-textinput-effects'
 import DatePicker from 'react-native-datepicker'
+import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
+import PropTypes from 'prop-types'
+import { copilot, walkthroughable, CopilotStep } from '@okgrow/react-native-copilot'
 import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
+  Image,
+  TouchableOpacity,
 } from 'react-native'
+
+const WalkthroughableText = walkthroughable(Text)
+const WalkthroughableView = walkthroughable(View)
+
+
+Akira
 
 class StartRoute extends React.Component {
   static navigationOptions = {
@@ -18,8 +30,23 @@ class StartRoute extends React.Component {
   }
 
   state = {
-    isTypingName: true,
-    isTypingDate: true,
+    secondStepActive: true,
+  }
+
+  static propTypes = {
+    start: PropTypes.func.isRequired,
+    copilotEvents: PropTypes.shape({
+      on: PropTypes.func.isRequired,
+    }).isRequired,
+  }
+
+  componentDidMount() {
+    this.props.copilotEvents.on('stepChange', this.handleStepChange);
+    this.props.start();
+  }
+
+  handleStepChange = (step) => {
+    console.log(`Current step is: ${step.name}`);
   }
 
   nowDate = () => {
@@ -48,7 +75,7 @@ class StartRoute extends React.Component {
       return (
         <ScrollView>
           <AutoTypingText
-            text={'¿Te animas a crear una ruta? ¡Genial! \nEmpecemos dándole un nombre'}
+            text={'¿Te animas a crear una ruta? ¡Genial!'}
             charMovingTime={40}
             delay={0}
             style={{
@@ -59,38 +86,22 @@ class StartRoute extends React.Component {
               margin: 20,
               marginTop: 20,
             }}
-            onComplete={() => { this.setState({ isTypingName: false }) }}
           />
-        {this.state.isTypingName? (null) : (
           <View style={styles.container}>
-            <Akira
-              label={'Nombre de la ruta'}
-              value={this.props.dataNewRoute.name}
-              onChangeText={(text) => { this.changeValueNewRoute('name', text) }}
-              style={{fontSize: 20, width: '80%', marginTop: 150, marginLeft: 20, marginRight: 20}}
-              borderColor={'#db786d'}
-              labelStyle={'#db786d'}
-            />
-          </View>
-        )}
-        {this.state.isTypingName? (null) : (
-          <AutoTypingText
-            text={'Después indica el día y la hora del inicio de la ruta'}
-            charMovingTime={40}
-            delay={0}
-            style={{
-              position: 'absolute',
-              width: '80%',
-              fontSize: 20,
-              color: Colors.verdeOscuro,
-              margin: 20,
-              marginTop: 70,
-            }}
-            onComplete={() => { this.setState({ isTypingDate: false }) }}
-          />
-        )}
-        {this.state.isTypingDate? null : (
-          <View style={styles.container}>
+            <CopilotStep text="Hey! This is the first step of the tour!" order={1} name="openApp">
+              <WalkthroughableView>
+                <Akira
+                  label={'Nombre de la ruta'}
+                  value={this.props.dataNewRoute.name}
+                  onChangeText={(text) => { this.changeValueNewRoute('name', text) }}
+                  style={{fontSize: 20, width: '80%', marginTop: 150, marginLeft: 20, marginRight: 20}}
+                  borderColor={'#db786d'}
+                  labelStyle={'#db786d'}
+                />
+              </WalkthroughableView>
+            </CopilotStep>
+
+
             <DatePicker
               style={styles.datePicker}
               mode="datetime"
@@ -115,7 +126,9 @@ class StartRoute extends React.Component {
               onDateChange={(date) => { this.changeValueNewRoute('date', date)}}
             />
           </View>
-        )}
+          <TouchableOpacity style={styles.button} onPress={() => this.props.start()}>
+            <Text>START THE TUTORIAL!</Text>
+          </TouchableOpacity>
         </ScrollView>
       )
     }
@@ -140,6 +153,11 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     width: '80%',
   },
+  button: {
+    backgroundColor: '#2980b9',
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
 })
 
 
@@ -149,4 +167,8 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, actions)(StartRoute)
+export default connect(mapStateToProps, actions)(copilot({
+  tooltipComponent: TooltipCopilot,
+  animated: true,
+  overlay: 'svg',
+})(StartRoute))
