@@ -9,7 +9,13 @@ import {
   StyleSheet,
   View,
   Alert,
+  Text,
+  Dimensions,
 } from 'react-native'
+
+var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete')
+
+var screenWidth = Dimensions.get('window').width
 
 class MapRoute extends React.Component {
   static navigationOptions = {
@@ -85,7 +91,11 @@ class MapRoute extends React.Component {
             onComplete={() => { console.log('done'); }}
           />
           <MapView
-            style={{height: '100%', width: '100%', marginTop:100}}
+            style={{left: 0,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              position: 'absolute'}}
             initialRegion={{
               latitude: this.state.me.location.coords.latitude,
               longitude: this.state.me.location.coords.longitude,
@@ -113,6 +123,77 @@ class MapRoute extends React.Component {
               null
             }
           </MapView>
+          <GooglePlacesAutocomplete
+              placeholder='¿Dónde es?'
+              minLength={2}
+              autoFocus={false}
+              autoCorrect={true}
+              listViewDisplayed='auto'
+              fetchDetails={true}
+              renderDescription={(row) => row.description}
+              onPress={(data, details = null) => {
+                  console.log(data)
+                  console.log(details)
+              }}
+              getDefaultValue={() => {
+                  return '';      // text input default value
+              }}
+              query={{
+                  // available options: https://developers.google.com/places/web-service/autocomplete
+                  key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
+                  language: 'en',
+                  types: 'geocode'
+              }}
+              styles={{
+                  description: {
+                      fontWeight: 'bold',
+                  },
+                  predefinedPlacesDescription: {
+                      color: '#1faadb',
+                  },
+                  textInputContainer: {
+                      backgroundColor: 'rgba(0,0,0,0)',
+                      top: 0,
+                      width: screenWidth-20,
+                      borderWidth: 0
+                  },
+                  textInput: {
+                      marginLeft: 0,
+                      marginRight: 0,
+                      paddingTop: 10,
+                      paddingBottom: 10,
+                      paddingLeft: 20,
+                      height: 38,
+                      color: '#5d5d5d',
+                      fontSize: 16,
+                      borderWidth: 0,
+                      borderRadius: 25,
+                  },
+                  listView: {
+                      backgroundColor: Colors.verdeOscuro,
+                      top: 23
+                  }
+              }}
+
+              currentLocation={false}
+              currentLocationLabel="Current location"
+              nearbyPlacesAPI='GooglePlacesSearch'
+              GoogleReverseGeocodingQuery={{
+                  // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+              }}
+              GooglePlacesSearchQuery={{
+                  // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                  rankby: 'distance',
+                  types: 'food'
+              }}
+
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_1']}
+              // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+              debounce={200}
+              //renderLeftButton={() => <Image source={require('left-icon')} />}
+              renderLeftButton={() => <Text></Text> }
+              renderRightButton={() => <Text></Text> }
+            />
         </View>
       )
     }

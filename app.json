@@ -26,6 +26,9 @@
       "infoPlist": {
         "NSCameraUsageDescription": "¿Permites usar la cámara para tomar fotos de tus canes?"
       },
+      "config": {
+        "googleMapsApiKey": "AIzaSyBFn2gCWT1I0-kEG2v3bm8h1lP69_NA0dk",
+      },
     },
     "android": {
       "package": "com.ismaelsagredo.RutaCaninaRN",
