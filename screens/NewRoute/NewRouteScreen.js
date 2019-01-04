@@ -91,7 +91,7 @@ let styles = StyleSheet.create({
     backgroundColor: Colors.whiteCrudo,
     height: '100%',
     flex: 1,
-    alignItems: 'center',
+    
   },
   wrapper: {
   },

@@ -32,24 +32,24 @@ const TooltipCopilot = ({
       {
         !isLastStep ?
           <TouchableOpacity onPress={handleStop}>
-            <Button>Saltarselo</Button>
+            <Button>Saltar</Button>
           </TouchableOpacity>
           : null
       }
       {
         !isFirstStep ?
           <TouchableOpacity onPress={handlePrev}>
-            <Button>Previous</Button>
+            <Button>Anterior</Button>
           </TouchableOpacity>
           : null
       }
       {
         !isLastStep ?
           <TouchableOpacity onPress={handleNext}>
-            <Button>Next</Button>
+            <Button>Siguiente</Button>
           </TouchableOpacity> :
           <TouchableOpacity onPress={handleStop}>
-            <Button>se acabo</Button>
+            <Button>¡Entendido!</Button>
           </TouchableOpacity>
       }
     </View>

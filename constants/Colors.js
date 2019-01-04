@@ -17,5 +17,6 @@ export default {
   noticeText: '#fff',
   whiteCrudo: 'rgb(247, 247, 247)',
   pinkChicle: '#db786d',
-  fontPrefer: 'Noteworthy-Bold'
+  fontPrefer: 'Noteworthy-Bold',
+  naranjaStrange: '#db786d',
 };

@@ -16,13 +16,15 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  Dimensions,
+  TextInput,
 } from 'react-native'
+
+var screenWidth = Dimensions.get('window').width
+var screenHeight = Dimensions.get('window').height
 
 const WalkthroughableText = walkthroughable(Text)
 const WalkthroughableView = walkthroughable(View)
-
-
-Akira
 
 class StartRoute extends React.Component {
   static navigationOptions = {
@@ -30,6 +32,7 @@ class StartRoute extends React.Component {
   }
 
   state = {
+    isTypingName: true,
     secondStepActive: true,
   }
 
@@ -41,8 +44,9 @@ class StartRoute extends React.Component {
   }
 
   componentDidMount() {
-    this.props.copilotEvents.on('stepChange', this.handleStepChange);
-    this.props.start();
+    this.props.copilotEvents.on('stepChange', this.handleStepChange)
+    this.props.start()
+    this.touchable.props.onPress()
   }
 
   handleStepChange = (step) => {
@@ -73,63 +77,88 @@ class StartRoute extends React.Component {
   render() {
     if (this.props.currentPosition == 0){
       return (
-        <ScrollView>
-          <AutoTypingText
-            text={'¿Te animas a crear una ruta? ¡Genial!'}
-            charMovingTime={40}
-            delay={0}
-            style={{
-              position: 'absolute',
-              width: '80%',
-              fontSize: 20,
-              color: Colors.verdeOscuro,
-              margin: 20,
-              marginTop: 20,
-            }}
-          />
-          <View style={styles.container}>
-            <CopilotStep text="Hey! This is the first step of the tour!" order={1} name="openApp">
-              <WalkthroughableView>
-                <Akira
-                  label={'Nombre de la ruta'}
-                  value={this.props.dataNewRoute.name}
-                  onChangeText={(text) => { this.changeValueNewRoute('name', text) }}
-                  style={{fontSize: 20, width: '80%', marginTop: 150, marginLeft: 20, marginRight: 20}}
-                  borderColor={'#db786d'}
-                  labelStyle={'#db786d'}
-                />
+        <ScrollView style={styles.container}>
+          <View style={{marginTop:10, alignItems:'center'}}>
+            <AutoTypingText
+              text={'¿Creamos una ruta? ¡Genial!'}
+              charMovingTime={40}
+              delay={0}
+              style={{
+                fontSize: 20,
+                color: Colors.verdeOscuro,
+              }}
+              onComplete={() => { this.setState({ isTypingName: false }) }}
+            />
+        </View>
+        {this.state.isTypingName? (null) : (
+          <CopilotStep text="Por último, desliza hacia la siguiente pantalla" order={4} name="newScreenRoute">
+            <WalkthroughableView style={{height:20, top: screenHeight/3, left:screenWidth -50}}/>
+          </CopilotStep>
+        )
+      }
+        {this.state.isTypingName? (null) : (
+          <CopilotStep text="Primero introduce el día y la hora exacta de la ruta" order={1} name="dateRoute">
+            <WalkthroughableView style={{marginTop:50, alignItems:'center'}}>
+              <DatePicker
+                style={{width: '80%'}}
+                mode="datetime"
+                date={this.state.dateSelect}
+                placeholder='Selecciona día y hora'
+                borderColor={Colors.naranjaStrange}
+                format="DD-MM-YYYY HH:mm"
+                minDate={this.nowDate()}
+                confirmBtnText="Aceptar"
+                cancelBtnText="Cancelar"
+                is24Hour={true}
+                customStyles={{
+                  dateIcon: {
+                    position: 'absolute',
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={(date) => { this.changeValueNewRoute('date', date)}}
+              />
+            </WalkthroughableView>
+          </CopilotStep>
+        )
+      }
+      {this.state.isTypingName? (null) : (
+         <CopilotStep text="A continuación introduce el nombre de la ruta" order={2} name="nameRoute">
+             <WalkthroughableView style={{marginTop:50, alignItems:'center'}}>
+               <Akira
+                 style={{width: '80%',}}
+                 label={'Nombre de la ruta'}
+                 value={this.props.dataNewRoute.name}
+                 onChangeText={(text) => { this.changeValueNewRoute('name', text) }}
+                 borderColor={Colors.naranjaStrange}
+                 labelStyle={Colors.naranjaStrange}
+               />
+             </WalkthroughableView>
+           </CopilotStep>
+         )
+       }
+       {this.state.isTypingName? (null) : (
+          <CopilotStep text="Escribe una amplia descripción de la ruta" order={3} name="descriptionRoute">
+              <WalkthroughableView style={{marginTop:60, alignItems:'center'}}>
+                <TextInput
+                   multiline = {true}
+                   style={styles.textInput}
+                   onChangeText={(text) => this.setState({text})}
+                   value='hola que tal'
+                   autoCapitalize='true'
+                 />
               </WalkthroughableView>
             </CopilotStep>
-
-
-            <DatePicker
-              style={styles.datePicker}
-              mode="datetime"
-              date={this.state.dateSelect}
-              placeholder='Selecciona día y hora'
-              format="DD-MM-YYYY HH:mm"
-              minDate={this.nowDate()}
-              confirmBtnText="Aceptar"
-              cancelBtnText="Cancelar"
-              is24Hour={true}
-              customStyles={{
-                dateIcon: {
-                  position: 'absolute',
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={(date) => { this.changeValueNewRoute('date', date)}}
-            />
-          </View>
-          <TouchableOpacity style={styles.button} onPress={() => this.props.start()}>
-            <Text>START THE TUTORIAL!</Text>
-          </TouchableOpacity>
+          )
+        }
+        <TouchableOpacity onPress={() => this.props.start()} ref={component => this.touchable = component}/>
         </ScrollView>
+
       )
     }
     return (
@@ -141,23 +170,14 @@ class StartRoute extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-      height: '100%',
       flex: 1,
-      alignItems: 'center',
   },
-  datePicker:{
-    height: '100%',
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 150,
-    marginBottom: 100,
-    width: '80%',
-  },
-  button: {
-    backgroundColor: '#2980b9',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
+  textInput:{
+    backgroundColor: Colors.whiteCrudo,
+    width:'80%',
+    borderColor: Colors.naranjaStrange,
+    borderWidth: 6,
+  }
 })
 
 
