@@ -23,7 +23,7 @@ class PerfilScreen extends React.Component {
     },
     backTitle: 'Volver',
     headerStyle: {
-      backgroundColor: Colors.verdeOscuro
+      backgroundColor: Colors.profilegreen
     }
   }
 

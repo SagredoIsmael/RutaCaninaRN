@@ -8,6 +8,7 @@ import DetailRoute from './DetailRoute'
 import MapRoute from './MapRoute'
 import EndRoute from './EndRoute'
 import {connect} from 'react-redux'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import {
   Image,
   Platform,
@@ -23,12 +24,16 @@ import {
 
 class NewRouteScreen extends React.Component {
 
+  static ourself = null;
+
   constructor() {
-    super()
+    super();
+    ourself = this;
     this.state = {
         currentPosition: 0,
     }
   }
+
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -40,6 +45,14 @@ class NewRouteScreen extends React.Component {
       headerStyle: {
         backgroundColor: Colors.background
       },
+      headerRight: (
+      <Icon.Button name='info-circle'
+                   backgroundColor="transparent"
+                   color={Colors.verdeOscuro}
+                   underlayColor={Colors.whiteCrudo}
+                   onPress={() => ourself.activateHelper()}>
+      </Icon.Button>
+      ),
     }
   }
 
@@ -48,6 +61,10 @@ class NewRouteScreen extends React.Component {
     this.setState({
       currentPosition: index
     })
+  }
+
+  activateHelper = () => {
+     this.child.activateHelper()
   }
 
   render() {
@@ -67,7 +84,7 @@ class NewRouteScreen extends React.Component {
           </View>
           <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
             <View style={styles.slide1}>
-              <StartRoute currentPosition={this.state.currentPosition}/>
+              <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.child = ref)}/>
             </View>
             <View style={styles.slide1}>
               <DetailRoute currentPosition={this.state.currentPosition}/>
@@ -91,7 +108,7 @@ let styles = StyleSheet.create({
     backgroundColor: Colors.whiteCrudo,
     height: '100%',
     flex: 1,
-    
+
   },
   wrapper: {
   },

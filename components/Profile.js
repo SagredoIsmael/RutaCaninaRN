@@ -19,9 +19,12 @@ import {
   Image,
   TouchableHighlight,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native'
 import * as actions from '../actions'
 import Colors from '../constants/Colors'
+
+const screenHeight = Dimensions.get('window').height
 
 class Profile extends React.Component {
   constructor(props){
@@ -148,7 +151,7 @@ class Profile extends React.Component {
   renderCard(dog, index) {
     const { name, avatar } = dog;
     return (
-      <View key={index} style={{height: 60, marginHorizontal: 20, marginTop: 10, backgroundColor: 'white', borderRadius: 5, alignItems: 'center', flexDirection: 'row'}}>
+      <View key={index} style={{height: 60, marginHorizontal: 20, marginTop: 10, backgroundColor: Colors.profilegreen, borderRadius: 5, alignItems: 'center', flexDirection: 'row'}}>
         <View style={{flex: 2, flexDirection: 'row', alignItems: 'center'}}>
           <View style={{marginLeft: 15}}>
             <Avatar small rounded source={ avatar? { uri: avatar} : {uri: urlPhotoDog = 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277' }} activeOpacity={0.7}/>
@@ -252,27 +255,31 @@ class Profile extends React.Component {
     return (
       <PortalProvider>
         <ScrollView style={styles.container}>
-          {this.state.fontLoaded ?
-            <ScrollView style={{flex: 1, marginBottom: 20, marginTop:0}}>
-                <View style={{flex: 1, flexDirection: 'column', backgroundColor: Colors.whiteCrudo, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 80}}>
-                  <View style={{flex: 3, flexDirection: 'row'}}>
-                    {this.renderPhotoUser()}
-                    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                      {this.renderTitleUser()}
+            <ImageBackground
+              source={require('../assets/images/background.png')}
+              style={{width: '100%', height:screenHeight}}>
+            {this.state.fontLoaded ?
+              <ScrollView style={{flex: 1, marginBottom: 20, marginTop:0}}>
+                  <View style={{flex: 1, flexDirection: 'column', backgroundColor:Colors.profilegreen, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 80}}>
+                    <View style={{flex: 3, flexDirection: 'row'}}>
+                      {this.renderPhotoUser()}
+                      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                        {this.renderTitleUser()}
+                      </View>
+                    </View>
+                    <View style={{width: 300, borderWidth: 0.5, borderColor: 'white', marginHorizontal: 20, height: 1, marginVertical: 10}} />
+                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                      {this.renderTextCanes()}
+                      {this.renderAddDogButton()}
                     </View>
                   </View>
-                  <View style={{width: 300, borderWidth: 0.5, borderColor: 'rgba(222, 223, 226, 1)', marginHorizontal: 20, height: 1, marginVertical: 10}} />
-                  <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                    {this.renderTextCanes()}
-                    {this.renderAddDogButton()}
-                  </View>
-                </View>
-                {this.renderListCards()}
-                <Loader loading={this.state.isLoading} size={'large'} color="#ff66be" />
-              </ScrollView>
-             :
-          <Text>Loading...</Text>
-          }
+                  {this.renderListCards()}
+                  <Loader loading={this.state.isLoading} size={'large'} color="#ff66be" />
+                </ScrollView>
+               :
+            <Text>Loading...</Text>
+            }
+          </ImageBackground>
           {this.renderDialogPopup()}
         </ScrollView>
       </PortalProvider>
@@ -310,8 +317,8 @@ class Profile extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#bedce2',
-    height: '100%'
+    backgroundColor: Colors.whiteCrudo,
+    height: '100%',
   },
    avatar: {
     width: 130,
