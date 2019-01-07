@@ -13,6 +13,7 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import CustomMarker1 from '../components/CustomMarker1'
 import CustomMarker2 from '../components/CustomMarker2'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   StyleSheet,
   TouchableOpacity,
@@ -297,141 +298,141 @@ class DogScreen extends React.Component {
       return <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
     }
     return (
-      <ScrollView style={styles.container}>
-        <ImageBackground
-          source={require('../assets/images/background.png')}
-          style={{width: '100%', height: '100%'}}>
-           <View>
-            <View style={{flex: 2, flexDirection: 'row', alignItems: 'center', marginTop:10}}>
-              <View style={{marginLeft: 15}}>
-                <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage(this.state.newValueKeyDog)}>
-                  {this.renderImageDog(this.state.newValueAvatarDog)}
-                </TouchableHighlight>
-              </View>
-              <View style={{flex: 2, flexDirection: 'column'}}>
-                <Hoshi
-                  label={'Nombre del can'}
-                  value={this.state.newValueNameDog}
-                  onChangeText={(text) => { this.setState({newValueNameDog: text}) }}
-                  style={{fontSize: 15, marginLeft: 15, marginRight: 15}}
-                  borderColor={'#db786d'}
-                  labelStyle={'#db786d'}
-                />
-                <Hoshi
-                  label={'Edad del can'}
-                  value={this.state.newValueAgeDog}
-                  keyboardType= {'number-pad'}
-                  onChangeText={(text) => { this.setState({newValueAgeDog: text}) }}
-                  style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:15}}
-                  borderColor={'#db786d'}
-                  labelStyle={'#db786d'}
-                />
-              </View>
-            </View>
-            <SwitchSelector options={ this.state.newValueGenderDog == 0 ? [
-                { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
-                { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
-            ] :
-            [   { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
-                { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
-            ]
-          } buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} onPress={value => this.setState({ newValueGenderDog: value })} />
-            <View style={styles.sliders}>
-              <View style={styles.sliderOne}>
-                <Text style={styles.text}>Temperamento: </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    this.state.sliderOneChangingTemperament && { color: '#db786d' },
-                  ]}
-                >
-                  {optionsTemperament[this.state.newValueTemperamentDog]}
-                </Text>
-              </View>
-              <MultiSlider
-                min={0}
-                max={4}
-                values={this.state.newValueTemperamentDog}
-                sliderLength={280}
-                onValuesChangeStart={this.sliderOneValuesChangeStartTemperament}
-                onValuesChange={this.sliderOneValuesChangeTemperament}
-                onValuesChangeFinish={this.sliderOneValuesChangeFinishTemperament}
-                selectedStyle={{
-                  backgroundColor: 'gold',
-                }}
-                unselectedStyle={{
-                  backgroundColor: Colors.background,
-                }}
-                containerStyle={{
-                  height: 40,
-                }}
-                trackStyle={{
-                  height: 10,
-                  backgroundColor: Colors.background  ,
-                }}
-                touchDimensions={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 20,
-                  slipDisplacement: 40,
-                }}
-                customMarker={CustomMarker1}
-              />
-              <View style={styles.sliderOne}>
-                <Text style={styles.text}>Conducta: </Text>
-                <Text
-                  style={[
-                    styles.text,
-                    this.state.sliderOneChangingConduct && { color: '#db786d' },
-                  ]}
-                >
-                  {optionsConduct[this.state.newValueConductDog]}
-                </Text>
-              </View>
-              <MultiSlider
-                min={0}
-                max={2}
-                values={this.state.newValueConductDog}
-                sliderLength={280}
-                onValuesChangeStart={this.sliderOneValuesChangeStartConduct}
-                onValuesChange={this.sliderOneValuesChangeConduct}
-                onValuesChangeFinish={this.sliderOneValuesChangeFinishConduct}
-                selectedStyle={{
-                  backgroundColor: 'gold',
-                }}
-                unselectedStyle={{
-                  backgroundColor: Colors.background,
-                }}
-                containerStyle={{
-                  height: 40,
-                }}
-                trackStyle={{
-                  height: 10,
-                  backgroundColor: Colors.background  ,
-                }}
-                touchDimensions={{
-                  height: 40,
-                  width: 40,
-                  borderRadius: 20,
-                  slipDisplacement: 40,
-                }}
-                customMarker={CustomMarker2}
-              />
-              </View>
-              <Hoshi
-                style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
-                label={'Raza del can'}
-                value={this.state.newValueBreedDog}
-                onChangeText={(text) => { this.setState({newValueBreedDog: text}) }}
-                borderColor={'#db786d'}
-                labelStyle={'#db786d'}
-              />
-              {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.showAlertDelete()}>Eliminar can</AwesomeButtonRick> : null }
-              <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
-              </View>
-          </ImageBackground>
-        </ScrollView>
-    );
+      <KeyboardAwareScrollView style={styles.container} resetScrollToCoords={{ x: 0, y: 0 }}>
+        <View >
+          <ImageBackground
+            source={require('../assets/images/background.png')}
+            style={{width: '100%', height: '100%'}}>
+         <View style={{flex: 2, flexDirection: 'row', alignItems: 'center', marginTop:10}}>
+           <View style={{marginLeft: 15}}>
+             <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)' overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={()=>this._pickImage(this.state.newValueKeyDog)}>
+               {this.renderImageDog(this.state.newValueAvatarDog)}
+             </TouchableHighlight>
+           </View>
+           <View style={{flex: 2, flexDirection: 'column'}}>
+             <Hoshi
+               label={'Nombre del can'}
+               value={this.state.newValueNameDog}
+               onChangeText={(text) => { this.setState({newValueNameDog: text}) }}
+               style={{fontSize: 15, marginLeft: 15, marginRight: 15}}
+               borderColor={'#db786d'}
+               labelStyle={'#db786d'}
+             />
+             <Hoshi
+               label={'Edad del can'}
+               value={this.state.newValueAgeDog}
+               keyboardType= {'number-pad'}
+               onChangeText={(text) => { this.setState({newValueAgeDog: text}) }}
+               style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:15}}
+               borderColor={'#db786d'}
+               labelStyle={'#db786d'}
+             />
+           </View>
+         </View>
+         <SwitchSelector options={ this.state.newValueGenderDog == 0 ? [
+             { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
+             { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
+         ] :
+         [   { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
+             { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
+         ]
+       } buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} onPress={value => this.setState({ newValueGenderDog: value })} />
+         <View style={styles.sliders}>
+           <View style={styles.sliderOne}>
+             <Text style={styles.text}>Temperamento: </Text>
+             <Text
+               style={[
+                 styles.text,
+                 this.state.sliderOneChangingTemperament && { color: '#db786d' },
+               ]}
+             >
+               {optionsTemperament[this.state.newValueTemperamentDog]}
+             </Text>
+           </View>
+           <MultiSlider
+             min={0}
+             max={4}
+             values={this.state.newValueTemperamentDog}
+             sliderLength={280}
+             onValuesChangeStart={this.sliderOneValuesChangeStartTemperament}
+             onValuesChange={this.sliderOneValuesChangeTemperament}
+             onValuesChangeFinish={this.sliderOneValuesChangeFinishTemperament}
+             selectedStyle={{
+               backgroundColor: 'gold',
+             }}
+             unselectedStyle={{
+               backgroundColor: Colors.background,
+             }}
+             containerStyle={{
+               height: 40,
+             }}
+             trackStyle={{
+               height: 10,
+               backgroundColor: Colors.background  ,
+             }}
+             touchDimensions={{
+               height: 40,
+               width: 40,
+               borderRadius: 20,
+               slipDisplacement: 40,
+             }}
+             customMarker={CustomMarker1}
+           />
+           <View style={styles.sliderOne}>
+             <Text style={styles.text}>Conducta: </Text>
+             <Text
+               style={[
+                 styles.text,
+                 this.state.sliderOneChangingConduct && { color: '#db786d' },
+               ]}
+             >
+               {optionsConduct[this.state.newValueConductDog]}
+             </Text>
+           </View>
+           <MultiSlider
+             min={0}
+             max={2}
+             values={this.state.newValueConductDog}
+             sliderLength={280}
+             onValuesChangeStart={this.sliderOneValuesChangeStartConduct}
+             onValuesChange={this.sliderOneValuesChangeConduct}
+             onValuesChangeFinish={this.sliderOneValuesChangeFinishConduct}
+             selectedStyle={{
+               backgroundColor: 'gold',
+             }}
+             unselectedStyle={{
+               backgroundColor: Colors.background,
+             }}
+             containerStyle={{
+               height: 40,
+             }}
+             trackStyle={{
+               height: 10,
+               backgroundColor: Colors.background  ,
+             }}
+             touchDimensions={{
+               height: 40,
+               width: 40,
+               borderRadius: 20,
+               slipDisplacement: 40,
+             }}
+             customMarker={CustomMarker2}
+           />
+           </View>
+           <Hoshi
+             style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:30, flex:1}}
+             label={'Raza del can'}
+             value={this.state.newValueBreedDog}
+             onChangeText={(text) => { this.setState({newValueBreedDog: text}) }}
+             borderColor={'#db786d'}
+             labelStyle={'#db786d'}
+           />
+           {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.showAlertDelete()}>Eliminar can</AwesomeButtonRick> : null }
+           <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
+         </ImageBackground>
+        </View>
+      </KeyboardAwareScrollView>
+    )
   }
 }
 

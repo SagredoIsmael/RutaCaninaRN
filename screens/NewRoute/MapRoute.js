@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux'
 import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
-import AutoTypingText from 'react-native-auto-typing-text'
 import { MapView } from 'expo'
 import {
   ScrollView,
@@ -54,6 +53,13 @@ class MapRoute extends React.Component {
     this.marker = ref
   }
 
+  onChangePositionMap = (location) => {
+    this.setState({me: {
+    location : {coords: {latitude: location.lat,
+                        longitude:  location.lng}}
+                      },})
+  }
+
   onMapPress = async(coords) => {
     this.setState({coordsMarker : coords.nativeEvent.coordinate})
     this.changeValueNewRoute(coords.nativeEvent.coordinate)
@@ -75,34 +81,16 @@ class MapRoute extends React.Component {
       }
       return (
         <View style={styles.container}>
-          <AutoTypingText
-            text={'A continuación selecciona el punto de encuentro de la ruta'}
-            charMovingTime={40}
-            delay={0}
-            style={{
-              position: 'absolute',
-              width: '90%',
-              height: 100,
-              fontSize: 20,
-              color: Colors.verdeOscuro,
-              margin: 20,
-              marginTop: 20,
-            }}
-            onComplete={() => { console.log('done'); }}
-          />
           <MapView
-            style={{left: 0,
-              right: 0,
+            style={{width:'80%',
               top: 0,
-              bottom: 0,
+              bottom: 60,
               position: 'absolute'}}
-            initialRegion={{
+            region={{
               latitude: this.state.me.location.coords.latitude,
               longitude: this.state.me.location.coords.longitude,
               longitudeDelta: 0.01211,
               latitudeDelta: 0.01211,
-            //latitudeDelta: 0.0022,
-            //longitudeDelta: 0.0021,
             }}
             onPress={(coords) => this.onMapPress(coords)}
             showsMyLocationButton={true}
@@ -124,37 +112,37 @@ class MapRoute extends React.Component {
             }
           </MapView>
           <GooglePlacesAutocomplete
-              placeholder='¿Dónde es?'
+              placeholder='¿Dónde quedamos?'
               minLength={2}
               autoFocus={false}
               autoCorrect={true}
-              listViewDisplayed='auto'
+              listViewDisplayed='false'
               fetchDetails={true}
               renderDescription={(row) => row.description}
               onPress={(data, details = null) => {
                   console.log(data)
                   console.log(details)
+                  if (details && details.geometry && details.geometry.location) {
+                      this.onChangePositionMap(details.geometry.location)
+                  }
               }}
               getDefaultValue={() => {
-                  return '';      // text input default value
+                  return ''
               }}
               query={{
                   // available options: https://developers.google.com/places/web-service/autocomplete
                   key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
-                  language: 'en',
+                  language: 'es',
                   types: 'geocode'
               }}
               styles={{
                   description: {
                       fontWeight: 'bold',
                   },
-                  predefinedPlacesDescription: {
-                      color: '#1faadb',
-                  },
                   textInputContainer: {
                       backgroundColor: 'rgba(0,0,0,0)',
                       top: 0,
-                      width: screenWidth-20,
+                      width: '80%',
                       borderWidth: 0
                   },
                   textInput: {
@@ -170,8 +158,8 @@ class MapRoute extends React.Component {
                       borderRadius: 25,
                   },
                   listView: {
-                      backgroundColor: Colors.verdeOscuro,
-                      top: 23
+                      backgroundColor: Colors.whiteCrudo,
+                      top: 10,
                   }
               }}
 
@@ -188,9 +176,7 @@ class MapRoute extends React.Component {
               }}
 
               filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_1']}
-              // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
               debounce={200}
-              //renderLeftButton={() => <Image source={require('left-icon')} />}
               renderLeftButton={() => <Text></Text> }
               renderRightButton={() => <Text></Text> }
             />
@@ -207,6 +193,9 @@ class MapRoute extends React.Component {
 const styles = StyleSheet.create({
 container: {
   height: '100%',
+  flex:1,
+  alignItems: 'center',
+
 },
 
 });
