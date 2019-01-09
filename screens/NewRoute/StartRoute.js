@@ -25,23 +25,12 @@ import {
 var screenWidth = Dimensions.get('window').width
 var screenHeight = Dimensions.get('window').height
 
-const WalkthroughableText = walkthroughable(Text)
 const WalkthroughableView = walkthroughable(View)
 
 class StartRoute extends React.Component {
-  static navigationOptions = {
-    headerRight: (
-    <Button
-      onPress={() => ourself.comprobeChanges('guardar')}
-      title='Guardar'
-      color= {Colors.azuliOS}
-      />
-    ),
-  }
 
   state = {
     isTypingName: true,
-    secondStepActive: true,
   }
 
   static propTypes = {
@@ -57,6 +46,10 @@ class StartRoute extends React.Component {
     this.props.onRef(this)
   }
 
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
   activateHelper = () => {
     this.props.start()
     this.touchable.props.onPress()
@@ -66,20 +59,10 @@ class StartRoute extends React.Component {
     console.log(`Current step is: ${step.name}`);
   }
 
-  find_dimesions(layout){
-    const {x, y, width, height} = layout
-    //screenHeight = height
-    //console.log('NUEVO HEIGHTTT: ', height);
-  }
-
   nowDate = () => {
     var today = new Date()
     date=today.getDate() + "-"+ parseInt(today.getMonth()+1) +"-"+ today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes()
     return date
-  }
-
-  componentWillUnmount() {
-    this.props.onRef(undefined)
   }
 
   changeValueNewRoute = (type, value) => {
@@ -102,9 +85,8 @@ class StartRoute extends React.Component {
 
   render() {
     if (this.props.currentPosition == 0){
-      if (this.props.isHelpActive) this.touchable.props.onPress()
       return (
-        <View onLayout={(event) => { this.find_dimesions(event.nativeEvent.layout) }} style={styles.container}>
+        <View style={styles.container}>
           <ScrollView style={styles.container}>
             <View style={{marginTop:10, alignItems:'center'}}>
               <AutoTypingText

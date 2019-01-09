@@ -64,7 +64,14 @@ class NewRouteScreen extends React.Component {
   }
 
   activateHelper = () => {
-     this.child.activateHelper()
+    switch (this.state.currentPosition) {
+      case 0:
+        this.childStart.activateHelper()
+        break;
+      case 2:
+        this.childMap.activateHelper()
+        break;
+      }
   }
 
   render() {
@@ -84,13 +91,13 @@ class NewRouteScreen extends React.Component {
           </View>
           <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
             <View style={styles.slide1}>
-              <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.child = ref)}/>
+              <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)}/>
             </View>
             <View style={styles.slide1}>
               <DetailRoute currentPosition={this.state.currentPosition}/>
             </View>
             <View style={styles.slide1}>
-              <MapRoute currentPosition={this.state.currentPosition}/>
+              <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
             </View>
             <View style={styles.slide1}>
               <EndRoute currentPosition={this.state.currentPosition}/>

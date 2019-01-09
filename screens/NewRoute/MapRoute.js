@@ -3,6 +3,9 @@ import {connect} from 'react-redux'
 import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
 import { MapView } from 'expo'
+import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
+import PropTypes from 'prop-types'
+import { copilot, walkthroughable, CopilotStep } from '@okgrow/react-native-copilot'
 import {
   ScrollView,
   StyleSheet,
@@ -15,17 +18,45 @@ import {
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete')
 
 var screenWidth = Dimensions.get('window').width
+const WalkthroughableView = walkthroughable(View)
 
 class MapRoute extends React.Component {
-  static navigationOptions = {
-    header: null
-  }
 
   state = {
     me: {
       location : {coords: {latitude: 36.834047,
                           longitude:  -2.463714}}
     },
+    isHelper: true,
+  }
+
+  static propTypes = {
+    start: PropTypes.func.isRequired,
+    copilotEvents: PropTypes.shape({
+      on: PropTypes.func.isRequired,
+    }).isRequired,
+  }
+
+  componentDidMount() {
+    this._getLocationAsync()
+    this.props.copilotEvents.on('stepChange', this.handleStepChange)
+    this.props.onRef(this)
+  }
+
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
+  componentDidUpdate(){
+    if (this.state.isHelper) this.activateHelper()
+  }
+
+  activateHelper = () => {
+    this.props.start()
+  }
+
+  handleStepChange = (step) => {
+    console.log(`Current step is: ${step.name}`);
   }
 
   _getLocationAsync = async() => {
@@ -45,10 +76,6 @@ class MapRoute extends React.Component {
     })
   }
 
-  componentDidMount() {
-    this._getLocationAsync()
-  }
-
   setMarkerRef = (ref) => {
     this.marker = ref
   }
@@ -58,10 +85,14 @@ class MapRoute extends React.Component {
     location : {coords: {latitude: location.lat,
                         longitude:  location.lng}}
                       },})
+    var coords = {nativeEvent:{coordinate:{latitude: location.lat, longitude: location.lng}}}
+    console.log('eeeeee', coords);
+    this.onMapPress(coords)
   }
 
   onMapPress = async(coords) => {
     this.setState({coordsMarker : coords.nativeEvent.coordinate})
+    console.log(this.state.coordsMarker);
     this.changeValueNewRoute(coords.nativeEvent.coordinate)
     let where = (await Expo.Location.reverseGeocodeAsync(coords.nativeEvent.coordinate))[0]
     this.setState({descripMarker : where.name})
@@ -75,42 +106,54 @@ class MapRoute extends React.Component {
 
   render() {
     if (this.props.currentPosition == 2){
+      if (this.state.isHelper) this.setState({isHelper: false})
       if(!this.state.me.location) {
         console.log('Permission not Granted')
         return(<View />);
       }
       return (
         <View style={styles.container}>
-          <MapView
-            style={{width:'80%',
+          <CopilotStep text="Para encontrar un lugar puedes ayudarte del buscador" order={2} name="findPlace">
+            <WalkthroughableView  style={{width:'80%',top: 0,alignItems: 'center',height:'8%', position: 'absolute'}}/>
+          </CopilotStep>
+          <CopilotStep text="Mueve el mapa hasta encontrar tu punto de encuentro. Una vez localizado, pincha encima para colocar el pin." order={1} name="map">
+            <WalkthroughableView
+              style={{width:'80%',
               top: 0,
               bottom: 60,
-              position: 'absolute'}}
-            region={{
-              latitude: this.state.me.location.coords.latitude,
-              longitude: this.state.me.location.coords.longitude,
-              longitudeDelta: 0.01211,
-              latitudeDelta: 0.01211,
-            }}
-            onPress={(coords) => this.onMapPress(coords)}
-            showsMyLocationButton={true}
-            showsUserLocation={true}
-            showsCompass={true}
-            compassStyle={{
-              bottom: 10,
-              left: 10,
-            }}
-            >
-            {this.state.coordsMarker?
-              <Expo.MapView.Marker
-                ref={this.setMarkerRef}
-                coordinate = {this.state.coordsMarker}
-                description={this.state.descripMarker}
-                title='Punto de encuentro' />
-              :
-              null
-            }
-          </MapView>
+              position: 'absolute'}}>
+              <MapView
+                style={{width:'100%',
+                  top: 0,
+                  bottom: 0,
+                  position: 'absolute'}}
+                region={{
+                  latitude: this.state.me.location.coords.latitude,
+                  longitude: this.state.me.location.coords.longitude,
+                  longitudeDelta: 0.01211,
+                  latitudeDelta: 0.01211,
+                }}
+                onPress={(coords) => this.onMapPress(coords)}
+                showsMyLocationButton={true}
+                showsUserLocation={true}
+                showsCompass={true}
+                compassStyle={{
+                  bottom: 10,
+                  left: 10,
+                }}
+                >
+                {this.state.coordsMarker?
+                  <Expo.MapView.Marker
+                    ref={this.setMarkerRef}
+                    coordinate = {this.state.coordsMarker}
+                    description={this.state.descripMarker}
+                    title='Punto de encuentro' />
+                  :
+                  null
+                }
+              </MapView>
+            </WalkthroughableView>
+          </CopilotStep>
           <GooglePlacesAutocomplete
               placeholder='¿Dónde quedamos?'
               minLength={2}
@@ -143,7 +186,7 @@ class MapRoute extends React.Component {
                       backgroundColor: 'rgba(0,0,0,0)',
                       top: 0,
                       width: '80%',
-                      borderWidth: 0
+                      borderWidth: 0,
                   },
                   textInput: {
                       marginLeft: 0,
@@ -207,4 +250,8 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, actions)(MapRoute)
+export default connect(mapStateToProps, actions)(copilot({
+  tooltipComponent: TooltipCopilot,
+  animated: true,
+  overlay: 'svg',
+})(MapRoute))
