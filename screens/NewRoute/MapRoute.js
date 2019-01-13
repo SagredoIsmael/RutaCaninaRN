@@ -114,7 +114,7 @@ class MapRoute extends React.Component {
       return (
         <View style={styles.container}>
           <CopilotStep text="Para encontrar un lugar puedes ayudarte del buscador" order={2} name="findPlace">
-            <WalkthroughableView  style={{width:'80%',top: 0,alignItems: 'center',height:'8%', position: 'absolute'}}/>
+            <WalkthroughableView  style={{width:'80%',top: 0,alignItems: 'center',height:'12%', position: 'absolute'}}/>
           </CopilotStep>
           <CopilotStep text="Mueve el mapa hasta encontrar tu punto de encuentro. Una vez localizado, pincha encima para colocar el pin." order={1} name="map">
             <WalkthroughableView
@@ -186,6 +186,7 @@ class MapRoute extends React.Component {
                       backgroundColor: 'rgba(0,0,0,0)',
                       top: 0,
                       width: '80%',
+                      height:'10%',
                       borderWidth: 0,
                   },
                   textInput: {
@@ -194,7 +195,7 @@ class MapRoute extends React.Component {
                       paddingTop: 10,
                       paddingBottom: 10,
                       paddingLeft: 20,
-                      height: 38,
+                      height: 30,
                       color: '#5d5d5d',
                       fontSize: 16,
                       borderWidth: 0,

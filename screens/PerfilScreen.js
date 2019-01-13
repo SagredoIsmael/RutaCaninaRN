@@ -5,7 +5,6 @@ import Fire from '../api/Fire'
 import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
 import Profile from '../components/Profile.js'
-import MenuOptions from '../components/MenuOptions/Menu.js'
 import Loader from '../components/Loader'
 import {
   ScrollView,
@@ -21,7 +20,6 @@ class PerfilScreen extends React.Component {
      color: 'white',
      fontSize: 20
     },
-    backTitle: 'Volver',
     headerStyle: {
       backgroundColor: Colors.profilegreen
     }
@@ -34,11 +32,6 @@ class PerfilScreen extends React.Component {
   state = {
     isLoading:true,
     isMyProfile: true,
-  }
-
-  userRequest = async (keyUser) => {
-
-
   }
 
   async componentWillMount() {
@@ -54,18 +47,11 @@ class PerfilScreen extends React.Component {
     this.setState({ isLoading: false })
   }
 
-  renderMenu(){
-   if(this.state.isMyProfile)
-      return <MenuOptions/>
-   return null;
- }
-
   render() {
     if (this.props.dataUser)
     return (
       <View>
         <Profile nav={this.props.nav} isMyProfile={this.state.isMyProfile}/>
-        { this.renderMenu() }
         <Loader loading={this.state.isLoading} size={'large'} color="#ff66be" />
       </View>
     )

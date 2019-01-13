@@ -6,7 +6,6 @@ import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
 import Profile from '../components/Profile.js'
 import PerfilScreen from './PerfilScreen.js'
-import MenuOptions from '../components/MenuOptions/Menu.js'
 import {
   ScrollView,
   StyleSheet,

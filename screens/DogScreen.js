@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import Fire from '../api/Fire'
-import { Permissions, ImagePicker } from 'expo'
+import { ImagePicker } from 'expo'
 import _ from 'lodash'
 import * as actions from '../actions'
 import Loader from '../components/Loader'
@@ -15,6 +15,7 @@ import CustomMarker2 from '../components/CustomMarker2'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
+  BackHandler,
   StyleSheet,
   TouchableOpacity,
   Alert,
@@ -52,23 +53,23 @@ class DogScreen extends React.Component {
       headerRight: (
       <Button
         onPress={() => ourself.comprobeChanges('guardar')}
-        title='Guardar'
-        color= {Colors.azuliOS}
+        title={'Guardar'}
+        color={Colors.pinkChicle}
         />
       ),
       headerLeft: (
-      <Button
-        onPress={() => ourself.comprobeChanges('volver')}
-        title='Volver'
-        color= {Colors.azuliOS}
-        />
+        <Icon.Button name='md-arrow-back'
+                     backgroundColor="transparent"
+                     color={Colors.pinkChicle}
+                     underlayColor={Colors.whiteCrudo}
+                     onPress={() => ourself.comprobeChanges('volver')}>
+        </Icon.Button>
       ),
     }
   }
 
   state = {
     image: null,
-    hasCameraPermission: null,
     isLoading:false,
     isFirstLoading:true,
     sliderOneChangingConduct: false,
@@ -86,6 +87,16 @@ class DogScreen extends React.Component {
 
   componentDidMount() {
     this.setNewStates()
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
+  }
+
+  handleBackPress = () => {
+    ourself.comprobeChanges('volver')
+    return true
   }
 
   setNewStates = () => {
@@ -315,8 +326,8 @@ class DogScreen extends React.Component {
                value={this.state.newValueNameDog}
                onChangeText={(text) => { this.setState({newValueNameDog: text}) }}
                style={{fontSize: 15, marginLeft: 15, marginRight: 15}}
-               borderColor={'#db786d'}
-               labelStyle={'#db786d'}
+               borderColor={Colors.pinkChicle}
+               labelStyle={Colors.pinkChicle}
              />
              <Hoshi
                label={'Edad del can'}
@@ -324,8 +335,8 @@ class DogScreen extends React.Component {
                keyboardType= {'number-pad'}
                onChangeText={(text) => { this.setState({newValueAgeDog: text}) }}
                style={{fontSize: 15, marginLeft: 15, marginRight: 15, marginTop:15}}
-               borderColor={'#db786d'}
-               labelStyle={'#db786d'}
+               borderColor={Colors.pinkChicle}
+               labelStyle={Colors.pinkChicle}
              />
            </View>
          </View>
@@ -336,14 +347,14 @@ class DogScreen extends React.Component {
          [   { label: '  Macho', value: 1, customIcon: <Icon name='md-male' color={Colors.background} size={25} />   },
              { label: '  Hembra', value: 0, customIcon: <Icon name='md-female' color={Colors.background} size={25} />   },
          ]
-       } buttonColor={'#db786d'} style={{marginLeft: 10, marginRight: 10, marginTop:30}} onPress={value => this.setState({ newValueGenderDog: value })} />
+       } buttonColor={Colors.pinkChicle} style={{marginLeft: 10, marginRight: 10, marginTop:30}} onPress={value => this.setState({ newValueGenderDog: value })} />
          <View style={styles.sliders}>
            <View style={styles.sliderOne}>
              <Text style={styles.text}>Temperamento: </Text>
              <Text
                style={[
                  styles.text,
-                 this.state.sliderOneChangingTemperament && { color: '#db786d' },
+                 this.state.sliderOneChangingTemperament && { color: Colors.pinkChicle },
                ]}
              >
                {optionsTemperament[this.state.newValueTemperamentDog]}
@@ -383,7 +394,7 @@ class DogScreen extends React.Component {
              <Text
                style={[
                  styles.text,
-                 this.state.sliderOneChangingConduct && { color: '#db786d' },
+                 this.state.sliderOneChangingConduct && { color: Colors.pinkChicle },
                ]}
              >
                {optionsConduct[this.state.newValueConductDog]}
@@ -424,8 +435,8 @@ class DogScreen extends React.Component {
              label={'Raza del can'}
              value={this.state.newValueBreedDog}
              onChangeText={(text) => { this.setState({newValueBreedDog: text}) }}
-             borderColor={'#db786d'}
-             labelStyle={'#db786d'}
+             borderColor={Colors.pinkChicle}
+             labelStyle={Colors.pinkChicle}
            />
            {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.showAlertDelete()}>Eliminar can</AwesomeButtonRick> : null }
            <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
@@ -463,7 +474,7 @@ let styles = StyleSheet.create({
   },
   sliders: {
     marginTop:40,
-    alignSelf: 'center',
+    alignItems: 'center',
   },
   text: {
     alignSelf: 'center',

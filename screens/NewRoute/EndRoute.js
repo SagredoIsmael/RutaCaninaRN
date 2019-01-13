@@ -45,22 +45,7 @@ export class EndRoute extends React.Component {
     if (this.props.currentPosition == 3){
       return (
       <View style={styles.container}>
-        <CopilotStep text="Hey! This is the first step of the tour!" order={1} name="openApp">
-          <WalkthroughableText style={styles.title}>
-            {'Welcome to the demo of\n"React Native Copilot"'}
-          </WalkthroughableText>
-        </CopilotStep>
-        <View style={styles.middleView}>
-          <CopilotStep active={this.state.secondStepActive} text="Here goes your profile picture!" order={2} name="secondText">
-            <WalkthroughableImage
-              source={{ uri: 'https://pbs.twimg.com/profile_images/527584017189982208/l3wwN-l-_400x400.jpeg' }}
-              style={styles.profilePhoto}
-            />
-          </CopilotStep>
-          <TouchableOpacity style={styles.button} onPress={() => this.props.start()}>
-            <Text style={styles.buttonText}>START THE TUTORIAL!</Text>
-          </TouchableOpacity>
-        </View>
+        
       </View>
     );
     }
@@ -75,29 +60,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-  },
-  profilePhoto: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    marginVertical: 20,
-  },
-  middleView: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  button: {
-    backgroundColor: '#2980b9',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
   },
 });
 

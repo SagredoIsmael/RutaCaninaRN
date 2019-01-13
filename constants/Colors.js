@@ -19,5 +19,4 @@ export default {
   whiteCrudo: 'rgb(247, 247, 247)',
   pinkChicle: '#db786d',
   fontPrefer: 'Noteworthy-Bold',
-  naranjaStrange: '#db786d',
 };

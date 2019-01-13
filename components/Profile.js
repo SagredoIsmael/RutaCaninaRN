@@ -9,7 +9,6 @@ import PopupDialog, { SlideAnimation } from './react-native-popup-dialog';
 import { PortalProvider, BlackPortal, WhitePortal } from 'react-native-portal';
 import Loader from './Loader'
 import {
-  AppRegistry,
   StyleSheet,
   Alert,
   ImageBackground,
@@ -114,7 +113,8 @@ class Profile extends React.Component {
         <BlackPortal name='popup'>
           <PopupDialog
             dialogAnimation={slideAnimation}
-            ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+            ref={(popupDialog) => { this.popupDialog = popupDialog }}
+            height={'60%'}
             closeButton={(() => {
               return (
                 <TouchableOpacity onPress={() => this.popupDialog.dismiss()} style={styles.closeButtonContainer}>
@@ -124,10 +124,10 @@ class Profile extends React.Component {
             })()}
             >
             {this.state.dogSelect?
-            <View>
+            <ScrollView>
               <ImageBackground
                 source={require('../assets/images/background.png')}
-                style={{width: '100%', height: '100%'}}>
+                style={{width: '100%', height:screenHeight*0.6}}>
                 <Image style={ styles.avatarDogs } source={this.state.dogSelect.avatar? {uri: this.state.dogSelect.avatar } : {uri: urlPhotoDog = 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277' }}/>
                 <Text style={{ fontFamily: 'bold', fontSize: 20, color: 'rgba(98,93,144,1)', marginTop: 5, textAlign: 'center'}}>
                   {("¡Hola soy " + this.state.dogSelect.name +"!")}</Text>
@@ -136,10 +136,9 @@ class Profile extends React.Component {
                 <Text style={{fontFamily: 'regular', fontSize: 15,  marginTop: 10, marginLeft: 10, marginRight:10, textAlign: 'center', color: 'gray'}}>
                   {("Me considero " + this.state.dogSelect.conduct + ", a la vez que " + this.state.dogSelect.temperament + ". ¡Tendrías que conocerme!")}</Text>
               </ImageBackground>
-
-            </View>
+            </ScrollView>
             :
-              <View> <Text>  Error al cargar los datos del can.</Text> </View>
+              null
             }
           </PopupDialog>
         </BlackPortal>
@@ -187,10 +186,10 @@ class Profile extends React.Component {
   renderAddDogButton(){
     if (this.props.isMyProfile)
       return (
-        <View style={{flex: 1}}>
+        <View style={{flex: 1, marginRight: 25}}>
           <Button
             title='Agregar perrete'
-            buttonStyle={{height: 33, width: 120, backgroundColor: Colors.pinkChicle, borderRadius: 5}}
+            buttonStyle={{height: 33, backgroundColor: Colors.pinkChicle, borderRadius: 5}}
             titleStyle={{fontFamily: 'regular', fontSize: 13, color: 'white'}}
             onPress={()=>this.gotoDogScreen(null, 'Nuevo can')}
             underlayColor="transparent"
@@ -244,14 +243,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    let { image } = this.state;
-    const { hasCameraPermission } = this.state;
-    // if ((hasCameraPermission === null) || (hasCameraPermission === false)) {
-    //   return
-    //      <View style={styles.container}>
-    //        <Text>No tiene permisos para acceder a la galería</Text>
-    //      </View>
-    // } else {
     return (
       <PortalProvider>
         <ScrollView style={styles.container}>
@@ -260,7 +251,7 @@ class Profile extends React.Component {
               style={{width: '100%', height:screenHeight}}>
             {this.state.fontLoaded ?
               <ScrollView style={{flex: 1, marginBottom: 20, marginTop:0}}>
-                  <View style={{flex: 1, flexDirection: 'column', backgroundColor:Colors.profilegreen, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 80}}>
+                  <View style={{flex: 1, flexDirection: 'column', backgroundColor:Colors.profilegreen, borderRadius: 5, alignItems: 'center', marginHorizontal: 10, height: 250, marginBottom: 10, marginTop: 30}}>
                     <View style={{flex: 3, flexDirection: 'row'}}>
                       {this.renderPhotoUser()}
                       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -277,7 +268,7 @@ class Profile extends React.Component {
                   <Loader loading={this.state.isLoading} size={'large'} color="#ff66be" />
                 </ScrollView>
                :
-            <Text>Loading...</Text>
+               null
             }
           </ImageBackground>
           {this.renderDialogPopup()}

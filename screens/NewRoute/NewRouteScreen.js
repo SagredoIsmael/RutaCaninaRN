@@ -46,7 +46,7 @@ class NewRouteScreen extends React.Component {
         backgroundColor: Colors.background
       },
       headerRight: (
-      <Icon.Button name='info-circle'
+      <Icon.Button name='question-circle'
                    backgroundColor="transparent"
                    color={Colors.verdeOscuro}
                    underlayColor={Colors.whiteCrudo}
