@@ -103,8 +103,9 @@ class StartRoute extends React.Component {
           </View>
           {this.state.isTypingName? (null) : (
             <CopilotStep text="Primero introduce el día y la hora exacta de la ruta" order={1} name="dateRoute">
-              <WalkthroughableView style={{marginTop:30, alignItems:'center', width: '90%'}}>
+              <WalkthroughableView style={{marginTop:50, alignSelf:'center', width: '90%', position:'absolute'}}>
                 <GiftedForm
+                  style={{width: '100%'}}
                   formName='startForm'
                   openModal={(route) => {
                     navigator.push(route);
@@ -113,11 +114,45 @@ class StartRoute extends React.Component {
                 >
                 <GiftedForm.TextInputWidget
                 name='nameRoute'
-                title='Nombre de la ruta'
-                placeholder='Ruta por la montaña de Montserrat'
+                title='Nombre'
+                placeholder='Ruta por Cabo de Gata'
                 clearButtonMode='while-editing'
               />
               </GiftedForm>
+
+              <GiftedForm.SeparatorWidget />
+
+              <GiftedForm.ModalWidget
+                title='Fecha'
+                displayValue='birthday'
+
+                scrollEnabled={false}
+              >
+              <GiftedForm.SeparatorWidget/>
+
+              <GiftedForm.DatePickerIOSWidget
+                  name='birthday'
+                  mode='date'
+                  getDefaultDate={() => {
+                    return new Date(((new Date()).getFullYear() - 18)+'');
+                  }}
+                />
+              </GiftedForm.ModalWidget>
+
+              <GiftedForm.ModalWidget
+                title='Descripción'
+                displayValue='bio'
+                scrollEnabled={true} // true by default
+              >
+                <GiftedForm.SeparatorWidget/>
+
+                <GiftedForm.TextAreaWidget
+                  name='bio'
+                  autoFocus={true}
+                  placeholder='Something interesting about yourself'
+                />
+              </GiftedForm.ModalWidget>
+
               </WalkthroughableView>
             </CopilotStep>
           )
