@@ -5,6 +5,7 @@ import Colors from '../../constants/Colors'
 import moment from 'react-moment'
 import AutoTypingText from 'react-native-auto-typing-text'
 import { Akira } from 'react-native-textinput-effects'
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import DatePickerD from 'react-native-datepicker'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
 import { copilot, walkthroughable, CopilotStep } from '@okgrow/react-native-copilot'
@@ -51,6 +52,10 @@ Is
     })
   }
 
+  handleValueChange(values) {
+    console.log('handleValueChange', values)
+    this.setState({ form: values })
+  }
 
   componentDidMount() {
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
@@ -96,11 +101,6 @@ Is
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
   }
 
-  handleValueChange(values) {
-    console.log('handleValueChange', values)
-    this.setState({ form: values })
-  }
-
   render() {
     if (this.props.currentPosition == 0){
       return (
@@ -119,21 +119,50 @@ Is
               />
           </View>
           {this.state.isTypingName? (null) : (
-            <CopilotStep text="Primero introduce el día y la hora exacta de la ruta" order={1} name="dateRoute">
+            <CopilotStep text="Primero rellena el formulario con la info de la ruta" order={1} name="dateRoute">
               <WalkthroughableView style={{marginTop:50, alignSelf:'center', width: '90%', position:'absolute'}}>
                 <GiftedForm
-                  formName='signupForm' // GiftedForm instances that use the same name will also share the same states
+                  formName='signupForm'
                   openModal={(params) => {
                     this.setModalVisible(true, params)
                   }}
                   onValueChange={this.handleValueChange.bind(this)}
                   closeModal={() => { this.setModalVisible(false) }}
                   clearOnClose={false}
+                  validators={{
+                    nameRoute: {
+                      title: 'Nombre',
+                      validate: [{
+                        validator: 'isLength',
+                        arguments: [1, 100],
+                        message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
+                      }]
+                    },
+
+
+                    description: {
+                      title: 'Descripción',
+                      validate: [{
+                        validator: 'isLength',
+                        arguments: [1, 3000],
+                        message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
+                      }]
+                    },
+                    date: {
+                      title: 'Fecha',
+                      validate: [{
+                        validator: 'isLength',
+                        arguments: [2],
+                        message: '{TITLE} is required'
+                      }]
+                    },
+                  }}
                 >
 
                 <GiftedForm.TextInputWidget
-                  name='name'
+                  name='nameRoute'
                   title='Nombre'
+                  image={require('../../assets/images/dog.png')}
                   placeholder='Ruta por Cabo de Gata'
                   clearButtonMode='while-editing'
                 />
@@ -151,6 +180,22 @@ Is
                   <GiftedForm.DatePickerIOSWidget
                     name='date'
                     mode='date'
+                    getDefaultDate={() => {
+                      return new Date()
+                    }}
+                  />
+                </GiftedForm.ModalWidget>
+
+                <GiftedForm.ModalWidget
+                  title='Hora de la ruta'
+                  displayValue='Hora de la ruta'
+                  scrollEnabled={false}
+                >
+                <GiftedForm.SeparatorWidget/>
+
+                  <GiftedForm.DatePickerIOSWidget
+                    name='date'
+                    mode='time'
                     getDefaultDate={() => {
                       return new Date()
                     }}
@@ -198,30 +243,25 @@ Is
                   transparent={false}
                   visible={this.state.modalVisible}
                   onRequestClose={() => {alert("Modal has been closed.")}}
-                  style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-start'}}
+                  style={{flex: 1, justifyContent: 'center', backgroundColor: Colors.pinkChicle}}
                   >
-                 <View style={{marginTop: 22, height: 40, backgroundColor: '#ccc', flexDirection:'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                     <View>
-                      <TouchableHighlight onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible)
-                      }}>
-                        <Text>Cancelar</Text>
-                      </TouchableHighlight>
-                     </View>
-                     <Text>
-                      {this.state.modalTitle}
-                     </Text>
-                     <View>
-                      <TouchableHighlight onPress={() => {
-                        this.setModalVisible(!this.state.modalVisible)
-                      }}>
-                        <Text>Aceptar</Text>
-                      </TouchableHighlight>
-                     </View>
-                   </View>
+                  <Text>
+                   {this.state.modalTitle}
+                  </Text>
                   <View style={{flex: 1}}>
                     {this.state.modalContent}
                   </View>
+                  <AwesomeButtonRick type="secondary"
+                     style={{alignSelf:'center', marginTop:50, marginBottom:40}}
+                     borderColor={Colors.pinkChicle}
+                     raiseLevel={2}
+                     textColor={Colors.pinkChicle}
+                     backgroundDarker={Colors.pinkChicle}
+                     backgroundShadow={Colors.pinkChicle}
+                     backgroundActive={Colors.whiteCrudo}
+                     onPress={value => this.setModalVisible(!this.state.modalVisible)}>
+                      Aceptar
+                    </AwesomeButtonRick>
                 </Modal>
               </WalkthroughableView>
             </CopilotStep>

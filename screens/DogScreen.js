@@ -438,7 +438,20 @@ class DogScreen extends React.Component {
              borderColor={Colors.pinkChicle}
              labelStyle={Colors.pinkChicle}
            />
-           {this.state.isEditingDog? <AwesomeButtonRick type="secondary" style={{alignSelf:'center', marginTop:50, marginBottom:40}} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.showAlertDelete()}>Eliminar can</AwesomeButtonRick> : null }
+           {this.state.isEditingDog?
+             <AwesomeButtonRick
+               type="secondary"
+               style={{alignSelf:'center', marginTop:50, marginBottom:40}}
+               borderColor={Colors.pinkChicle}
+               raiseLevel={2}
+               textColor={Colors.pinkChicle}
+               backgroundDarker={Colors.pinkChicle}
+               backgroundShadow={Colors.pinkChicle}
+               backgroundActive={Colors.whiteCrudo}
+               onPress={value => this.showAlertDelete()}>
+                Eliminar can
+              </AwesomeButtonRick>
+              : null }
            <Loader loading={this.state.isLoading} color={Colors.verdeOscuro} />
          </ImageBackground>
         </View>
