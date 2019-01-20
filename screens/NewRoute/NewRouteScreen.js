@@ -91,7 +91,7 @@ class NewRouteScreen extends React.Component {
           </View>
           <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
             <View style={styles.slide1}>
-              <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)}/>
+              <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)} nav={this.props.navigation}/>
             </View>
             <View style={styles.slide1}>
               <DetailRoute currentPosition={this.state.currentPosition}/>

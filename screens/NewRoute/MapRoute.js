@@ -4,7 +4,6 @@ import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
 import { MapView } from 'expo'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
-import PropTypes from 'prop-types'
 import { copilot, walkthroughable, CopilotStep } from '@okgrow/react-native-copilot'
 import {
   ScrollView,
@@ -28,13 +27,6 @@ class MapRoute extends React.Component {
                           longitude:  -2.463714}}
     },
     isHelper: true,
-  }
-
-  static propTypes = {
-    start: PropTypes.func.isRequired,
-    copilotEvents: PropTypes.shape({
-      on: PropTypes.func.isRequired,
-    }).isRequired,
   }
 
   componentDidMount() {
