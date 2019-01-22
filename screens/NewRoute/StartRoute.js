@@ -36,11 +36,11 @@ const WalkthroughableView = walkthroughable(View)
 
 @withNavigation
 class StartRoute extends React.Component {
-Is
+
   state = {
     isTypingName: true,
-    modalVisible: false,
-    modalContent: <Text>Foo</Text>
+    modalVisible:false,
+    jeje: 'jeje'
   }
 
   setModalVisible(visible, params = null) {
@@ -53,6 +53,7 @@ Is
   }
 
   handleValueChange(values) {
+    if (values.date != null) this.setState({ jeje: 'oooo' })
     console.log('handleValueChange', values)
     this.setState({ form: values })
   }
@@ -120,12 +121,13 @@ Is
           </View>
           {this.state.isTypingName? (null) : (
             <CopilotStep text="Primero rellena el formulario con la info de la ruta" order={1} name="dateRoute">
-              <WalkthroughableView style={{marginTop:50, alignSelf:'center', width: '90%', position:'absolute'}}>
+              <WalkthroughableView style={{marginTop:70, marginLeft:10, alignSelf:'flex-start', width: '85%', position:'absolute'}}>
                 <GiftedForm
                   formName='signupForm'
                   openModal={(params) => {
                     this.setModalVisible(true, params)
                   }}
+                  scrollEnabled={false}
                   onValueChange={this.handleValueChange.bind(this)}
                   closeModal={() => { this.setModalVisible(false) }}
                   clearOnClose={false}
@@ -141,7 +143,7 @@ Is
 
 
                     description: {
-                      title: 'Descripción',
+                      title: 'description',
                       validate: [{
                         validator: 'isLength',
                         arguments: [1, 3000],
@@ -158,7 +160,6 @@ Is
                     },
                   }}
                 >
-
                 <GiftedForm.TextInputWidget
                   name='nameRoute'
                   title='Nombre'
@@ -171,8 +172,8 @@ Is
                 <GiftedForm.SeparatorWidget />
 
                 <GiftedForm.ModalWidget
-                  title='Fecha de la ruta'
-                  displayValue='Fecha de la ruta'
+                  title= {this.state.jeje}
+                  displayValue= 'date'
                   image={require('../../assets/images/formIcon/date.png')}
                   scrollEnabled={false}
                 >
@@ -188,15 +189,15 @@ Is
                 </GiftedForm.ModalWidget>
 
                 <GiftedForm.ModalWidget
-                  title='Hora de la ruta'
+                  title='Hora'
                   image={require('../../assets/images/formIcon/time.png')}
-                  displayValue='Hora de la ruta'
+                  displayValue='timeDate'
                   scrollEnabled={false}
                 >
                 <GiftedForm.SeparatorWidget/>
 
                   <GiftedForm.DatePickerIOSWidget
-                    name='date'
+                    name='timeDate'
                     mode='time'
                     getDefaultDate={() => {
                       return new Date()
@@ -207,7 +208,7 @@ Is
                 <GiftedForm.ModalWidget
                   title='Duración aproximada'
                   image={require('../../assets/images/formIcon/duration.png')}
-                  displayValue='Duración aproximada'
+                  displayValue='duration'
                 >
 
                 <GiftedForm.SeparatorWidget />
@@ -226,7 +227,7 @@ Is
 
                 <GiftedForm.ModalWidget
                   title='Descripción'
-                  displayValue='Descripción'
+                  displayValue='description'
                   image={require('../../assets/images/formIcon/description.png')}
                   scrollEnabled={true}
                 >
