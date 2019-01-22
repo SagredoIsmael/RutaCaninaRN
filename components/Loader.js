@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Colors from '../constants/Colors'
 
 
-const icons = [require('../assets/images/dog.png'),require('../assets/images/bone.png'),require('../assets/images/paws.png'),require('../assets/images/toys.png')]
+const icons = [require('../assets/images/loader/dog.png'),require('../assets/images/loader/bone.png'),require('../assets/images/loader/paws.png'),require('../assets/images/loader/toys.png')]
 const Loader = ({ loading = false, color, size, opacity = 0.4 }) => {
   return (
     <Modal

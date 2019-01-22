@@ -162,7 +162,7 @@ Is
                 <GiftedForm.TextInputWidget
                   name='nameRoute'
                   title='Nombre'
-                  image={require('../../assets/images/dog.png')}
+                  image={require('../../assets/images/formIcon/nameRoute.png')}
                   placeholder='Ruta por Cabo de Gata'
                   clearButtonMode='while-editing'
                 />
@@ -173,6 +173,7 @@ Is
                 <GiftedForm.ModalWidget
                   title='Fecha de la ruta'
                   displayValue='Fecha de la ruta'
+                  image={require('../../assets/images/formIcon/date.png')}
                   scrollEnabled={false}
                 >
                 <GiftedForm.SeparatorWidget/>
@@ -188,6 +189,7 @@ Is
 
                 <GiftedForm.ModalWidget
                   title='Hora de la ruta'
+                  image={require('../../assets/images/formIcon/time.png')}
                   displayValue='Hora de la ruta'
                   scrollEnabled={false}
                 >
@@ -204,6 +206,7 @@ Is
 
                 <GiftedForm.ModalWidget
                   title='Duración aproximada'
+                  image={require('../../assets/images/formIcon/duration.png')}
                   displayValue='Duración aproximada'
                 >
 
@@ -224,6 +227,7 @@ Is
                 <GiftedForm.ModalWidget
                   title='Descripción'
                   displayValue='Descripción'
+                  image={require('../../assets/images/formIcon/description.png')}
                   scrollEnabled={true}
                 >
                   <GiftedForm.SeparatorWidget/>

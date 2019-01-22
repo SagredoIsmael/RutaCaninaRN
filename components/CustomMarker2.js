@@ -7,7 +7,7 @@ class CustomMarker2 extends React.Component {
       <Image
         style={styles.image}
         source={
-          this.props.pressed ? require('../assets/images/dog.png') : require('../assets/images/toys.png')
+          this.props.pressed ? require('../assets/images/loader/dog.png') : require('../assets/images/loader/toys.png')
         }
         resizeMode="contain"
       />
