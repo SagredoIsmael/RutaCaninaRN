@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
-import moment from 'react-moment'
+import moment from 'moment'
 import AutoTypingText from 'react-native-auto-typing-text'
 import { Akira } from 'react-native-textinput-effects'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
@@ -40,23 +40,45 @@ class StartRoute extends React.Component {
   state = {
     isTypingName: true,
     modalVisible:false,
-    jeje: 'jeje'
+    date: 'Fecha',
+    time: 'Hora',
+    description: 'Descripción'
   }
 
   setModalVisible(visible, params = null) {
     this.setState({
       modalVisible: visible,
       modalContent: params !== null ? params.renderScene(null) : <Text>Volver</Text> ,
-      modalRight: params !== null ? params.renderRightButton(null) : <Text>Volver</Text> ,
       modalTitle: <Text>{params !== null ? params.getTitle() : 'Error al cargar'}</Text>
     })
   }
 
+
   handleValueChange(values) {
-    if (values.date != null) this.setState({ jeje: 'oooo' })
-    console.log('handleValueChange', values)
+
+    if (values.nameRoute != null) this.props.dataNewRoute.name = values.nameRoute
+
+    if (values.dateRoute != null){
+      const dateFormat = moment(values.dateRoute).format('DD-MM-YYYY')
+      this.props.dataNewRoute.date = dateFormat
+      this.setState({ date: dateFormat })
+    }
+
+    if (values.timeRoute != null){
+      const timeFormat = moment(values.timeRoute).format('HH:mm')
+      this.props.dataNewRoute.time = timeFormat
+      this.setState({ time: timeFormat })
+    }
+
+    if (values.descriptionRoute != null){
+      this.props.dataNewRoute.description = values.descriptionRoute
+      this.setState({ description: values.descriptionRoute })
+    }
+
+    this.props.insert_dataNewRoute(this.props.dataNewRoute)
     this.setState({ form: values })
   }
+
 
   componentDidMount() {
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
@@ -81,25 +103,6 @@ class StartRoute extends React.Component {
     var today = new Date()
     date=today.getDate() + "-"+ parseInt(today.getMonth()+1) +"-"+ today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes()
     return date
-  }
-
-
-  changeValueNewRoute = (type, value) => {
-    switch (type) {
-      case 'name':
-        this.props.dataNewRoute.name = value
-        break;
-      case 'date':
-        this.props.dataNewRoute.date = value
-        this.setState({ dateSelect: value })
-        break;
-      case 'description':
-        this.props.dataNewRoute.description = value
-        break;
-      default:
-        break;
-    }
-    this.props.insert_dataNewRoute(this.props.dataNewRoute)
   }
 
   render() {
@@ -140,29 +143,12 @@ class StartRoute extends React.Component {
                         message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
                       }]
                     },
-
-
-                    description: {
-                      title: 'description',
-                      validate: [{
-                        validator: 'isLength',
-                        arguments: [1, 3000],
-                        message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
-                      }]
-                    },
-                    date: {
-                      title: 'Fecha',
-                      validate: [{
-                        validator: 'isLength',
-                        arguments: [2],
-                        message: '{TITLE} is required'
-                      }]
-                    },
                   }}
                 >
                 <GiftedForm.TextInputWidget
                   name='nameRoute'
                   title='Nombre'
+                  value={this.props.dataNewRoute.name}
                   image={require('../../assets/images/formIcon/nameRoute.png')}
                   placeholder='Ruta por Cabo de Gata'
                   clearButtonMode='while-editing'
@@ -172,7 +158,7 @@ class StartRoute extends React.Component {
                 <GiftedForm.SeparatorWidget />
 
                 <GiftedForm.ModalWidget
-                  title= {this.state.jeje}
+                  title= {this.state.date}
                   displayValue= 'date'
                   image={require('../../assets/images/formIcon/date.png')}
                   scrollEnabled={false}
@@ -180,16 +166,17 @@ class StartRoute extends React.Component {
                 <GiftedForm.SeparatorWidget/>
 
                   <GiftedForm.DatePickerIOSWidget
-                    name='date'
+                    name='dateRoute'
                     mode='date'
                     getDefaultDate={() => {
                       return new Date()
                     }}
+                    minimumDate={new Date()}
                   />
                 </GiftedForm.ModalWidget>
 
                 <GiftedForm.ModalWidget
-                  title='Hora'
+                  title= {this.state.time}
                   image={require('../../assets/images/formIcon/time.png')}
                   displayValue='timeDate'
                   scrollEnabled={false}
@@ -197,8 +184,9 @@ class StartRoute extends React.Component {
                 <GiftedForm.SeparatorWidget/>
 
                   <GiftedForm.DatePickerIOSWidget
-                    name='timeDate'
+                    name='timeRoute'
                     mode='time'
+                    style={backgroundColor: Colors.whiteCrudo}>
                     getDefaultDate={() => {
                       return new Date()
                     }}
@@ -206,7 +194,7 @@ class StartRoute extends React.Component {
                 </GiftedForm.ModalWidget>
 
                 <GiftedForm.ModalWidget
-                  title='Duración aproximada'
+                  title='Duración aprox.'
                   image={require('../../assets/images/formIcon/duration.png')}
                   displayValue='duration'
                 >
@@ -226,7 +214,8 @@ class StartRoute extends React.Component {
                 <GiftedForm.SeparatorWidget />
 
                 <GiftedForm.ModalWidget
-                  title='Descripción'
+                  title= {this.state.description}
+                  name='descriptionRoute'
                   displayValue='description'
                   image={require('../../assets/images/formIcon/description.png')}
                   scrollEnabled={true}
@@ -234,7 +223,7 @@ class StartRoute extends React.Component {
                   <GiftedForm.SeparatorWidget/>
 
                   <GiftedForm.TextAreaWidget
-                    name='description'
+                    name='descriptionRoute'
                     autoFocus={true}
                     placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'
 
@@ -248,25 +237,25 @@ class StartRoute extends React.Component {
                   transparent={false}
                   visible={this.state.modalVisible}
                   onRequestClose={() => {alert("Modal has been closed.")}}
-                  style={{flex: 1, justifyContent: 'center', backgroundColor: Colors.pinkChicle}}
+                  style={{flex: 1}}
                   >
-                  <Text>
-                   {this.state.modalTitle}
-                  </Text>
-                  <View style={{flex: 1}}>
+                  <View style={{ height:'100%', justifyContent: 'center', backgroundColor: Colors.whiteCrudo}}>
+                    <Text style={{fontFamily: 'bold', fontSize: 35, color: Colors.pinkChicle, marginTop: 30, textAlignVertical: "center",textAlign: "center"}}>
+                      {this.state.modalTitle}
+                    </Text>
                     {this.state.modalContent}
+                    <AwesomeButtonRick type="secondary"
+                       style={{alignSelf:'center', marginTop:50, marginBottom:40}}
+                       borderColor={Colors.pinkChicle}
+                       raiseLevel={2}
+                       textColor={Colors.pinkChicle}
+                       backgroundDarker={Colors.pinkChicle}
+                       backgroundShadow={Colors.pinkChicle}
+                       backgroundActive={Colors.verdeOscuro}
+                       onPress={value => this.setModalVisible(!this.state.modalVisible)}>
+                        Aceptar
+                      </AwesomeButtonRick>
                   </View>
-                  <AwesomeButtonRick type="secondary"
-                     style={{alignSelf:'center', marginTop:50, marginBottom:40}}
-                     borderColor={Colors.pinkChicle}
-                     raiseLevel={2}
-                     textColor={Colors.pinkChicle}
-                     backgroundDarker={Colors.pinkChicle}
-                     backgroundShadow={Colors.pinkChicle}
-                     backgroundActive={Colors.whiteCrudo}
-                     onPress={value => this.setModalVisible(!this.state.modalVisible)}>
-                      Aceptar
-                    </AwesomeButtonRick>
                 </Modal>
               </WalkthroughableView>
             </CopilotStep>
@@ -294,44 +283,11 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
   },
-  textInput:{
-    backgroundColor: Colors.whiteCrudo,
-    width:'80%',
-    borderColor: Colors.pinkChicle,
-    borderWidth: 6,
-  },
-  button: {
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'blue',
-    paddingHorizontal: 10,
-    minHeight: 40,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: 'white',
-  },
   form: {
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: Colors.pinkChicle,
   },
 })
-
-const formStyles = {
-  fieldContainer: {
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
-  fieldText: {
-    color: '#333',
-    fontSize: 14,
-    fontWeight: '600',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-}
 
 
 const mapStateToProps = state => {
