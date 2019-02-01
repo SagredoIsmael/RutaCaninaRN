@@ -1,18 +1,18 @@
 /* @flow */
 
-import { Animated } from 'react-native';
-import Animation from './Animation';
+import {Animated} from "react-native";
+import Animation from "./Animation";
 
 type Param = {
   toValue?: number,
-  animationDuration?: number,
-}
+  animationDuration?: number
+};
 
 export default class FadeAnimation extends Animation {
-  animate: Object
-  animationDuration: number
+  animate: Object;
+  animationDuration: number;
 
-  constructor({ toValue = 0, animationDuration = 200 }: Param) {
+  constructor({toValue = 0, animationDuration = 200}: Param) {
     super(toValue);
 
     this.animationDuration = animationDuration;
@@ -21,11 +21,11 @@ export default class FadeAnimation extends Animation {
   toValue(toValue: number) {
     Animated.timing(this.animate, {
       toValue,
-      duration: this.animationDuration,
+      duration: this.animationDuration
     }).start();
   }
 
   createAnimations(): Object {
-    return { opacity: this.animate };
+    return {opacity: this.animate};
   }
 }

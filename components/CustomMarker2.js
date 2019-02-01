@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import React from "react";
+import {StyleSheet, Image} from "react-native";
 
 class CustomMarker2 extends React.Component {
   render() {
@@ -7,7 +7,9 @@ class CustomMarker2 extends React.Component {
       <Image
         style={styles.image}
         source={
-          this.props.pressed ? require('../assets/images/loader/dog.png') : require('../assets/images/loader/toys.png')
+          this.props.pressed
+            ? require("../assets/images/loader/dog.png")
+            : require("../assets/images/loader/toys.png")
         }
         resizeMode="contain"
       />
@@ -18,8 +20,8 @@ class CustomMarker2 extends React.Component {
 const styles = StyleSheet.create({
   image: {
     height: 40,
-    width: 40,
-  },
+    width: 40
+  }
 });
 
 export default CustomMarker2;

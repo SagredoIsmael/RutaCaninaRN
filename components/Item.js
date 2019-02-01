@@ -1,7 +1,15 @@
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import Colors from '../constants/Colors';
-import { Image, StyleSheet, Text, View, ImageBackground, Alert, TouchableHighlight } from 'react-native';
+import {Ionicons} from "@expo/vector-icons";
+import React from "react";
+import Colors from "../constants/Colors";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  Alert,
+  TouchableHighlight
+} from "react-native";
 
 const profileImageSize = 36;
 const padding = 12;
@@ -13,17 +21,27 @@ export default class Item extends React.Component {
     if (!this.props.imageWidth) {
       // Get the size of the web image
       Image.getSize(this.props.image, (width, height) => {
-        this.setState({ width, height });
+        this.setState({width, height});
       });
     }
   }
 
-  goToProfile = (keyUserr) => {
-    this.props.nav.navigate('Profile', {keyUser:keyUserr})
-  }
+  goToProfile = keyUserr => {
+    this.props.nav.navigate("Profile", {keyUser: keyUserr});
+  };
 
   render() {
-    const {keyCreator, nameCreator, imageCreator, title, imageWidth, imageHeight, uid, image, description } = this.props;
+    const {
+      keyCreator,
+      nameCreator,
+      imageCreator,
+      title,
+      imageWidth,
+      imageHeight,
+      uid,
+      image,
+      description
+    } = this.props;
 
     // Reduce the name to something
     const imgW = imageWidth || this.state.width;
@@ -33,22 +51,29 @@ export default class Item extends React.Component {
     return (
       <View>
         <ImageBackground
-          source={require('../assets/images/background.png')}
-          style={{width: '100%'}}>
+          source={require("../assets/images/background.png")}
+          style={{width: "100%"}}
+        >
           <View>
-            <TouchableHighlight  width={145} height={145} activeOpacity={0.7} underlayColor='rgba(98,93,144,0)'
-              overlayContainerStyle={{backgroundColor: 'transparent'}} onPress={() => this.goToProfile(keyCreator)}>
-              <Header image={{ uri: imageCreator }} name={nameCreator} />
+            <TouchableHighlight
+              width={145}
+              height={145}
+              activeOpacity={0.7}
+              underlayColor="rgba(98,93,144,0)"
+              overlayContainerStyle={{backgroundColor: "transparent"}}
+              onPress={() => this.goToProfile(keyCreator)}
+            >
+              <Header image={{uri: imageCreator}} name={nameCreator} />
             </TouchableHighlight>
           </View>
           <Image
             resizeMode="contain"
             style={{
               backgroundColor: Colors.whiteCrudo,
-              width: '100%',
-              aspectRatio: aspect,
+              width: "100%",
+              aspectRatio: aspect
             }}
-            source={{ uri: image }}
+            source={{uri: image}}
           />
           <Metadata name={title} description={description} />
         </ImageBackground>
@@ -57,7 +82,7 @@ export default class Item extends React.Component {
   }
 }
 
-const Metadata = ({ name, description }) => (
+const Metadata = ({name, description}) => (
   <View style={styles.padding}>
     <IconBar />
     <Text style={styles.text}>{name}</Text>
@@ -65,7 +90,7 @@ const Metadata = ({ name, description }) => (
   </View>
 );
 
-const Header = ({ name, image }) => (
+const Header = ({name, image}) => (
   <View style={[styles.row, styles.padding]}>
     <View style={styles.row}>
       <Image style={styles.avatar} source={image} />
@@ -75,8 +100,13 @@ const Header = ({ name, image }) => (
   </View>
 );
 
-const Icon = ({ name }) => (
-  <Ionicons style={{ marginRight: 8 }} name={name} size={26} color= {Colors.pinkChicle} />
+const Icon = ({name}) => (
+  <Ionicons
+    style={{marginRight: 8}}
+    name={name}
+    size={26}
+    color={Colors.pinkChicle}
+  />
 );
 
 const IconBar = () => (
@@ -91,17 +121,17 @@ const IconBar = () => (
 );
 
 const styles = StyleSheet.create({
-  text: { fontWeight: '600' },
+  text: {fontWeight: "600"},
   subtitle: {
-    opacity: 0.8,
+    opacity: 0.8
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   padding: {
-    padding,
+    padding
   },
   avatar: {
     aspectRatio: 1,
@@ -111,7 +141,7 @@ const styles = StyleSheet.create({
     borderRadius: profileImageSize / 2,
     width: profileImageSize,
     height: profileImageSize,
-    resizeMode: 'cover',
-    marginRight: padding,
-  },
+    resizeMode: "cover",
+    marginRight: padding
+  }
 });

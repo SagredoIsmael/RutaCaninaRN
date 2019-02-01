@@ -7,3 +7,4 @@ description:'', date:'', time:'', coords:[]}, action) => {
       return state
   }
 }
+ 

@@ -1,13 +1,13 @@
 // @flow
 
-import React, { Component } from 'react';
-import Dialog from './components/Dialog';
-import type { PopupDialogType } from './type';
+import React, {Component} from "react";
+import Dialog from "./components/Dialog";
+import type {PopupDialogType} from "./type";
 
 class PopupDialog extends Component {
   props: PopupDialogType;
 
-  dialog: Object
+  dialog: Object;
 
   show(onShown: ?Function) {
     this.dialog.show(onShown);
@@ -20,7 +20,9 @@ class PopupDialog extends Component {
   render() {
     return (
       <Dialog
-        ref={(dialog) => { this.dialog = dialog; }}
+        ref={dialog => {
+          this.dialog = dialog;
+        }}
         {...this.props}
       >
         {this.props.dialogTitle}

@@ -6,3 +6,4 @@ function reduceImageAsync(uri) {
   });
 }
 export default reduceImageAsync;
+ 

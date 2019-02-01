@@ -9,28 +9,21 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button,
+  Button
 } from 'react-native';
 
- class MisRutasScreen extends React.Component {
+class MisRutasScreen extends React.Component {
   static navigationOptions = {
-    title: 'Mis Rutas',
+    title: 'Mis Rutas'
   };
 
   render() {
-    return (
-        <View style={styles.container}>
-
-        </View>
-    );
+    return (<View style={styles.container}></View>);
   }
 }
 
 const mapStateToProps = state => {
-  return {
-    dataRoutes : state.dataRoutes,
-    keyUser : state.keyUser,
-  }
+  return {dataRoutes: state.dataRoutes, keyUser: state.keyUser}
 }
 
 export default connect(mapStateToProps, actions)(MisRutasScreen)
@@ -42,6 +35,6 @@ let styles = StyleSheet.create({
     paddingTop: 70,
     paddingBottom: 20,
     flex: 1,
-    justifyContent: 'space-between',
-  },
+    justifyContent: 'space-between'
+  }
 });

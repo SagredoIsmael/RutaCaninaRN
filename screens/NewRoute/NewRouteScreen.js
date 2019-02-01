@@ -18,9 +18,8 @@ import {
   TouchableOpacity,
   View,
   Button,
-  ImageBackground,
+  ImageBackground
 } from 'react-native'
-
 
 class NewRouteScreen extends React.Component {
 
@@ -30,12 +29,11 @@ class NewRouteScreen extends React.Component {
     super();
     ourself = this;
     this.state = {
-        currentPosition: 0,
+      currentPosition: 0
     }
   }
 
-
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({navigation}) => {
     return {
       title: 'Nueva ruta',
       headerTitleStyle: {
@@ -45,22 +43,13 @@ class NewRouteScreen extends React.Component {
       headerStyle: {
         backgroundColor: Colors.background
       },
-      headerRight: (
-      <Icon.Button name='question-circle'
-                   backgroundColor="transparent"
-                   color={Colors.verdeOscuro}
-                   underlayColor={Colors.whiteCrudo}
-                   onPress={() => ourself.activateHelper()}>
-      </Icon.Button>
-      ),
+      headerRight: (<Icon.Button name='question-circle' backgroundColor="transparent" color={Colors.verdeOscuro} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>)
     }
   }
 
   changeIndex = (index) => {
     console.log(this.props.dataNewRoute);
-    this.setState({
-      currentPosition: index
-    })
+    this.setState({currentPosition: index})
   }
 
   activateHelper = () => {
@@ -71,70 +60,64 @@ class NewRouteScreen extends React.Component {
       case 2:
         this.childMap.activateHelper()
         break;
-      }
+    }
   }
 
   render() {
-    return (
-      <View style={styles.container}>
-        <ImageBackground
-          source={require('../../assets/images/background.png')}
-          style={{width: '100%', height: '100%'}}>
-          <View style={{marginTop:10}}>
-            <StepIndicator
-               customStyles={customStyles}
-               style={{position: 'absolute'}}
-               stepCount={4}
-               currentPosition={this.state.currentPosition}
-               labels={labels}
-            />
+    return (<View style={styles.container}>
+      <ImageBackground source={require('../../assets/images/background.png')} style={{
+          width: '100%',
+          height: '100%'
+        }}>
+        <View style={{
+            marginTop: 10
+          }}>
+          <StepIndicator customStyles={customStyles} style={{
+              position: 'absolute'
+            }} stepCount={4} currentPosition={this.state.currentPosition} labels={labels}/>
+        </View>
+        <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
+          <View style={styles.slide1}>
+            <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)} nav={this.props.navigation}/>
           </View>
-          <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
-            <View style={styles.slide1}>
-              <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)} nav={this.props.navigation}/>
-            </View>
-            <View style={styles.slide1}>
-              <DetailRoute currentPosition={this.state.currentPosition}/>
-            </View>
-            <View style={styles.slide1}>
-              <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
-            </View>
-            <View style={styles.slide1}>
-              <EndRoute currentPosition={this.state.currentPosition}/>
-            </View>
-          </Swiper>
-        </ImageBackground>
-      </View>
-    );
+          <View style={styles.slide1}>
+            <DetailRoute currentPosition={this.state.currentPosition}/>
+          </View>
+          <View style={styles.slide1}>
+            <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
+          </View>
+          <View style={styles.slide1}>
+            <EndRoute currentPosition={this.state.currentPosition}/>
+          </View>
+        </Swiper>
+      </ImageBackground>
+    </View>);
   }
 }
-
 
 let styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.whiteCrudo,
     height: '100%',
-    flex: 1,
-
+    flex: 1
   },
-  wrapper: {
-  },
+  wrapper: {},
   slide1: {
     justifyContent: 'center',
     flex: 1,
-    marginTop:20
+    marginTop: 20
   },
   text: {
     color: '#fff',
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   }
 });
 
-const labels = ["Inicio","Detalle","Mapa","Fin"];
+const labels = ["Inicio", "Detalle", "Mapa", "Fin"];
 const customStyles = {
   stepIndicatorSize: 25,
-  currentStepIndicatorSize:30,
+  currentStepIndicatorSize: 30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
   stepStrokeCurrentColor: Colors.verdeOscuro,
@@ -157,9 +140,7 @@ const customStyles = {
 }
 
 const mapStateToProps = state => {
-  return {
-    dataNewRoute : state.dataNewRoute,
-  }
+  return {dataNewRoute: state.dataNewRoute}
 }
 
 export default connect(mapStateToProps, actions)(NewRouteScreen)

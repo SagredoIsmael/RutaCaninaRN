@@ -11,3 +11,4 @@ const tabBarIcon = name => ({ tintColor }) => (
 );
 
 export default tabBarIcon;
+ 

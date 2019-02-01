@@ -6,3 +6,4 @@ export default (state = {name:'', image:'https://firebasestorage.googleapis.com/
       return state
   }
 }
+ 

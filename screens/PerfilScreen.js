@@ -6,19 +6,14 @@ import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
 import Profile from '../components/Profile.js'
 import Loader from '../components/Loader'
-import {
-  ScrollView,
-  View,
-  AsyncStorage,
-} from 'react-native'
-
+import {ScrollView, View, AsyncStorage} from 'react-native'
 
 class PerfilScreen extends React.Component {
   static navigationOptions = {
     title: 'Su perfil',
     headerTitleStyle: {
-     color: 'white',
-     fontSize: 20
+      color: 'white',
+      fontSize: 20
     },
     headerStyle: {
       backgroundColor: Colors.profilegreen
@@ -30,39 +25,34 @@ class PerfilScreen extends React.Component {
   }
 
   state = {
-    isLoading:true,
-    isMyProfile: true,
+    isLoading: true,
+    isMyProfile: true
   }
 
   async componentWillMount() {
-    if (this.props.navigation != null){
+    if (this.props.navigation != null) {
       const keyUser = this.props.navigation.getParam('keyUser', null)
-      const { dataUser } = await Fire.shared.getInfoUser(keyUser)
+      const {dataUser} = await Fire.shared.getInfoUser(keyUser)
       this.props.insert_dataUser(dataUser)
-      this.setState({ isMyProfile: false })
-    }else{
-      const { dataUser } = await Fire.shared.getInfoUser(this.props.keyUser)
+      this.setState({isMyProfile: false})
+    } else {
+      const {dataUser} = await Fire.shared.getInfoUser(this.props.keyUser)
       this.props.insert_dataMyUser(dataUser)
     }
-    this.setState({ isLoading: false })
+    this.setState({isLoading: false})
   }
 
   render() {
-    if (this.props.dataUser)
-    return (
-      <View>
+    if (this.props.dataUser) 
+      return (<View>
         <Profile nav={this.props.nav} isMyProfile={this.state.isMyProfile}/>
-        <Loader loading={this.state.isLoading} size={'large'} color="#ff66be" />
-      </View>
-    )
+        <Loader loading={this.state.isLoading} size={'large'} color="#ff66be"/>
+      </View>)
   }
 }
 
 const mapStateToProps = state => {
-  return {
-    dataUser : state.dataUser,
-    dataMyUser : state.dataMyUser,
-  }
+  return {dataUser: state.dataUser, dataMyUser: state.dataMyUser}
 }
 
 export default connect(mapStateToProps, actions)(PerfilScreen)

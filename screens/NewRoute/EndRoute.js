@@ -2,14 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux'
 import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
-import { copilot, walkthroughable, CopilotStep } from '@okgrow/react-native-copilot'
+import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
 import {
   ScrollView,
   StyleSheet,
   View,
   TouchableOpacity,
   Text,
-  Image,
+  Image
 } from 'react-native'
 
 const WalkthroughableText = walkthroughable(Text)
@@ -21,7 +21,7 @@ export class EndRoute extends React.Component {
   }
 
   state = {
-    secondStepActive: true,
+    secondStepActive: true
   }
 
   componentDidMount() {
@@ -34,35 +34,22 @@ export class EndRoute extends React.Component {
   }
 
   render() {
-    if (this.props.currentPosition == 3){
-      return (
-      <View style={styles.container}>
-
-      </View>
-    );
+    if (this.props.currentPosition == 3) {
+      return (<View style={styles.container}></View>);
     }
-    return (
-      <View/>
-    )
+    return (<View/>)
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
-
 const mapStateToProps = state => {
-  return {
-    dataNewRoute : state.dataNewRoute,
-  }
+  return {dataNewRoute: state.dataNewRoute}
 }
 
-export default connect(mapStateToProps, actions)(copilot({
-  animated: true,
-  overlay: 'svg',
-})(EndRoute))
+export default connect(mapStateToProps, actions)(copilot({animated: true, overlay: 'svg'})(EndRoute))

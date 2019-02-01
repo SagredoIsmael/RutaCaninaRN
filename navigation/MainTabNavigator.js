@@ -1,66 +1,69 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-import TabBarIcon from '../components/TabBarIcon';
-import RutasScreen from '../screens/RutasScreen';
-import LoginScreen from '../screens/LoginScreen';
-import MisRutasScreen from '../screens/MisRutasScreen';
+import React from "react";
+import {Platform} from "react-native";
+import {createStackNavigator, createBottomTabNavigator} from "react-navigation";
+import TabBarIcon from "../components/TabBarIcon";
+import RutasScreen from "../screens/RutasScreen";
+import LoginScreen from "../screens/LoginScreen";
+import MisRutasScreen from "../screens/MisRutasScreen";
 
-import { Ionicons } from '@expo/vector-icons';
+import {Ionicons} from "@expo/vector-icons";
 
 const RutasStack = createStackNavigator({
-  Rutas : RutasScreen,
+  Rutas: RutasScreen
 });
 
-
 RutasStack.navigationOptions = {
-  tabBarLabel: 'Rutas cerca',
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: "Rutas cerca",
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
       name={
-        Platform.OS === 'ios'?
-           `ios-navigate${focused ? '' : '-outline'}`
-          : 'md-navigate'
+        Platform.OS === "ios"
+          ? `ios-navigate${focused ? "" : "-outline"}`
+          : "md-navigate"
       }
     />
-  ),
+  )
 };
 
 const PerfilStack = createStackNavigator({
-  Login: LoginScreen,
+  Login: LoginScreen
 });
 
 PerfilStack.navigationOptions = {
-  tabBarLabel: 'Perfil',
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: "Perfil",
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ?
-       `ios-contact${focused ? '' : '-outline'}`
-        : 'md-contact'}
+      name={
+        Platform.OS === "ios"
+          ? `ios-contact${focused ? "" : "-outline"}`
+          : "md-contact"
+      }
     />
-  ),
+  )
 };
 
 const MisRutasStack = createStackNavigator({
-  MisRutas: MisRutasScreen,
+  MisRutas: MisRutasScreen
 });
 
 MisRutasStack.navigationOptions = {
-  tabBarLabel: 'Mis Rutas',
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: "Mis Rutas",
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ?
-       `ios-heart${focused ? '' : '-outline'}`
-        : 'md-heart'}
+      name={
+        Platform.OS === "ios"
+          ? `ios-heart${focused ? "" : "-outline"}`
+          : "md-heart"
+      }
     />
-  ),
+  )
 };
 
 export default createBottomTabNavigator({
   RutasStack,
   PerfilStack,
-  MisRutasStack,
+  MisRutasStack
 });
