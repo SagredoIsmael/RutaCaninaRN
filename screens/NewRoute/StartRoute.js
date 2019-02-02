@@ -45,10 +45,14 @@ class StartRoute extends React.Component {
       modalVisible: visible,
       modalContent: params !== null
         ? params.renderScene(null)
-        : <Text>Volver</Text>,
+        : <Text>Volver</Text>})
+
+    const {props} = this.state.modalContent;
+
+    this.setState({
       modalTitle: <Text>{
-            params !== null
-              ? params.getTitle()
+            props !== null
+              ? props.displayValue
               : 'Error al cargar'
           }</Text>
     })
@@ -56,7 +60,7 @@ class StartRoute extends React.Component {
 
   handleValueChange(values) {
 
-    if (values.nameRoute != null) 
+    if (values.nameRoute != null)
       this.props.dataNewRoute.name = values.nameRoute
 
     if (values.dateRoute != null) {
@@ -154,33 +158,36 @@ class StartRoute extends React.Component {
                     <GiftedForm.SeparatorWidget/>
                     <GiftedForm.SeparatorWidget/>
 
-                    <GiftedForm.ModalWidget title={this.state.date} displayValue='date' image={require('../../assets/images/formIcon/date.png')} scrollEnabled={false}>
+                    <GiftedForm.ModalWidget title={this.state.date} displayValue='Fecha' image={require('../../assets/images/formIcon/date.png')} scrollEnabled={false}>
                       <GiftedForm.SeparatorWidget/>
 
                       <GiftedForm.DatePickerIOSWidget name='dateRoute' mode='date' getDefaultDate={() => {
                           return new Date()
-                        }} minimumDate={new Date()}/>
+                        }} minimumDate={new Date()}
+                        style={{height: '1000%'}}/>
                     </GiftedForm.ModalWidget>
 
-                    <GiftedForm.ModalWidget title={this.state.time} image={require('../../assets/images/formIcon/time.png')} displayValue='timeDate' scrollEnabled={false}>
+                    <GiftedForm.ModalWidget title={this.state.time} image={require('../../assets/images/formIcon/time.png')} displayValue='Hora' scrollEnabled={false}>
                       <GiftedForm.SeparatorWidget/>
 
-                      <GiftedForm.DatePickerIOSWidget name='timeRoute' mode='time' style={{
-                          backgroundColor: Colors.whiteCrudo
-                        }} getDefaultDate={() => {
-                          return new Date()
-                        }}/>
+                      <GiftedForm.DatePickerIOSWidget name='timeRoute' mode='time' getDefaultDate={() => {
+                          return new Date()}}
+                          style={{height: '1000%'}}/>
                     </GiftedForm.ModalWidget>
 
-                    <GiftedForm.ModalWidget title='Duración aprox.' image={require('../../assets/images/formIcon/duration.png')} displayValue='duration'>
+                    <GiftedForm.ModalWidget title='Duración aprox.' image={require('../../assets/images/formIcon/duration.png')} displayValue='Duración aprox.'>
 
                       <GiftedForm.SeparatorWidget/>
 
                       <GiftedForm.SelectWidget name='duration' title='Duración aproximada' multiple={false}>
                         <GiftedForm.OptionWidget title='1 hora' value='1'/>
+                        <GiftedForm.OptionWidget title='1 hora y media' value='1.5'/>
                         <GiftedForm.OptionWidget title='2 horas' value='2'/>
+                          <GiftedForm.OptionWidget title='2 horas y media' value='2.5'/>
                         <GiftedForm.OptionWidget title='3 horas' value='3'/>
+                          <GiftedForm.OptionWidget title='3 horas y media' value='3.5'/>
                         <GiftedForm.OptionWidget title='4 horas' value='4'/>
+                          <GiftedForm.OptionWidget title='4 horas y media' value='4.5'/>
                         <GiftedForm.OptionWidget title='Más de 5 horas..' value='5'/>
                       </GiftedForm.SelectWidget>
                     </GiftedForm.ModalWidget>
@@ -188,10 +195,11 @@ class StartRoute extends React.Component {
                     <GiftedForm.SeparatorWidget/>
                     <GiftedForm.SeparatorWidget/>
 
-                    <GiftedForm.ModalWidget title={this.state.description} name='descriptionRoute' displayValue='description' image={require('../../assets/images/formIcon/description.png')} scrollEnabled={true}>
+                    <GiftedForm.ModalWidget title={this.state.description} name='descriptionRoute' displayValue='Descripción' image={require('../../assets/images/formIcon/description.png')} scrollEnabled={true}>
                       <GiftedForm.SeparatorWidget/>
 
-                      <GiftedForm.TextAreaWidget name='descriptionRoute' autoFocus={true} placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'/>
+                      <GiftedForm.TextAreaWidget name='descriptionRoute'
+                        style={{height: '300%', width: '120%', marginTop: 20, paddingLeft: 70, paddingRight: 70, backgroundColor: 'white'}} autoFocus={true} placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'/>
                     </GiftedForm.ModalWidget>
 
                   </GiftedForm>
@@ -207,7 +215,6 @@ class StartRoute extends React.Component {
                         backgroundColor: Colors.whiteCrudo
                       }}>
                       <Text style={{
-                          fontFamily: 'bold',
                           fontSize: 35,
                           color: Colors.pinkChicle,
                           marginTop: 30,
