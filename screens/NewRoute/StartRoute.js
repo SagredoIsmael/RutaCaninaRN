@@ -4,9 +4,7 @@ import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
 import moment from 'moment'
 import AutoTypingText from 'react-native-auto-typing-text'
-import {Akira} from 'react-native-textinput-effects'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
-import DatePickerD from 'react-native-datepicker'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
 import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
 import {GiftedForm, GiftedFormModal, GiftedFormManager} from 'react-native-gifted-form'
@@ -78,6 +76,11 @@ class StartRoute extends React.Component {
     if (values.descriptionRoute != null) {
       this.props.dataNewRoute.description = values.descriptionRoute
       this.setState({description: values.descriptionRoute})
+    }
+
+    if (values.duration != null) {
+      this.props.dataNewRoute.duration = values.duration
+      this.setState({duration: values.duration})
     }
 
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
@@ -180,15 +183,15 @@ class StartRoute extends React.Component {
                       <GiftedForm.SeparatorWidget/>
 
                       <GiftedForm.SelectWidget name='duration' title='Duración aproximada' multiple={false}>
-                        <GiftedForm.OptionWidget title='1 hora' value='1'/>
-                        <GiftedForm.OptionWidget title='1 hora y media' value='1.5'/>
-                        <GiftedForm.OptionWidget title='2 horas' value='2'/>
-                          <GiftedForm.OptionWidget title='2 horas y media' value='2.5'/>
-                        <GiftedForm.OptionWidget title='3 horas' value='3'/>
-                          <GiftedForm.OptionWidget title='3 horas y media' value='3.5'/>
-                        <GiftedForm.OptionWidget title='4 horas' value='4'/>
-                          <GiftedForm.OptionWidget title='4 horas y media' value='4.5'/>
-                        <GiftedForm.OptionWidget title='Más de 5 horas..' value='5'/>
+                        <GiftedForm.OptionWidget title='1 hora' value='1 hora'/>
+                        <GiftedForm.OptionWidget title='1 hora y media' value='1h y media'/>
+                        <GiftedForm.OptionWidget title='2 horas' value='2 horas'/>
+                          <GiftedForm.OptionWidget title='2 horas y media' value='2h y media'/>
+                        <GiftedForm.OptionWidget title='3 horas' value='3 horas'/>
+                          <GiftedForm.OptionWidget title='3 horas y media' value='3h y media'/>
+                        <GiftedForm.OptionWidget title='4 horas' value='4 horas'/>
+                          <GiftedForm.OptionWidget title='4 horas y media' value='4h y media'/>
+                        <GiftedForm.OptionWidget title='Más de 5 horas..' value='5 horas'/>
                       </GiftedForm.SelectWidget>
                     </GiftedForm.ModalWidget>
 

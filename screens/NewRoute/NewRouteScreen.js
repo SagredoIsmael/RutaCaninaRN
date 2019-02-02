@@ -60,6 +60,9 @@ class NewRouteScreen extends React.Component {
       case 2:
         this.childMap.activateHelper()
         break;
+      case 3:
+        this.childEnd.activateHelper()
+        break;
     }
   }
 
@@ -87,7 +90,7 @@ class NewRouteScreen extends React.Component {
             <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
           </View>
           <View style={styles.slide1}>
-            <EndRoute currentPosition={this.state.currentPosition}/>
+            <EndRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childEnd = ref)} nav={this.props.navigation}/>
           </View>
         </Swiper>
       </ImageBackground>
