@@ -52,7 +52,7 @@ class Profile extends React.Component {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key);
     this.props.insert_dataMyUser(dataUser);
     this.setState({isLoading: false});
-  };
+  }
 
   async componentWillMount() {
     const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);

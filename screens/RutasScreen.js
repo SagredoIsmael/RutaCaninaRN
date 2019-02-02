@@ -10,7 +10,6 @@ import {
   LayoutAnimation,
   RefreshControl,
   StyleSheet,
-  ListView,
   View,
   TouchableHighlight,
   Text,
@@ -42,7 +41,7 @@ class RutasScreen extends React.Component {
     //     }
     //   });
     // }
-    this.makeRemoteRequest();
+    this.makeRemoteRequest()
   }
 
   makeRemoteRequest = async lastKey => {
@@ -61,10 +60,10 @@ class RutasScreen extends React.Component {
     for (let child of data) {
       posts[child.key] = child;
     }
-    this.addPosts(posts);
+    this.addPosts(posts)
 
     // Finish loading, this will stop the refreshing animation.
-    this.setState({loading: false});
+    this.setState({loading: false})
   };
 
   // Append the item to our states `data` prop
@@ -78,10 +77,10 @@ class RutasScreen extends React.Component {
         data,
         // Sort the data by timestamp
         posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp)
-      };
-    });
+      }
+    })
     this.props.insert_dataRoutes(this.state.posts)
-  };
+  }
 
   goToNewRoute = () => {
     if (Fire.shared.uid != undefined) {
@@ -128,7 +127,7 @@ class RutasScreen extends React.Component {
         }} size={this.state.loading
           ? 0
           : 50}/>
-    </View>);
+    </View>)
   }
 }
 
