@@ -59,7 +59,7 @@ class StartRoute extends React.Component {
   handleValueChange(values) {
 
     if (values.nameRoute != null)
-      this.props.dataNewRoute.name = values.nameRoute
+      this.props.dataNewRoute.title = values.nameRoute
 
     if (values.dateRoute != null) {
       const dateFormat = moment(values.dateRoute).format('DD-MM-YYYY')
@@ -156,7 +156,7 @@ class StartRoute extends React.Component {
                         ]
                       }
                     }}>
-                    <GiftedForm.TextInputWidget name='nameRoute' title='Nombre' value={this.props.dataNewRoute.name} image={require('../../assets/images/formIcon/nameRoute.png')} placeholder='Ruta por Cabo de Gata' clearButtonMode='while-editing'/>
+                    <GiftedForm.TextInputWidget name='nameRoute' title='Nombre' value={this.props.dataNewRoute.title} image={require('../../assets/images/formIcon/nameRoute.png')} placeholder='Ruta por Cabo de Gata' clearButtonMode='while-editing'/>
 
                     <GiftedForm.SeparatorWidget/>
                     <GiftedForm.SeparatorWidget/>

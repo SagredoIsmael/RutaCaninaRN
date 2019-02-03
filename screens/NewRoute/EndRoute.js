@@ -30,6 +30,7 @@ export class EndRoute extends React.Component {
     secondStepActive: true,
     isHelper: true,
     isLoading: false,
+    isEditingRoute: false,
   }
 
 
@@ -69,7 +70,7 @@ export class EndRoute extends React.Component {
 
   comprobeChanges = async () => {
 
-    if (this.props.dataNewRoute.name == '') {
+    if (this.props.dataNewRoute.title == '') {
       this._showSimpleAlert ('¡Wuau!', 'El nombre de la ruta es un campo obligatorio')
     }else{
       if (this.props.dataNewRoute.date == '') {
@@ -78,24 +79,35 @@ export class EndRoute extends React.Component {
         if (this.props.dataNewRoute.time == '') {
           this._showSimpleAlert ('¡Wuau!', 'La hora de la ruta es un campo obligatorio')
         }else{
-          if (this.props.dataNewRoute.name == '') {
+          if (this.props.dataNewRoute.title == '') {
             this._showSimpleAlert ('¡Wuau!', 'La descripción la ruta es un campo obligatorio')
           }else{
             if (this.props.dataNewRoute.coords.length == 0) {
               this._showSimpleAlert ('¡Wuau!', 'Debes seleccionar el punto de encuentro en el mapa')
             }else{
-              this.setState({isLoading: true});
-            /*  if (this.state.isEditingRoute) {
-                await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+              this.setState({isLoading: true})
+              const attributesDicc = this.prepareAttributes()
+              if (this.state.isEditingRoute) {
+              //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
-                await Fire.shared.createNewDogWithAttributes(attributesDicc, this.state.newValueAvatarDog)
-              }*/
+                await Fire.shared.createNewRouteWithAttributes(attributesDicc, null) //PUT IMAGE
+              }
+
             //  update list rutas
             }
           }
         }
       }
     }
+  }
+
+  prepareAttributes = () => {
+    var attributes = {}
+    attributes = this.props.dataNewRoute
+    attributes.keyCreator = this.props.keyUser
+    attributes.imageCreator = this.props.dataMyUser.image
+    attributes.nameCreator = this.props.dataMyUser.name
+    return attributes
   }
 
   goToBack() {
@@ -115,7 +127,7 @@ export class EndRoute extends React.Component {
 
 
   renderItem = () => <Item keyCreator={this.props.keyUser}
-                          imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.name} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>
+                          imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>
 
   render() {
     if (this.props.currentPosition == 3) {
@@ -139,7 +151,7 @@ export class EndRoute extends React.Component {
           <AwesomeButtonRick type="secondary" style={{
               alignSelf: 'center',
               marginTop: 30,
-              marginBottom: 40,
+              marginBottom: 50,
             }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.comprobeChanges()}>
             ¡Crear ruta!
           </AwesomeButtonRick>

@@ -139,7 +139,7 @@ class Profile extends React.Component {
                         ? {uri: this.state.dogSelect.avatar}
                         : {
                             uri: (urlPhotoDog =
-                              "https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277")
+                              "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f")
                           }
                     }
                   />
@@ -224,7 +224,7 @@ class Profile extends React.Component {
                   ? {uri: avatar}
                   : {
                       uri: (urlPhotoDog =
-                        "https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277")
+                        "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f")
                     }
               }
               activeOpacity={0.7}

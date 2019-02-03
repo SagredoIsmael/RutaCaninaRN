@@ -69,7 +69,7 @@ class DogScreen extends React.Component {
     newValueBreedDog: '',
     newValueKeyDog: ''
   }
-  
+
 
   componentDidMount() {
     this.setNewStates()
@@ -225,13 +225,13 @@ class DogScreen extends React.Component {
 
   renderImageDog(urlPhotoDog) {
     if (urlPhotoDog == '')
-      urlPhotoDog = 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277'
+      urlPhotoDog = 'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f'
     return (<Image style={styles.avatar} source={urlPhotoDog
         ? {
           uri: urlPhotoDog
         }
         : {
-          uri: 'https://www.avatarys.com/var/resizes/Cool-Avatars/Animal-Avatars/cool-dog-avatar-by-avatarys.jpg?m=1436714277'
+          uri: 'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f'
         }}/>)
   }
 

@@ -46,6 +46,8 @@ class Fire extends React.Component {
     return firebase.auth().signOut();
   }
 
+  //API ROUTES///////////////////
+
   // Download Data Route
   getRoutes = async ({size, start}) => {
     console.log("in getpage: ", "Size:", size, "start", start);
@@ -66,7 +68,7 @@ class Fire extends React.Component {
             key: doc.id,
             image:
               img ||
-              "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg",
+              "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FdefectRoute.jpg?alt=media&token=86c6aedb-8a51-4e70-b42b-78cd4949613f",
             name: (title || "Desconocido").trim(),
             ...post
           };
@@ -78,7 +80,62 @@ class Fire extends React.Component {
     } catch ({message}) {
       alert(message);
     }
-  };
+  }
+
+
+  createNewRouteWithAttributes = async (attributesDicc, newValuePhotoPathRoute) => {
+    let ref = firebase
+      .firestore()
+      .collection("routes")
+    await ref
+      .add(attributesDicc)
+      .then(data => {
+        if (newValuePhotoPathRoute != null) return this.uploadImageRouteAsync(newValuePhotoPathRoute, data.id)
+        return true
+      })
+      .catch(function(error) {
+        console.error("Error adding new route: ", error);
+      })
+  }
+
+
+  uploadImageRouteAsync = async (uri, keyRoute) => {
+    const image = await this.resizeImageRoute(uri);
+    const response = await fetch(image);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child("routesPhotos")
+      .child(keyRoute);
+    const snapshot = await ref.put(blob);
+    const urlPhoto = await snapshot.ref.getDownloadURL();
+    const attributesDicc = {
+      photo: urlPhoto
+    };
+    return this.updateAttributeRoute(attributesDicc, keyRoute);
+  }
+
+  updateAttributeRoute = async (attributesDicc, keyRoute) => {
+    let ref = firebase
+      .firestore()
+      .collection("routes")
+      .doc(keyRoute);
+    await ref.set(attributesDicc, {merge: true});
+    return true;
+  }
+
+  resizeImageRoute = async uri => {
+    const manipResult = await ImageManipulator.manipulate(
+      uri,
+      [{resize: {width: 400, height: 400}}],
+      {format: "jpeg"}
+    );
+    return manipResult.uri;
+  }
+
+
+//API USER/////////////////////
 
   // Download Data User
   getUsers = async () => {
@@ -95,7 +152,7 @@ class Fire extends React.Component {
             key: doc.id,
             image:
               img ||
-              "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg",
+              "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FprofileAnonimous.jpg?alt=media&token=7db25a1d-fe41-46cd-bbbf-a19c9489a4cd",
             name: (title || "Desconocido").trim(),
             ...post
           };
@@ -127,7 +184,7 @@ class Fire extends React.Component {
         }
         const dataUser = {
           key: queryData.id,
-          image: img || "https://bootdey.com/img/Content/avatar/avatar6.png",
+          image: img || "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FprofileAnonimous.jpg?alt=media&token=7db25a1d-fe41-46cd-bbbf-a19c9489a4cd",
           name: (title || "Desconocido").trim(),
           dogs: dogs || [],
           ...post
@@ -140,7 +197,37 @@ class Fire extends React.Component {
       console.log("No se puede obtener la infoMyUser");
       alert(message);
     }
+  }
+
+  resizeImage = async uri => {
+    const manipResult = await ImageManipulator.manipulate(
+      uri,
+      [{resize: {width: 200, height: 200}}],
+      {format: "jpeg"}
+    );
+    return manipResult.uri;
+  }
+
+  uploadImageUserAsync = async uri => {
+    const image = await this.resizeImage(uri);
+    const response = await fetch(image);
+    const blob = await response.blob();
+    const ref = firebase
+      .storage()
+      .ref()
+      .child("usersPhotos")
+      .child(this.uid)
+      .child("photo");
+    const snapshot = await ref.put(blob);
+    const urlPhoto = await snapshot.ref.getDownloadURL();
+    const attributesDicc = {
+      image: urlPhoto
+    };
+    return this.updateAttributeUser(attributesDicc);
   };
+
+
+  ////////DOGS API///////////////////
 
   // Download Data Dogs by User
   getDogsByUser = async keyUser => {
@@ -161,7 +248,7 @@ class Fire extends React.Component {
             key: doc.id,
             image:
               img ||
-              "https://www.mundoperro.net/wp-content/uploads/cachorros-de-Weimaraner-jugando.jpg",
+              "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f",
             name: (title || "Desconocido").trim(),
             ...post
           };
@@ -174,32 +261,6 @@ class Fire extends React.Component {
     }
   };
 
-  resizeImage = async uri => {
-    const manipResult = await ImageManipulator.manipulate(
-      uri,
-      [{resize: {width: 200, height: 200}}],
-      {format: "jpeg"}
-    );
-    return manipResult.uri;
-  };
-
-  uploadImageUserAsync = async uri => {
-    const image = await this.resizeImage(uri);
-    const response = await fetch(image);
-    const blob = await response.blob();
-    const ref = firebase
-      .storage()
-      .ref()
-      .child("usersPhotos")
-      .child(this.uid)
-      .child("photo");
-    const snapshot = await ref.put(blob);
-    const urlPhoto = await snapshot.ref.getDownloadURL();
-    const attributesDicc = {
-      image: urlPhoto
-    };
-    return this.updateAttributeUser(attributesDicc);
-  };
 
   uploadImageDogAsync = async (uri, keyDog) => {
     const image = await this.resizeImage(uri);
@@ -217,7 +278,8 @@ class Fire extends React.Component {
       avatar: urlPhoto
     };
     return this.updateAttributeDog(attributesDicc, keyDog);
-  };
+  }
+
 
   updateAttributeDog = async (attributesDicc, keyDog) => {
     let ref = firebase
@@ -228,13 +290,15 @@ class Fire extends React.Component {
       .doc(keyDog);
     await ref.set(attributesDicc, {merge: true});
     return true;
-  };
+  }
+
 
   updateAttributeUser = async attributesDicc => {
     let ref = this.firestoreMyUser;
     await ref.set(attributesDicc, {merge: true});
     return true;
-  };
+  }
+
 
   createNewDogWithAttributes = async (attributesDicc, newValuePhotoPathDog) => {
     let ref = firebase
@@ -249,8 +313,8 @@ class Fire extends React.Component {
       })
       .catch(function(error) {
         console.error("Error adding new dog: ", error);
-      });
-  };
+      })
+  }
 
   deleteCompletDog = async keyDog => {
     let ref = firebase
@@ -260,7 +324,8 @@ class Fire extends React.Component {
       .collection("dogs")
       .doc(keyDog);
     await ref.delete();
-  };
+  }
+
 
   // Helpers
   get collectionRoutes() {

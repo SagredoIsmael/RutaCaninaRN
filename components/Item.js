@@ -53,14 +53,14 @@ export default class Item extends React.Component {
 
     var esLocale = require('moment/locale/es');
     moment.locale('es', esLocale);
-    
+
     return (
       <View>
         <ImageBackground
           source={require("../assets/images/background.png")}
           style={{width: "100%"}}
         >
-          <View>
+          <View style={{marginTop: 10}}>
             <TouchableHighlight
               width={145}
               height={145}
@@ -89,7 +89,7 @@ export default class Item extends React.Component {
 }
 
 const Metadata = ({name, description, date, time, duration}) => (
-  <View style={styles.padding}>
+  <View style={styles.paddingView}>
     <IconBar />
     <Text style={styles.text}>{name}</Text>
     <View style={styles.rowDate}>
@@ -160,7 +160,11 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   padding: {
-    padding
+    padding,
+  },
+  paddingView: {
+    padding,
+    marginBottom: 10
   },
   avatar: {
     aspectRatio: 1,
