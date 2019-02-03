@@ -53,7 +53,7 @@ export default class Item extends React.Component {
 
     var esLocale = require('moment/locale/es');
     moment.locale('es', esLocale);
-
+    
     return (
       <View>
         <ImageBackground
@@ -84,7 +84,7 @@ export default class Item extends React.Component {
         <Metadata name={title} description={description} date={date} time={time} duration={duration}  />
         </ImageBackground>
       </View>
-    );
+    )
   }
 }
 
@@ -92,7 +92,11 @@ const Metadata = ({name, description, date, time, duration}) => (
   <View style={styles.padding}>
     <IconBar />
     <Text style={styles.text}>{name}</Text>
-    <Text style={styles.time}>{moment(date, 'DD-MM-YYYY').format("dddd DD MMM")} a las {time} ({duration})</Text>
+    <View style={styles.rowDate}>
+      {date != ''? <Text style={styles.time}>{moment(date, 'DD-MM-YYYY').format("dddd DD MMM")} </Text> : null}
+      {time != ''? <Text style={styles.time}> a las {time} </Text> : null}
+      {duration != ''? <Text style={styles.time}>  ({duration}) </Text> : null}
+    </View>
     <Text style={styles.subtitle}>{description}</Text>
   </View>
 );
@@ -126,11 +130,14 @@ const IconBar = () => (
 );
 
 const styles = StyleSheet.create({
-  text: {fontWeight: "600",
-  fontSize: 15},
+  text: {
+    fontWeight: "600",
+    fontSize: 15,
+  },
   subtitle: {
     opacity: 0.7,
     fontSize: 10,
+    marginTop: 5,
   },
   time: {
     opacity: 0.9,
@@ -138,6 +145,17 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  rowDate: {
+    flexDirection: "row",
+    justifyContent: 'flex-start',
+    alignItems: "center",
+    marginTop: 5,
+  },
+  column: {
+    flexDirection: 'column',
     justifyContent: "space-between",
     alignItems: "center"
   },

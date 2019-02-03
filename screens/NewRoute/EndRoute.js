@@ -7,7 +7,9 @@ import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
 import Fire from "../../api/Fire"
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Item from "../../components/Item"
+import Loader from '../../components/Loader'
 import {
+  Alert,
   ScrollView,
   StyleSheet,
   View,
@@ -23,10 +25,13 @@ export class EndRoute extends React.Component {
     header: null
   }
 
+
   state = {
     secondStepActive: true,
     isHelper: true,
+    isLoading: false,
   }
+
 
   componentDidMount() {
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
@@ -34,22 +39,27 @@ export class EndRoute extends React.Component {
     this.userRequest()
   }
 
+
   componentWillUnmount() {
     this.props.onRef(undefined)
   }
+
 
   componentDidUpdate() {
     if (this.state.isHelper)
       this.activateHelper()
   }
 
+
   activateHelper = () => {
     this.props.start()
   }
 
+
   handleStepChange = (step) => {
     console.log(`Current step is: ${step.name}`);
   }
+
 
   userRequest = async () => {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.keyUser)
@@ -57,8 +67,55 @@ export class EndRoute extends React.Component {
   }
 
 
+  comprobeChanges = async () => {
+
+    if (this.props.dataNewRoute.name == '') {
+      this._showSimpleAlert ('¡Wuau!', 'El nombre de la ruta es un campo obligatorio')
+    }else{
+      if (this.props.dataNewRoute.date == '') {
+        this._showSimpleAlert ('¡Wuau!', 'La fecha de la ruta es un campo obligatorio')
+      }else{
+        if (this.props.dataNewRoute.time == '') {
+          this._showSimpleAlert ('¡Wuau!', 'La hora de la ruta es un campo obligatorio')
+        }else{
+          if (this.props.dataNewRoute.name == '') {
+            this._showSimpleAlert ('¡Wuau!', 'La descripción la ruta es un campo obligatorio')
+          }else{
+            if (this.props.dataNewRoute.coords.length == 0) {
+              this._showSimpleAlert ('¡Wuau!', 'Debes seleccionar el punto de encuentro en el mapa')
+            }else{
+              this.setState({isLoading: true});
+            /*  if (this.state.isEditingRoute) {
+                await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+              } else {
+                await Fire.shared.createNewDogWithAttributes(attributesDicc, this.state.newValueAvatarDog)
+              }*/
+            //  update list rutas
+            }
+          }
+        }
+      }
+    }
+  }
+
+  goToBack() {
+    this.props.nav.goBack(null)
+  }
+
+  _showSimpleAlert = (title, description) => {
+    Alert.alert(
+      title,
+      description,
+      [
+        {text: 'Aceptar', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+
+
   renderItem = () => <Item keyCreator={this.props.keyUser}
-                          imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.name} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration[0]}/>
+                          imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.name} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>
 
   render() {
     if (this.props.currentPosition == 3) {
@@ -82,9 +139,11 @@ export class EndRoute extends React.Component {
           <AwesomeButtonRick type="secondary" style={{
               alignSelf: 'center',
               marginTop: 30,
-            }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.verdeOscuro} onPress={value => console.log('guardar')}>
+              marginBottom: 40,
+            }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.comprobeChanges()}>
             ¡Crear ruta!
           </AwesomeButtonRick>
+          <Loader loading={this.state.isLoading} color={Colors.verdeOscuro}/>
         </ScrollView>
         )
     }

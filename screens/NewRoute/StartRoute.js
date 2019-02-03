@@ -79,8 +79,8 @@ class StartRoute extends React.Component {
     }
 
     if (values.duration != null) {
-      this.props.dataNewRoute.duration = values.duration
-      this.setState({duration: values.duration})
+      this.props.dataNewRoute.duration = values.duration[0]
+      this.setState({duration: values.duration[0]})
     }
 
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
@@ -231,7 +231,7 @@ class StartRoute extends React.Component {
                           alignSelf: 'center',
                           marginTop: 50,
                           marginBottom: 40
-                        }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.verdeOscuro} onPress={value => this.setModalVisible(!this.state.modalVisible)}>
+                        }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.setModalVisible(!this.state.modalVisible)}>
                         Aceptar
                       </AwesomeButtonRick>
                     </View>

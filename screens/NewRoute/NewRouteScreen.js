@@ -9,7 +9,9 @@ import MapRoute from './MapRoute'
 import EndRoute from './EndRoute'
 import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon1 from 'react-native-vector-icons/Ionicons'
 import {
+  Alert,
   Image,
   Platform,
   ScrollView,
@@ -43,13 +45,33 @@ class NewRouteScreen extends React.Component {
       headerStyle: {
         backgroundColor: Colors.background
       },
-      headerRight: (<Icon.Button name='question-circle' backgroundColor="transparent" color={Colors.verdeOscuro} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>)
+      headerRight: (<Icon.Button name='question-circle' backgroundColor="transparent" color={Colors.verdeOscuro} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>),
+      headerLeft: (<Icon1.Button name='md-arrow-back' backgroundColor="transparent" color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.showAlert()}></Icon1.Button>)
     }
   }
 
   changeIndex = (index) => {
     console.log(this.props.dataNewRoute);
     this.setState({currentPosition: index})
+  }
+
+  showAlert = (title, text) => {
+    Alert.alert('¡Wuau!', '¿Seguro que quiere salir sin guardar?', [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'Salir',
+        onPress: () => {
+          this.goToBack()
+        }
+      }
+    ], {cancelable: true})
+  }
+
+  goToBack() {
+    this.props.navigation.goBack(null)
   }
 
   activateHelper = () => {
