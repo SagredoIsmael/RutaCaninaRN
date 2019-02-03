@@ -2,6 +2,7 @@ import {Ionicons} from "@expo/vector-icons"
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
+import Btn from 'react-native-micro-animated-button'
 import {
   Image,
   StyleSheet,
@@ -113,16 +114,28 @@ const Header = ({name, image}) => (
 
 const Icon = ({name}) => (
   <Ionicons
-    style={{marginRight: 30}}
+    style={{marginRight: 5}}
     name={name}
     size={40}
     color={Colors.pinkChicle}
   />
-);
+)
+
+pressMeApunto = () => {
+  console.log('AOFJLDSJFLSJFLSJFLKSJDFJSLJFLSOEEEE');
+  this.btn.success()
+}
 
 const IconBar = () => (
   <View style={styles.row}>
-    <Icon name="ios-heart-outline" />
+    <Btn
+      foregroundColor={Colors.pinkChicle}
+      style={{maxWidth: 100, fontSize: 10, backgroundColor: 'transparent'}}
+      label="¡Me apunto!"
+      onPress={() => this.pressMeApunto()}
+      ref={ref => (this.btn = ref)}
+      successIcon="heart"
+    />
     <Icon name="ios-chatbubbles-outline" />
     <Icon name="ios-send-outline" />
     <Icon name="ios-bookmark-outline" />
