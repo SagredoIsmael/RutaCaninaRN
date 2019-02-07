@@ -246,7 +246,7 @@ class StartRoute extends React.Component {
 
                     <GiftedForm.SeparatorWidget/>
 
-                    <GiftedForm.RowValueWidget name='photoRoute' title='Foto de la ruta' value={this.state.photoStatus} image={require('../../assets/images/formIcon/nameRoute.png')} placeholder='Selecciona foto' onPress={() => {
+                    <GiftedForm.RowValueWidget name='photoRoute' title='Foto de la ruta' value={this.state.photoStatus} image={require('../../assets/images/formIcon/photo.png')} placeholder='Selecciona foto' onPress={() => {
                         this._pickImage()
                       }}></GiftedForm.RowValueWidget>
 

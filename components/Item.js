@@ -44,7 +44,7 @@ export default class Item extends React.Component {
       description,
       date,
       time,
-      duration,
+      duration
     } = this.props;
 
     // Reduce the name to something
@@ -55,106 +55,104 @@ export default class Item extends React.Component {
     var esLocale = require('moment/locale/es');
     moment.locale('es', esLocale);
 
-    return (
-      <View>
-        <ImageBackground
-          source={require("../assets/images/background.png")}
-          style={{width: "100%"}}
-        >
-          <View style={{marginTop: 10}}>
-            <TouchableHighlight
-              width={145}
-              height={145}
-              activeOpacity={0.7}
-              underlayColor="rgba(98,93,144,0)"
-              overlayContainerStyle={{backgroundColor: "transparent"}}
-              onPress={() => this.goToProfile(keyCreator)}
-            >
-              <Header image={{uri: imageCreator}} name={nameCreator} />
-            </TouchableHighlight>
-          </View>
-          <Image
-            resizeMode="contain"
-            style={{
-              backgroundColor: Colors.whiteCrudo,
-              width: "100%",
-              aspectRatio: aspect
-            }}
-            source={{uri: image}}
-          />
-        <Metadata name={title} description={description} date={date} time={time} duration={duration}  />
-        </ImageBackground>
-      </View>
-    )
+    return (<View>
+      <ImageBackground source={require("../assets/images/background.png")} style={{
+          width: "100%"
+        }}>
+        <View style={{
+            marginTop: 10
+          }}>
+          <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
+              backgroundColor: "transparent"
+            }} onPress={() => this.goToProfile(keyCreator)}>
+            <Header image={{
+                uri: imageCreator
+              }} name={nameCreator}/>
+          </TouchableHighlight>
+        </View>
+        <Image resizeMode="contain" style={{
+            backgroundColor: Colors.whiteCrudo,
+            width: "100%",
+            aspectRatio: aspect,
+            borderRadius: 20
+          }} source={{
+            uri: image
+          }}/>
+        <Metadata name={title} description={description} date={date} time={time} duration={duration}/>
+      </ImageBackground>
+    </View>)
   }
 }
 
-const Metadata = ({name, description, date, time, duration}) => (
-  <View style={styles.paddingView}>
-    <IconBar />
+const Metadata = ({name, description, date, time, duration}) => (<View style={styles.paddingView}>
+  <IconBar/>
+  <Text style={styles.text}>{name}</Text>
+  <View style={styles.rowDate}>
+    {
+      date != ''
+        ? <Text style={styles.time}>{moment(date, 'DD-MM-YYYY').format("dddd DD MMM")}
+          </Text>
+        : null
+    }
+    {
+      time != ''
+        ? <Text style={styles.time}>
+            a las {time}
+          </Text>
+        : null
+    }
+    {
+      duration != ''
+        ? <Text style={styles.time}>
+            ({duration})
+          </Text>
+        : null
+    }
+  </View>
+  <Text style={styles.subtitle}>{description}</Text>
+</View>);
+
+const Header = ({name, image}) => (<View style={[styles.row, styles.padding]}>
+  <View style={styles.row}>
+    <Image style={styles.avatar} source={image}/>
     <Text style={styles.text}>{name}</Text>
-    <View style={styles.rowDate}>
-      {date != ''? <Text style={styles.time}>{moment(date, 'DD-MM-YYYY').format("dddd DD MMM")} </Text> : null}
-      {time != ''? <Text style={styles.time}> a las {time} </Text> : null}
-      {duration != ''? <Text style={styles.time}>  ({duration}) </Text> : null}
-    </View>
-    <Text style={styles.subtitle}>{description}</Text>
   </View>
-);
+  <Icon name="ios-more"/>
+</View>);
 
-const Header = ({name, image}) => (
-  <View style={[styles.row, styles.padding]}>
-    <View style={styles.row}>
-      <Image style={styles.avatar} source={image} />
-      <Text style={styles.text}>{name}</Text>
-    </View>
-    <Icon name="ios-more" />
-  </View>
-);
-
-const Icon = ({name}) => (
-  <Ionicons
-    style={{marginRight: 5}}
-    name={name}
-    size={40}
-    color={Colors.pinkChicle}
-  />
-)
+const Icon = ({name}) => (<Ionicons style={{
+    marginRight: 5
+  }} name={name} size={40} color={Colors.pinkChicle}/>)
 
 pressMeApunto = () => {
   console.log('AOFJLDSJFLSJFLSJFLKSJDFJSLJFLSOEEEE');
   this.btn.success()
 }
 
-const IconBar = () => (
-  <View style={styles.row}>
-    <Btn
-      foregroundColor={Colors.pinkChicle}
-      style={{maxWidth: 100, fontSize: 10, backgroundColor: 'transparent'}}
-      label="¡Me apunto!"
-      onPress={() => this.pressMeApunto()}
-      ref={ref => (this.btn = ref)}
-      successIcon="heart"
-    />
-    <Icon name="ios-chatbubbles-outline" />
-    <Icon name="ios-send-outline" />
-    <Icon name="ios-bookmark-outline" />
-  </View>
-);
+const IconBar = () => (<View style={styles.row}>
+  <Btn foregroundColor={Colors.pinkChicle} style={{
+      maxWidth: 100,
+      fontSize: 10,
+      backgroundColor: 'transparent'
+    }} label="¡Me apunto!" onPress={() => this.pressMeApunto()} ref={ref => (this.btn = ref)} successIcon="heart"/>
+  <Icon name="ios-chatbubbles-outline"/>
+  <Icon name="ios-send-outline"/>
+  <Icon name="ios-bookmark-outline"/>
+</View>);
 
 const styles = StyleSheet.create({
   text: {
     fontWeight: "600",
-    fontSize: 15,
+    fontSize: 15
   },
   subtitle: {
     opacity: 0.7,
     fontSize: 10,
-    marginTop: 5,
+    marginTop: 5
   },
   time: {
     opacity: 0.9,
-    fontSize: 12,
+    fontSize: 12
   },
   row: {
     flexDirection: "row",
@@ -165,7 +163,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'flex-start',
     alignItems: "center",
-    marginTop: 5,
+    marginTop: 5
   },
   column: {
     flexDirection: 'column',
@@ -173,7 +171,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   padding: {
-    padding,
+    padding
   },
   paddingView: {
     padding,
