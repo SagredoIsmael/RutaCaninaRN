@@ -2,7 +2,6 @@ import {Ionicons} from "@expo/vector-icons"
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
-import Btn from 'react-native-micro-animated-button'
 import {
   Image,
   StyleSheet,
@@ -17,7 +16,9 @@ const profileImageSize = 36
 const padding = 12
 
 export default class Item extends React.Component {
-  state = {}
+  state = {
+    meApunto: '¡Me apunto!'
+  }
 
   componentDidMount() {
     if (!this.props.imageWidth) {
@@ -124,17 +125,19 @@ const Icon = ({name}) => (<Ionicons style={{
     marginRight: 5
   }} name={name} size={40} color={Colors.pinkChicle}/>)
 
-pressMeApunto = () => {
-  console.log('AOFJLDSJFLSJFLSJFLKSJDFJSLJFLSOEEEE');
-  this.btn.success()
+_pressButtonMeApunto = () => {
+  console.log('eeeeee');
 }
 
 const IconBar = () => (<View style={styles.row}>
-  <Btn foregroundColor={Colors.pinkChicle} style={{
-      maxWidth: 100,
+  <AwesomeButtonRick type="progress" style={{
+      alignSelf: 'center',
+      width: 100,
       fontSize: 10,
       backgroundColor: 'transparent'
-    }} label="¡Me apunto!" onPress={() => this.pressMeApunto()} ref={ref => (this.btn = ref)} successIcon="heart"/>
+    }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this._pressButtonMeApunto}>
+    this.state.meApunto
+  </AwesomeButtonRick>
   <Icon name="ios-chatbubbles-outline"/>
   <Icon name="ios-send-outline"/>
   <Icon name="ios-bookmark-outline"/>
