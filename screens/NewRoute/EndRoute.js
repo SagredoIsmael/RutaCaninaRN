@@ -25,14 +25,12 @@ export class EndRoute extends React.Component {
     header: null
   }
 
-
   state = {
     secondStepActive: true,
     isHelper: true,
     isLoading: false,
-    isEditingRoute: false,
+    isEditingRoute: false
   }
-
 
   componentDidMount() {
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
@@ -40,60 +38,54 @@ export class EndRoute extends React.Component {
     this.userRequest()
   }
 
-
   componentWillUnmount() {
     this.props.onRef(undefined)
   }
 
-
   componentDidUpdate() {
-    if (this.state.isHelper)
+    if (this.state.isHelper) 
       this.activateHelper()
   }
-
 
   activateHelper = () => {
     this.props.start()
   }
 
-
   handleStepChange = (step) => {
     console.log(`Current step is: ${step.name}`);
   }
-
 
   userRequest = async () => {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.keyUser)
     this.props.insert_dataMyUser(dataUser)
   }
 
-
   comprobeChanges = async () => {
 
     if (this.props.dataNewRoute.title == '') {
-      this._showSimpleAlert ('¡Wuau!', 'El nombre de la ruta es un campo obligatorio')
-    }else{
+      this._showSimpleAlert('¡Wuau!', 'El nombre de la ruta es un campo obligatorio')
+    } else {
       if (this.props.dataNewRoute.date == '') {
-        this._showSimpleAlert ('¡Wuau!', 'La fecha de la ruta es un campo obligatorio')
-      }else{
+        this._showSimpleAlert('¡Wuau!', 'La fecha de la ruta es un campo obligatorio')
+      } else {
         if (this.props.dataNewRoute.time == '') {
-          this._showSimpleAlert ('¡Wuau!', 'La hora de la ruta es un campo obligatorio')
-        }else{
+          this._showSimpleAlert('¡Wuau!', 'La hora de la ruta es un campo obligatorio')
+        } else {
           if (this.props.dataNewRoute.title == '') {
-            this._showSimpleAlert ('¡Wuau!', 'La descripción la ruta es un campo obligatorio')
-          }else{
+            this._showSimpleAlert('¡Wuau!', 'La descripción la ruta es un campo obligatorio')
+          } else {
             if (this.props.dataNewRoute.coords.length == 0) {
-              this._showSimpleAlert ('¡Wuau!', 'Debes seleccionar el punto de encuentro en el mapa')
-            }else{
+              this._showSimpleAlert('¡Wuau!', 'Debes seleccionar el punto de encuentro en el mapa')
+            } else {
               this.setState({isLoading: true})
               const attributesDicc = this.prepareAttributes()
               if (this.state.isEditingRoute) {
-              //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+                //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
                 await Fire.shared.createNewRouteWithAttributes(attributesDicc, null) //PUT IMAGE
               }
 
-            //  update list rutas
+              //  update list rutas
             }
           }
         }
@@ -115,49 +107,43 @@ export class EndRoute extends React.Component {
   }
 
   _showSimpleAlert = (title, description) => {
-    Alert.alert(
-      title,
-      description,
-      [
-        {text: 'Aceptar', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
+    Alert.alert(title, description, [
+      {
+        text: 'Aceptar',
+        onPress: () => console.log('OK Pressed')
+      }
+    ], {cancelable: false})
   }
 
-
-  renderItem = () => <Item keyCreator={this.props.keyUser}
-                          imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>
+  renderItem = () => (<Item keyCreator={this.props.keyUser} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>)
 
   render() {
-    if (this.props.currentPosition == 3) {
-      if (this.state.isHelper)
+    if (this.props.currentPosition == 2) {
+      if (this.state.isHelper) 
         this.setState({isHelper: false})
-      return (
-        <ScrollView style={styles.container}>
-          <CopilotStep text="Vista previa de tu ruta. ¡Click en 'Crear ruta' si todo está genial!" order={1} name="createRoute">
-            <WalkthroughableView style={{
-                alignItems: 'center',
-                paddingLeft: 35,
-                paddingRight: 30,
-                borderWidth: 3,
-                marginLeft: 5,
-                marginRight: 5,
-                borderColor: Colors.verdeOscuro,
-              }}>
-              {this.renderItem()}
-            </WalkthroughableView>
-          </CopilotStep>
-          <AwesomeButtonRick type="secondary" style={{
-              alignSelf: 'center',
-              marginTop: 30,
-              marginBottom: 50,
-            }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.comprobeChanges()}>
-            ¡Crear ruta!
-          </AwesomeButtonRick>
-          <Loader loading={this.state.isLoading} color={Colors.verdeOscuro}/>
-        </ScrollView>
-        )
+      return (<ScrollView style={styles.container}>
+        <CopilotStep text="Vista previa de tu ruta. ¡Click en 'Crear ruta' si todo está genial!" order={1} name="createRoute">
+          <WalkthroughableView style={{
+              alignItems: 'center',
+              paddingLeft: 35,
+              paddingRight: 30,
+              borderWidth: 3,
+              marginLeft: 5,
+              marginRight: 5,
+              borderColor: Colors.verdeOscuro
+            }}>
+            {this.renderItem()}
+          </WalkthroughableView>
+        </CopilotStep>
+        <AwesomeButtonRick type="secondary" style={{
+            alignSelf: 'center',
+            marginTop: 30,
+            marginBottom: 50
+          }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.comprobeChanges()}>
+          ¡Crear ruta!
+        </AwesomeButtonRick>
+        <Loader loading={this.state.isLoading} color={Colors.verdeOscuro}/>
+      </ScrollView>)
     }
     return (<View/>)
   }
@@ -166,13 +152,11 @@ export class EndRoute extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
+  }
 })
 
 const mapStateToProps = state => {
-  return {dataNewRoute: state.dataNewRoute,
-          dataMyUser: state.dataMyUser,
-          keyUser: state.keyUser}
+  return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, keyUser: state.keyUser}
 }
 
 export default connect(mapStateToProps, actions)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(EndRoute))

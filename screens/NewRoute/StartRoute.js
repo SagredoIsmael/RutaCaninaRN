@@ -43,7 +43,8 @@ class StartRoute extends React.Component {
       modalVisible: visible,
       modalContent: params !== null
         ? params.renderScene(null)
-        : <Text>Volver</Text>})
+        : <Text>Volver</Text>
+    })
 
     const {props} = this.state.modalContent;
 
@@ -58,7 +59,7 @@ class StartRoute extends React.Component {
 
   handleValueChange(values) {
 
-    if (values.nameRoute != null)
+    if (values.nameRoute != null) 
       this.props.dataNewRoute.title = values.nameRoute
 
     if (values.dateRoute != null) {
@@ -166,16 +167,19 @@ class StartRoute extends React.Component {
 
                       <GiftedForm.DatePickerIOSWidget name='dateRoute' mode='date' getDefaultDate={() => {
                           return new Date()
-                        }} minimumDate={new Date()}
-                        style={{height: '1000%'}}/>
+                        }} minimumDate={new Date()} style={{
+                          height: '1000%'
+                        }}/>
                     </GiftedForm.ModalWidget>
 
                     <GiftedForm.ModalWidget title={this.state.time} image={require('../../assets/images/formIcon/time.png')} displayValue='Hora' scrollEnabled={false}>
                       <GiftedForm.SeparatorWidget/>
 
                       <GiftedForm.DatePickerIOSWidget name='timeRoute' mode='time' getDefaultDate={() => {
-                          return new Date()}}
-                          style={{height: '1000%'}}/>
+                          return new Date()
+                        }} style={{
+                          height: '1000%'
+                        }}/>
                     </GiftedForm.ModalWidget>
 
                     <GiftedForm.ModalWidget title='Duración aprox.' image={require('../../assets/images/formIcon/duration.png')} displayValue='Duración aprox.'>
@@ -186,11 +190,11 @@ class StartRoute extends React.Component {
                         <GiftedForm.OptionWidget title='1 hora' value='1 hora'/>
                         <GiftedForm.OptionWidget title='1 hora y media' value='1h y media'/>
                         <GiftedForm.OptionWidget title='2 horas' value='2 horas'/>
-                          <GiftedForm.OptionWidget title='2 horas y media' value='2h y media'/>
+                        <GiftedForm.OptionWidget title='2 horas y media' value='2h y media'/>
                         <GiftedForm.OptionWidget title='3 horas' value='3 horas'/>
-                          <GiftedForm.OptionWidget title='3 horas y media' value='3h y media'/>
+                        <GiftedForm.OptionWidget title='3 horas y media' value='3h y media'/>
                         <GiftedForm.OptionWidget title='4 horas' value='4 horas'/>
-                          <GiftedForm.OptionWidget title='4 horas y media' value='4h y media'/>
+                        <GiftedForm.OptionWidget title='4 horas y media' value='4h y media'/>
                         <GiftedForm.OptionWidget title='Más de 5 horas..' value='5 horas'/>
                       </GiftedForm.SelectWidget>
                     </GiftedForm.ModalWidget>
@@ -201,8 +205,14 @@ class StartRoute extends React.Component {
                     <GiftedForm.ModalWidget title={this.state.description} name='descriptionRoute' displayValue='Descripción' image={require('../../assets/images/formIcon/description.png')} scrollEnabled={true}>
                       <GiftedForm.SeparatorWidget/>
 
-                      <GiftedForm.TextAreaWidget name='descriptionRoute'
-                        style={{height: '300%', width: '120%', marginTop: 20, paddingLeft: 70, paddingRight: 70, backgroundColor: 'white'}} autoFocus={true} placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'/>
+                      <GiftedForm.TextAreaWidget name='descriptionRoute' style={{
+                          height: '300%',
+                          width: '120%',
+                          marginTop: 20,
+                          paddingLeft: 70,
+                          paddingRight: 70,
+                          backgroundColor: 'white'
+                        }} autoFocus={true} placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'/>
                     </GiftedForm.ModalWidget>
 
                   </GiftedForm>

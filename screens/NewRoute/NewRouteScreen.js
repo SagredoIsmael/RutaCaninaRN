@@ -4,7 +4,6 @@ import StepIndicator from 'react-native-step-indicator'
 import * as actions from '../../actions'
 import Swiper from 'react-native-swiper'
 import StartRoute from './StartRoute'
-import DetailRoute from './DetailRoute'
 import MapRoute from './MapRoute'
 import EndRoute from './EndRoute'
 import {connect} from 'react-redux'
@@ -99,14 +98,11 @@ class NewRouteScreen extends React.Component {
           }}>
           <StepIndicator customStyles={customStyles} style={{
               position: 'absolute'
-            }} stepCount={4} currentPosition={this.state.currentPosition} labels={labels}/>
+            }} stepCount={3} currentPosition={this.state.currentPosition} labels={labels}/>
         </View>
         <Swiper style={styles.wrapper} showsButtons={true} loop={false} onIndexChanged={value => this.changeIndex(value)}>
           <View style={styles.slide1}>
             <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)} nav={this.props.navigation}/>
-          </View>
-          <View style={styles.slide1}>
-            <DetailRoute currentPosition={this.state.currentPosition}/>
           </View>
           <View style={styles.slide1}>
             <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
@@ -139,7 +135,7 @@ let styles = StyleSheet.create({
   }
 });
 
-const labels = ["Inicio", "Detalle", "Mapa", "Fin"];
+const labels = ["Inicio", "Mapa", "¡Crear!"];
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,

@@ -120,7 +120,7 @@ class MapRoute extends React.Component {
   }
 
   render() {
-    if (this.props.currentPosition == 2) {
+    if (this.props.currentPosition == 1) {
       if (this.state.isHelper) 
         this.setState({isHelper: false})
       if (!this.state.me.location) {
