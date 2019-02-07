@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
+import {Permissions, ImagePicker, Font, Constants} from "expo";
 import * as actions from '../../actions'
 import Colors from '../../constants/Colors'
 import moment from 'moment'
@@ -31,6 +32,7 @@ const WalkthroughableView = walkthroughable(View)
 class StartRoute extends React.Component {
 
   state = {
+    hasCameraPermission: false,
     isTypingName: true,
     modalVisible: false,
     date: 'Fecha',
@@ -54,6 +56,13 @@ class StartRoute extends React.Component {
               ? props.displayValue
               : 'Error al cargar'
           }</Text>
+    })
+  }
+
+  async componentWillMount() {
+    const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    this.setState({
+      hasCameraPermission: status === "granted"
     })
   }
 
@@ -81,7 +90,6 @@ class StartRoute extends React.Component {
 
     if (values.duration != null) {
       this.props.dataNewRoute.duration = values.duration[0]
-      this.setState({duration: values.duration[0]})
     }
 
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
@@ -105,6 +113,17 @@ class StartRoute extends React.Component {
 
   handleStepChange = (step) => {
     console.log(`Current step is: ${step.name}`);
+  }
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+    if (!result.cancelled) {
+      this.props.dataNewRoute.photo = result.uri
+      this.setState({photoStatus: "Foto cargada"})
+    }
   }
 
   nowDate = () => {
@@ -155,11 +174,22 @@ class StartRoute extends React.Component {
                             message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
                           }
                         ]
+                      },
+                      photoRoute: {
+                        title: 'Foto',
+                        validate: [
+                          {
+                            validator: 'isLength',
+                            arguments: [
+                              1, 100
+                            ],
+                            message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
+                          }
+                        ]
                       }
                     }}>
                     <GiftedForm.TextInputWidget name='nameRoute' title='Nombre' value={this.props.dataNewRoute.title} image={require('../../assets/images/formIcon/nameRoute.png')} placeholder='Ruta por Cabo de Gata' clearButtonMode='while-editing'/>
 
-                    <GiftedForm.SeparatorWidget/>
                     <GiftedForm.SeparatorWidget/>
 
                     <GiftedForm.ModalWidget title={this.state.date} displayValue='Fecha' image={require('../../assets/images/formIcon/date.png')} scrollEnabled={false}>
@@ -200,7 +230,6 @@ class StartRoute extends React.Component {
                     </GiftedForm.ModalWidget>
 
                     <GiftedForm.SeparatorWidget/>
-                    <GiftedForm.SeparatorWidget/>
 
                     <GiftedForm.ModalWidget title={this.state.description} name='descriptionRoute' displayValue='Descripción' image={require('../../assets/images/formIcon/description.png')} scrollEnabled={true}>
                       <GiftedForm.SeparatorWidget/>
@@ -214,6 +243,12 @@ class StartRoute extends React.Component {
                           backgroundColor: 'white'
                         }} autoFocus={true} placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'/>
                     </GiftedForm.ModalWidget>
+
+                    <GiftedForm.SeparatorWidget/>
+
+                    <GiftedForm.RowValueWidget name='photoRoute' title='Foto de la ruta' value={this.state.photoStatus} image={require('../../assets/images/formIcon/nameRoute.png')} placeholder='Selecciona foto' onPress={() => {
+                        this._pickImage()
+                      }}></GiftedForm.RowValueWidget>
 
                   </GiftedForm>
 
