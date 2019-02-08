@@ -2,7 +2,6 @@ import {Ionicons} from "@expo/vector-icons"
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
-import FlashMessage from 'react-native-flash-message'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Image,
@@ -19,7 +18,9 @@ const profileImageSize = 36
 const padding = 12
 
 export default class Item extends React.Component {
-  state = {}
+  state = {
+    isSubscribe: false
+  }
 
   componentDidMount() {
     if (!this.props.imageWidth) {
@@ -28,6 +29,7 @@ export default class Item extends React.Component {
         this.setState({width, height})
       });
     }
+
   }
 
   goToProfile = keyUserr => {
@@ -81,11 +83,6 @@ export default class Item extends React.Component {
             uri: image
           }}/>
         <Metadata name={title} description={description} date={date} time={time} duration={duration}/>
-        <Button onPress={() => {
-            /* HERE WE GONE SHOW OUR FIRST MESSAGE */
-            showMessage({message: "Simple message", type: "info", floating: true});
-          }} title="Request Details" color="#841584"/>
-        <FlashMessage position="top"/>
       </ImageBackground>
     </View>)
   }
@@ -131,12 +128,13 @@ const Icon = ({name}) => (<Ionicons style={{
     marginRight: 5
   }} name={name} size={40} color={Colors.pinkChicle}/>)
 
-_pressSubscribe = () => {
-  console.log('eeeee');
-  showMessage({
-    message: "My message title", description: "My message description", type: "default", backgroundColor: "purple", // background color
-    color: "#606060", // text color
-  });
+_pressSubscribe = (isSubscribe) => {
+  if (isSubscribe) {
+    showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true});
+  } else {
+    showMessage({message: "Has dejado de asistir a la ruta", type: "info", floating: true});
+  }
+
 }
 
 _pressChat = () => {
@@ -152,7 +150,9 @@ _pressSave = () => {
 }
 
 const IconBar = () => (<View style={styles.row}>
-  <TouchableHighlight onPress={this._pressSubscribe}>
+  <TouchableHighlight onPress={() => {
+      this._pressSubscribe(this.state.isSubscribe)
+    }}>
     <Icon name="ios-person-add-outline"/>
   </TouchableHighlight>
   <TouchableHighlight onPress={this._pressChat}>
