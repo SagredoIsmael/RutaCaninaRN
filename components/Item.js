@@ -2,6 +2,8 @@ import {Ionicons} from "@expo/vector-icons"
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
+import FlashMessage from 'react-native-flash-message'
+import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Image,
   StyleSheet,
@@ -9,6 +11,7 @@ import {
   View,
   ImageBackground,
   Alert,
+  Button,
   TouchableHighlight
 } from "react-native"
 
@@ -16,9 +19,7 @@ const profileImageSize = 36
 const padding = 12
 
 export default class Item extends React.Component {
-  state = {
-    meApunto: '¡Me apunto!'
-  }
+  state = {}
 
   componentDidMount() {
     if (!this.props.imageWidth) {
@@ -80,6 +81,11 @@ export default class Item extends React.Component {
             uri: image
           }}/>
         <Metadata name={title} description={description} date={date} time={time} duration={duration}/>
+        <Button onPress={() => {
+            /* HERE WE GONE SHOW OUR FIRST MESSAGE */
+            showMessage({message: "Simple message", type: "info", floating: true});
+          }} title="Request Details" color="#841584"/>
+        <FlashMessage position="top"/>
       </ImageBackground>
     </View>)
   }
@@ -125,22 +131,39 @@ const Icon = ({name}) => (<Ionicons style={{
     marginRight: 5
   }} name={name} size={40} color={Colors.pinkChicle}/>)
 
-_pressButtonMeApunto = () => {
+_pressSubscribe = () => {
+  console.log('eeeee');
+  showMessage({
+    message: "My message title", description: "My message description", type: "default", backgroundColor: "purple", // background color
+    color: "#606060", // text color
+  });
+}
+
+_pressChat = () => {
+  console.log('eeeeee');
+}
+
+_pressMap = () => {
+  console.log('eeeeee');
+}
+
+_pressSave = () => {
   console.log('eeeeee');
 }
 
 const IconBar = () => (<View style={styles.row}>
-  <AwesomeButtonRick type="progress" style={{
-      alignSelf: 'center',
-      width: 100,
-      fontSize: 10,
-      backgroundColor: 'transparent'
-    }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this._pressButtonMeApunto}>
-    this.state.meApunto
-  </AwesomeButtonRick>
-  <Icon name="ios-chatbubbles-outline"/>
-  <Icon name="ios-send-outline"/>
-  <Icon name="ios-bookmark-outline"/>
+  <TouchableHighlight onPress={this._pressSubscribe}>
+    <Icon name="ios-person-add-outline"/>
+  </TouchableHighlight>
+  <TouchableHighlight onPress={this._pressChat}>
+    <Icon name="ios-chatbubbles-outline"/>
+  </TouchableHighlight>
+  <TouchableHighlight onPress={this._pressMap}>
+    <Icon name="ios-send-outline"/>
+  </TouchableHighlight>
+  <TouchableHighlight onPress={this._pressSave}>
+    <Icon name="ios-bookmark-outline"/>
+  </TouchableHighlight>
 </View>);
 
 const styles = StyleSheet.create({
