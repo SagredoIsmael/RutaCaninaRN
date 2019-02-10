@@ -2,6 +2,8 @@ import {Ionicons} from "@expo/vector-icons"
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Image,
@@ -17,7 +19,7 @@ import {
 const profileImageSize = 36
 const padding = 12
 
-export default class Item extends React.Component {
+class Item extends React.Component {
   state = {
     isSubscribe: false
   }
@@ -37,6 +39,7 @@ export default class Item extends React.Component {
   };
 
   render() {
+    console.log('ueeee', this.props);
     const {
       keyCreator,
       nameCreator,
@@ -82,14 +85,21 @@ export default class Item extends React.Component {
           }} source={{
             uri: image
           }}/>
-        <Metadata name={title} description={description} date={date} time={time} duration={duration}/>
+        <Metadata keyRoute={this.props.keyRoute} name={title} description={description} date={date} time={time} duration={duration}/>
       </ImageBackground>
     </View>)
   }
 }
 
-const Metadata = ({name, description, date, time, duration}) => (<View style={styles.paddingView}>
-  <IconBar/>
+const Metadata = ({
+  keyRoute,
+  name,
+  description,
+  date,
+  time,
+  duration
+}) => (<View style={styles.paddingView}>
+  <IconBar keyRoute={keyRoute}/>
   <Text style={styles.text}>{name}</Text>
   <View style={styles.rowDate}>
     {
@@ -110,6 +120,7 @@ const Metadata = ({name, description, date, time, duration}) => (<View style={st
         ? <Text style={styles.time}>
             ({duration})
           </Text>
+
         : null
     }
   </View>
@@ -128,12 +139,10 @@ const Icon = ({name}) => (<Ionicons style={{
     marginRight: 5
   }} name={name} size={40} color={Colors.pinkChicle}/>)
 
-_pressSubscribe = (isSubscribe) => {
-  if (isSubscribe) {
-    showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true});
-  } else {
-    showMessage({message: "Has dejado de asistir a la ruta", type: "info", floating: true});
-  }
+_pressSubscribe = (keyRoute) => {
+  console.log('heehehehhee', keyRoute);
+  showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+  //showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
 
 }
 
@@ -149,9 +158,9 @@ _pressSave = () => {
   console.log('eeeeee');
 }
 
-const IconBar = () => (<View style={styles.row}>
+const IconBar = ({keyRoute}) => (<View style={styles.row}>
   <TouchableHighlight onPress={() => {
-      this._pressSubscribe(this.state.isSubscribe)
+      this._pressSubscribe(keyRoute)
     }}>
     <Icon name="ios-person-add-outline"/>
   </TouchableHighlight>
@@ -214,4 +223,10 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     marginRight: padding
   }
-});
+})
+
+const mapStateToProps = state => {
+  return {dataMyUser: state.dataMyUser}
+}
+
+export default connect(mapStateToProps, actions)(Item)
