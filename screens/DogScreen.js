@@ -70,11 +70,9 @@ class DogScreen extends React.Component {
     newValueKeyDog: ''
   }
 
-
   componentDidMount() {
     this.setNewStates()
-    }
-
+  }
 
   setNewStates = () => {
     const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
@@ -109,18 +107,18 @@ class DogScreen extends React.Component {
           break
 
         case 'guardar':
-          if (Object.keys(attributesDicc).length < 6) {
-            this._showSimpleAlert ('¡Wuau!', 'Hay que rellenar todos los campos')
-          }else{
-            this.setState({isLoading: true});
-            if (this.state.isEditingDog) {
-              await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+          this.setState({isLoading: true});
+          if (this.state.isEditingDog) {
+            await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+          } else {
+            if (Object.keys(attributesDicc).length < 6) {
+              this._showSimpleAlert('¡Wuau!', 'Hay que rellenar todos los campos')
             } else {
               await Fire.shared.createNewDogWithAttributes(attributesDicc, this.state.newValueAvatarDog)
             }
-            this.userRequest()
-            this.goToBack()
           }
+          this.userRequest()
+          this.goToBack()
           break
 
         default:
@@ -136,17 +134,17 @@ class DogScreen extends React.Component {
     var attributes = {}
     if (this.state.isEditingDog) {
       const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
-      if (this.state.newValueNameDog != dog.name)
+      if (this.state.newValueNameDog != dog.name) 
         attributes.name = this.state.newValueNameDog
-      if (this.state.newValueAgeDog != dog.age)
+      if (this.state.newValueAgeDog != dog.age) 
         attributes.age = this.state.newValueAgeDog
-      if (this.intToGender(this.state.newValueGenderDog) != dog.gender)
+      if (this.intToGender(this.state.newValueGenderDog) != dog.gender) 
         attributes.gender = this.intToGender(this.state.newValueGenderDog)
-      if (this.state.newValueBreedDog != dog.breed)
+      if (this.state.newValueBreedDog != dog.breed) 
         attributes.breed = this.state.newValueBreedDog
-      if (optionsTemperament[this.state.newValueTemperamentDog] != dog.temperament)
+      if (optionsTemperament[this.state.newValueTemperamentDog] != dog.temperament) 
         attributes.temperament = optionsTemperament[this.state.newValueTemperamentDog]
-      if (optionsConduct[this.state.newValueConductDog] != dog.conduct)
+      if (optionsConduct[this.state.newValueConductDog] != dog.conduct) 
         attributes.conduct = optionsConduct[this.state.newValueConductDog]
     } else {
       attributes = {
@@ -162,14 +160,12 @@ class DogScreen extends React.Component {
   }
 
   _showSimpleAlert = (title, description) => {
-    Alert.alert(
-      title,
-      description,
-      [
-        {text: 'Aceptar', onPress: () => console.log('OK Pressed')},
-      ],
-      { cancelable: false }
-    )
+    Alert.alert(title, description, [
+      {
+        text: 'Aceptar',
+        onPress: () => console.log('OK Pressed')
+      }
+    ], {cancelable: false})
   }
 
   showAlert = (title, text) => {
@@ -224,7 +220,7 @@ class DogScreen extends React.Component {
   }
 
   renderImageDog(urlPhotoDog) {
-    if (urlPhotoDog == '')
+    if (urlPhotoDog == '') 
       urlPhotoDog = 'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f'
     return (<Image style={styles.avatar} source={urlPhotoDog
         ? {
@@ -261,13 +257,13 @@ class DogScreen extends React.Component {
   }
 
   genderToInt(gender) {
-    if (gender == 'hembra')
+    if (gender == 'hembra') 
       return 0
     return 1
   }
 
   intToGender(value) {
-    if (value == 0)
+    if (value == 0) 
       return 'hembra'
     return 'macho'
   }
@@ -447,7 +443,8 @@ class DogScreen extends React.Component {
               flex: 1
             }} label={'Raza del can'} value={this.state.newValueBreedDog} onChangeText={(text) => {
               this.setState({newValueBreedDog: text})
-            }} borderColor={Colors.pinkChicle} labelStyle={Colors.pinkChicle}/> {
+            }} borderColor={Colors.pinkChicle} labelStyle={Colors.pinkChicle}></Hoshi>
+          {
             this.state.isEditingDog
               ? <AwesomeButtonRick type="secondary" style={{
                     alignSelf: 'center',

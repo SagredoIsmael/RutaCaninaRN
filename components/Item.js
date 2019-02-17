@@ -111,7 +111,7 @@ const Metadata = ({
     {
       time != ''
         ? <Text style={styles.time}>
-            a las {time}
+            a las {time}{' '}
           </Text>
         : null
     }
