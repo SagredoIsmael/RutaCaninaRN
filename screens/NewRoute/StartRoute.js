@@ -156,11 +156,11 @@ class StartRoute extends React.Component {
                     marginLeft: 10,
                     alignSelf: 'flex-start',
                     width: '85%',
-                    position: 'absolute'
+                    height: '100%'
                   }}>
                   <GiftedForm formName='signupForm' openModal={(params) => {
                       this.setModalVisible(true, params)
-                    }} scrollEnabled={false} onValueChange={this.handleValueChange.bind(this)} closeModal={() => {
+                    }} scrollEnabled={false} onValueChange={(values) => this.handleValueChange(values)} closeModal={() => {
                       this.setModalVisible(false)
                     }} clearOnClose={false} validators={{
                       nameRoute: {
