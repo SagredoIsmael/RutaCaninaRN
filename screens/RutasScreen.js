@@ -69,6 +69,7 @@ class RutasScreen extends React.Component {
         posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp)
       }
     })
+    this.props.insert_user(Fire.shared.uid)
     this.props.insert_dataRoutes(this.state.posts)
   }
 
@@ -79,7 +80,6 @@ class RutasScreen extends React.Component {
 
   goToNewRoute = () => {
     if (Fire.shared.uid != undefined) {
-      this.props.insert_user(Fire.shared.uid)
       this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList})
     } else {
       this.showAlertLogIn()

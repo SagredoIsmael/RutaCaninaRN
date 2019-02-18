@@ -39,7 +39,6 @@ class Item extends React.Component {
   };
 
   render() {
-    console.log('ueeee', this.props);
     const {
       keyCreator,
       nameCreator,
@@ -51,7 +50,9 @@ class Item extends React.Component {
       description,
       date,
       time,
-      duration
+      duration,
+      assistants,
+      keyUser
     } = this.props;
 
     // Reduce the name to something
@@ -85,7 +86,7 @@ class Item extends React.Component {
           }} source={{
             uri: image
           }}/>
-        <Metadata keyRoute={this.props.keyRoute} name={title} description={description} date={date} time={time} duration={duration}/>
+        <Metadata keyRoute={this.props.keyRoute} name={title} description={description} date={date} time={time} duration={duration} assistants={assistants} keyUser={keyUser}/>
       </ImageBackground>
     </View>)
   }
@@ -97,9 +98,11 @@ const Metadata = ({
   description,
   date,
   time,
-  duration
+  duration,
+  assistants,
+  keyUser
 }) => (<View style={styles.paddingView}>
-  <IconBar keyRoute={keyRoute}/>
+  <IconBar keyRoute={keyRoute} assistants={assistants} keyUser={keyUser}/>
   <Text style={styles.text}>{name}</Text>
   <View style={styles.rowDate}>
     {
@@ -139,11 +142,16 @@ const Icon = ({name}) => (<Ionicons style={{
     marginRight: 5
   }} name={name} size={40} color={Colors.pinkChicle}/>)
 
-_pressSubscribe = (keyRoute) => {
-  console.log('heehehehhee', keyRoute);
-  showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-  //showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
-
+_pressSubscribe = (keyRoute, assistants, keyUser) => {
+  if (assistants) {
+    if (assistants[keyUser] != null) {
+      showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
+    } else {
+      showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+    }
+  } else {
+    showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+  }
 }
 
 _pressChat = () => {
@@ -158,11 +166,15 @@ _pressSave = () => {
   console.log('eeeeee');
 }
 
-const IconBar = ({keyRoute}) => (<View style={styles.row}>
+const IconBar = ({keyRoute, assistants, keyUser}) => (<View style={styles.row}>
   <TouchableHighlight onPress={() => {
-      this._pressSubscribe(keyRoute)
+      this._pressSubscribe(keyRoute, assistants, keyUser)
     }}>
-    <Icon name="ios-person-add-outline"/>
+    {
+      assistants
+        ? <Icon name="ios-happy-outline"/>
+        : <Icon name="ios-person-add-outline"/>
+    }
   </TouchableHighlight>
   <TouchableHighlight onPress={this._pressChat}>
     <Icon name="ios-chatbubbles-outline"/>
@@ -171,7 +183,7 @@ const IconBar = ({keyRoute}) => (<View style={styles.row}>
     <Icon name="ios-send-outline"/>
   </TouchableHighlight>
   <TouchableHighlight onPress={this._pressSave}>
-    <Icon name="ios-bookmark-outline"/>
+    <Icon name="ios-people-outline"/>
   </TouchableHighlight>
 </View>);
 
@@ -226,7 +238,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataMyUser: state.dataMyUser}
+  return {dataMyUser: state.dataMyUser, keyUser: state.keyUser}
 }
 
 export default connect(mapStateToProps, actions)(Item)
