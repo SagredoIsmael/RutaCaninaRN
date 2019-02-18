@@ -86,6 +86,7 @@ export class EndRoute extends React.Component {
               }
               this.setState({isLoading: false})
               this.goToBack()
+              this.props.refreshList();
             }
           }
         }
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, keyUser: state.keyUser}
+  return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, keyUser: state.keyUser, refreshRoutes: state.refreshRoutes}
 }
 
 export default connect(mapStateToProps, actions)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(EndRoute))

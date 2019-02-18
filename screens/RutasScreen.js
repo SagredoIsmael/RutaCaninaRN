@@ -71,10 +71,14 @@ class RutasScreen extends React.Component {
     this.props.insert_dataRoutes(this.state.posts)
   }
 
+  refreshList = () => {
+    this.makeRemoteRequest()
+  };
+
   goToNewRoute = () => {
     if (Fire.shared.uid != undefined) {
       this.props.insert_user(Fire.shared.uid)
-      this.props.navigation.navigate('NewRoute')
+      this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList})
     } else {
       this.showAlertLogIn()
     }
