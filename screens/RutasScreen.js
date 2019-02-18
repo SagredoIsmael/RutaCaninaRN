@@ -7,6 +7,7 @@ import getPermission from '../utils/getPermission'
 import ActionButton from 'react-native-action-button'
 import Colors from '../constants/Colors'
 import FlashMessage from 'react-native-flash-message'
+import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   LayoutAnimation,
   RefreshControl,
@@ -72,6 +73,7 @@ class RutasScreen extends React.Component {
   }
 
   refreshList = () => {
+    showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
     this.makeRemoteRequest()
   };
 
