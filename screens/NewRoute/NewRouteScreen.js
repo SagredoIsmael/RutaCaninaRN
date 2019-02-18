@@ -78,10 +78,10 @@ class NewRouteScreen extends React.Component {
       case 0:
         this.childStart.activateHelper()
         break;
-      case 2:
+      case 1:
         this.childMap.activateHelper()
         break;
-      case 3:
+      case 2:
         this.childEnd.activateHelper()
         break;
     }
