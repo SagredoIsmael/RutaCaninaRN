@@ -110,14 +110,12 @@ class Fire extends React.Component {
   }
 
   resizeImageRoute = async uri => {
-    const manipResult = await ImageManipulator.manipulate(uri, [
-      {
+    const manipResult = await ImageManipulator.manipulate(uri, [/*  {
         resize: {
-          width: 400,
+          width: 350,
           height: 250
         }
-      }
-    ], {format: "jpeg"});
+      } */], {format: "jpeg"});
     return manipResult.uri;
   }
 

@@ -84,7 +84,7 @@ export class EndRoute extends React.Component {
               } else {
                 await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
               }
-              this.routesRequest()
+              this.setState({isLoading: false})
               this.goToBack()
             }
           }
@@ -104,14 +104,6 @@ export class EndRoute extends React.Component {
 
   goToBack() {
     this.props.nav.goBack(null)
-  }
-
-  routesRequest = async () => {
-    //the same but with routes (update routes list). Is routes depending props.?
-    /*  const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
-    this.props.insert_dataMyUser(dataUser)
-    this.setNewStates()*/
-    this.setState({isLoading: false})
   }
 
   _showSimpleAlert = (title, description) => {

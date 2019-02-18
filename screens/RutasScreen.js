@@ -30,18 +30,6 @@ class RutasScreen extends React.Component {
   };
 
   componentDidMount() {
-    //  Check if we are signed in...
-    // if (Fire.shared.uid) {
-    //    If we are, then we can get the first 5 posts
-    //   this.makeRemoteRequest();
-    // } else {
-    //    If we aren't then we should just start observing changes. This will be called when the user signs in
-    //   firebase.auth().onAuthStateChanged(user => {
-    //     if (user) {
-    //       this.makeRemoteRequest();
-    //     }
-    //   });
-    // }
     this.makeRemoteRequest()
   }
 
@@ -52,7 +40,7 @@ class RutasScreen extends React.Component {
     this.setState({loading: true});
 
     // The data prop will be an array of posts, the cursor will be used for pagination.
-    const {data, cursor} = await Fire.shared.getRoutes({size: 20, start: lastKey});
+    const {data, cursor} = await Fire.shared.getRoutes({size: 5, start: lastKey});
 
     this.lastKnownKey = cursor;
 
@@ -122,7 +110,7 @@ class RutasScreen extends React.Component {
         onRefresh = {
           this._onRefresh
         }
-        />} onPressFooter={this.onPressFooter} data={this.state.posts} nav={this.props.navigation}/>
+        />} onPressFooter={this.onPressFooter} data={this.props.dataRoutes} nav={this.props.navigation}/>
       <ActionButton buttonColor={Colors.pinkChicle} onPress={() => {
           this.goToNewRoute()
         }} size={this.state.loading
