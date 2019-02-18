@@ -82,10 +82,10 @@ export class EndRoute extends React.Component {
               if (this.state.isEditingRoute) {
                 //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
-                await Fire.shared.createNewRouteWithAttributes(attributesDicc, null) //PUT IMAGE
+                await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
               }
-
-              //  update list rutas
+              this.routesRequest()
+              this.goToBack()
             }
           }
         }
@@ -104,6 +104,14 @@ export class EndRoute extends React.Component {
 
   goToBack() {
     this.props.nav.goBack(null)
+  }
+
+  routesRequest = async () => {
+    //the same but with routes (update routes list). Is routes depending props.?
+    /*  const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
+    this.props.insert_dataMyUser(dataUser)
+    this.setNewStates()*/
+    this.setState({isLoading: false})
   }
 
   _showSimpleAlert = (title, description) => {

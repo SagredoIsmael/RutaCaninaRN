@@ -152,11 +152,11 @@ class StartRoute extends React.Component {
               ? (null)
               : (<CopilotStep text="Primero rellena el formulario con la info de la ruta" order={1} name="dateRoute">
                 <WalkthroughableView style={{
-                    marginTop: 70,
+                    marginTop: 20,
                     marginLeft: 10,
                     alignSelf: 'flex-start',
                     width: '85%',
-                    height: '100%'
+                    height: '85%'
                   }}>
                   <GiftedForm formName='signupForm' openModal={(params) => {
                       this.setModalVisible(true, params)

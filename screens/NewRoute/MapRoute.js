@@ -142,7 +142,7 @@ class MapRoute extends React.Component {
               width: '80%',
               top: 0,
               bottom: 60,
-              position: 'absolute'
+              height: '80%'
             }}>
             <MapView style={{
                 width: '100%',
