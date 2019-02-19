@@ -5,6 +5,8 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {showMessage, hideMessage} from 'react-native-flash-message'
+import {PortalProvider, BlackPortal, WhitePortal} from "react-native-portal"
+import PopupDialog, {SlideAnimation} from "./react-native-popup-dialog"
 import {
   Image,
   StyleSheet,
@@ -13,6 +15,7 @@ import {
   ImageBackground,
   Alert,
   Button,
+  TouchableOpacity,
   TouchableHighlight
 } from "react-native"
 
@@ -31,33 +34,140 @@ class Item extends React.Component {
         this.setState({width, height})
       });
     }
-
   }
 
   goToProfile = keyUserr => {
     this.props.nav.navigate("Profile", {keyUser: keyUserr});
-  };
+  }
+
+  renderHeader() {
+    return (<View style={[styles.row, styles.padding]}>
+      <View style={styles.row}>
+        <Image style={styles.avatar} source={{
+            uri: this.props.imageCreator
+          }}/>
+        <Text style={styles.text}>{this.props.name}</Text>
+      </View>
+      {this.renderIcon("ios-more")}
+    </View>)
+  }
+
+  renderIconBar() {
+    return (<View style={styles.row}>
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+          this._pressSubscribe(this.props.keyRoute, this.props.assistants, this.props.keyUser)
+        }}>
+        {
+          this.props.assistants
+            ? this.renderIcon("ios-happy-outline")
+
+            : this.renderIcon("ios-person-add-outline")
+
+        }
+      </TouchableHighlight>
+
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat}>
+        {this.renderIcon("ios-chatbubbles-outline")}
+      </TouchableHighlight>
+
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressMap}>
+        {this.renderIcon("ios-send-outline")}
+      </TouchableHighlight>
+
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressAssistants}>
+        {this.renderIcon("ios-people-outline")}
+      </TouchableHighlight>
+    </View>)
+  }
+
+  renderBarOptions() {
+    return (<View style={styles.paddingView}>
+
+      {this.renderIconBar()}
+
+      <Text style={styles.text}>{this.props.title}</Text>
+      <View style={styles.rowDate}>
+        {
+          this.props.date != ''
+            ? <Text style={styles.time}>{moment(this.props.date, 'DD-MM-YYYY').format("dddd DD MMM")}
+              </Text>
+            : null
+        }
+        {
+          this.props.time != ''
+            ? <Text style={styles.time}>
+                a las {this.props.time}{' '}
+              </Text>
+            : null
+        }
+        {
+          this.props.duration != ''
+            ? <Text style={styles.time}>
+                ({this.props.duration})
+              </Text>
+
+            : null
+        }
+      </View>
+      <Text style={styles.subtitle}>{this.props.description}</Text>
+    </View>)
+  }
+
+  renderIcon(name) {
+    return (<Ionicons style={{
+        marginRight: 5
+      }} name={name} size={40} color={Colors.pinkChicle}/>)
+  }
+
+  renderDialogPopup() {
+    return (<PortalProvider>
+      <WhitePortal name="popup"/>
+      <BlackPortal name="popup">
+        <PopupDialog dialogAnimation={slideAnimation} ref={popupDialog => {
+            this.popupDialog = popupDialog;
+          }} height={"60%"} closeButton={(() => {
+            return (<TouchableOpacity onPress={() => this.popupDialog.dismiss()} style={styles.closeButtonContainer}>
+              <Text style={[
+                  styles.closeButton, {
+                    color: "black"
+                  }
+                ]}>X</Text>
+            </TouchableOpacity>);
+          })()}>
+          lkfjflgjljglkdfjgldkjglkdfjglkdfjg
+        </PopupDialog>
+      </BlackPortal>
+    </PortalProvider>)
+  }
+
+  _pressSubscribe = (keyRoute, assistants, keyUser) => {
+    if (assistants) {
+      if (assistants[keyUser] != null) {
+        showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
+      } else {
+        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+      }
+    } else {
+      showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+    }
+  }
+
+  _pressChat = () => {
+    console.log('eeeeee');
+  }
+
+  _pressMap = () => {
+    console.log('eeeeee');
+  }
+
+  _pressAssistants = () => {
+    this.popupDialog.show();
+  }
 
   render() {
-    const {
-      keyCreator,
-      nameCreator,
-      imageCreator,
-      title,
-      imageWidth,
-      imageHeight,
-      image,
-      description,
-      date,
-      time,
-      duration,
-      assistants,
-      keyUser
-    } = this.props;
-
     // Reduce the name to something
-    const imgW = imageWidth || this.state.width;
-    const imgH = imageHeight || this.state.height;
+    const imgW = this.props.imageWidth || this.state.width;
+    const imgH = this.props.imageHeight || this.state.height;
     const aspect = imgW / imgH || 1;
 
     var esLocale = require('moment/locale/es');
@@ -72,10 +182,10 @@ class Item extends React.Component {
           }}>
           <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
               backgroundColor: "transparent"
-            }} onPress={() => this.goToProfile(keyCreator)}>
-            <Header image={{
-                uri: imageCreator
-              }} name={nameCreator}/>
+            }} onPress={() => this.goToProfile(this.props.keyCreator)}>
+
+            {this.renderHeader()}
+
           </TouchableHighlight>
         </View>
         <Image resizeMode="contain" style={{
@@ -84,108 +194,13 @@ class Item extends React.Component {
             aspectRatio: aspect,
             borderRadius: 20
           }} source={{
-            uri: image
-          }}/>
-        <Metadata keyRoute={this.props.keyRoute} name={title} description={description} date={date} time={time} duration={duration} assistants={assistants} keyUser={keyUser}/>
+            uri: this.props.image
+          }}/> {this.renderBarOptions()}
       </ImageBackground>
+      {this.renderDialogPopup()}
     </View>)
   }
 }
-
-const Metadata = ({
-  keyRoute,
-  name,
-  description,
-  date,
-  time,
-  duration,
-  assistants,
-  keyUser
-}) => (<View style={styles.paddingView}>
-  <IconBar keyRoute={keyRoute} assistants={assistants} keyUser={keyUser}/>
-  <Text style={styles.text}>{name}</Text>
-  <View style={styles.rowDate}>
-    {
-      date != ''
-        ? <Text style={styles.time}>{moment(date, 'DD-MM-YYYY').format("dddd DD MMM")}
-          </Text>
-        : null
-    }
-    {
-      time != ''
-        ? <Text style={styles.time}>
-            a las {time}{' '}
-          </Text>
-        : null
-    }
-    {
-      duration != ''
-        ? <Text style={styles.time}>
-            ({duration})
-          </Text>
-
-        : null
-    }
-  </View>
-  <Text style={styles.subtitle}>{description}</Text>
-</View>);
-
-const Header = ({name, image}) => (<View style={[styles.row, styles.padding]}>
-  <View style={styles.row}>
-    <Image style={styles.avatar} source={image}/>
-    <Text style={styles.text}>{name}</Text>
-  </View>
-  <Icon name="ios-more"/>
-</View>);
-
-const Icon = ({name}) => (<Ionicons style={{
-    marginRight: 5
-  }} name={name} size={40} color={Colors.pinkChicle}/>)
-
-_pressSubscribe = (keyRoute, assistants, keyUser) => {
-  if (assistants) {
-    if (assistants[keyUser] != null) {
-      showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
-    } else {
-      showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-    }
-  } else {
-    showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-  }
-}
-
-_pressChat = () => {
-  console.log('eeeeee');
-}
-
-_pressMap = () => {
-  console.log('eeeeee');
-}
-
-_pressSave = () => {
-  console.log('eeeeee');
-}
-
-const IconBar = ({keyRoute, assistants, keyUser}) => (<View style={styles.row}>
-  <TouchableHighlight onPress={() => {
-      this._pressSubscribe(keyRoute, assistants, keyUser)
-    }}>
-    {
-      assistants
-        ? <Icon name="ios-happy-outline"/>
-        : <Icon name="ios-person-add-outline"/>
-    }
-  </TouchableHighlight>
-  <TouchableHighlight onPress={this._pressChat}>
-    <Icon name="ios-chatbubbles-outline"/>
-  </TouchableHighlight>
-  <TouchableHighlight onPress={this._pressMap}>
-    <Icon name="ios-send-outline"/>
-  </TouchableHighlight>
-  <TouchableHighlight onPress={this._pressSave}>
-    <Icon name="ios-people-outline"/>
-  </TouchableHighlight>
-</View>);
 
 const styles = StyleSheet.create({
   text: {
@@ -236,6 +251,8 @@ const styles = StyleSheet.create({
     marginRight: padding
   }
 })
+
+const slideAnimation = new SlideAnimation({slideFrom: "bottom"});
 
 const mapStateToProps = state => {
   return {dataMyUser: state.dataMyUser, keyUser: state.keyUser}
