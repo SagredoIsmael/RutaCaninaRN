@@ -5,8 +5,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {showMessage, hideMessage} from 'react-native-flash-message'
-import {PortalProvider, BlackPortal, WhitePortal} from "react-native-portal"
-import PopupDialog, {SlideAnimation} from "./react-native-popup-dialog"
+
 import {
   Image,
   StyleSheet,
@@ -55,7 +54,7 @@ class Item extends React.Component {
   renderIconBar() {
     return (<View style={styles.row}>
       <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-          this._pressSubscribe(this.props.keyRoute, this.props.assistants, this.props.keyUser)
+          this._pressSubscribe()
         }}>
         {
           this.props.assistants
@@ -74,12 +73,11 @@ class Item extends React.Component {
         {this.renderIcon("ios-send-outline")}
       </TouchableHighlight>
 
-      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressAssistants}>
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this.setState({isOpen: true})}>
         {this.renderIcon("ios-people-outline")}
       </TouchableHighlight>
     </View>)
   }
-
   renderBarOptions() {
     return (<View style={styles.paddingView}>
 
@@ -119,30 +117,9 @@ class Item extends React.Component {
       }} name={name} size={40} color={Colors.pinkChicle}/>)
   }
 
-  renderDialogPopup() {
-    return (<PortalProvider>
-      <WhitePortal name="popup"/>
-      <BlackPortal name="popup">
-        <PopupDialog dialogAnimation={slideAnimation} ref={popupDialog => {
-            this.popupDialog = popupDialog;
-          }} height={"60%"} closeButton={(() => {
-            return (<TouchableOpacity onPress={() => this.popupDialog.dismiss()} style={styles.closeButtonContainer}>
-              <Text style={[
-                  styles.closeButton, {
-                    color: "black"
-                  }
-                ]}>X</Text>
-            </TouchableOpacity>);
-          })()}>
-          lkfjflgjljglkdfjgldkjglkdfjglkdfjg
-        </PopupDialog>
-      </BlackPortal>
-    </PortalProvider>)
-  }
-
-  _pressSubscribe = (keyRoute, assistants, keyUser) => {
-    if (assistants) {
-      if (assistants[keyUser] != null) {
+  _pressSubscribe = () => {
+    if (this.props.assistants) {
+      if (this.props.assistants[this.props.keyUser] != null) {
         showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
       } else {
         showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
@@ -160,9 +137,7 @@ class Item extends React.Component {
     console.log('eeeeee');
   }
 
-  _pressAssistants = () => {
-    this.popupDialog.show();
-  }
+  _pressAssistants = () => {}
 
   render() {
     // Reduce the name to something
@@ -196,12 +171,11 @@ class Item extends React.Component {
           }} source={{
             uri: this.props.image
           }}/> {this.renderBarOptions()}
+
       </ImageBackground>
-      {this.renderDialogPopup()}
     </View>)
   }
 }
-
 const styles = StyleSheet.create({
   text: {
     fontWeight: "600",
@@ -251,9 +225,6 @@ const styles = StyleSheet.create({
     marginRight: padding
   }
 })
-
-const slideAnimation = new SlideAnimation({slideFrom: "bottom"});
-
 const mapStateToProps = state => {
   return {dataMyUser: state.dataMyUser, keyUser: state.keyUser}
 }
