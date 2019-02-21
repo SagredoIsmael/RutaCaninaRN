@@ -4,6 +4,7 @@ import Colors from "../constants/Colors"
 import moment from 'moment'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
+import Dialog, {DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 
 import {
@@ -23,7 +24,8 @@ const padding = 12
 
 class Item extends React.Component {
   state = {
-    isSubscribe: false
+    isSubscribe: false,
+    defaultAnimationDialog: false
   }
 
   componentDidMount() {
@@ -35,8 +37,8 @@ class Item extends React.Component {
     }
   }
 
-  goToProfile = keyUserr => {
-    this.props.nav.navigate("Profile", {keyUser: keyUserr});
+  goToProfile = () => {
+    this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator});
   }
 
   renderHeader() {
@@ -45,7 +47,7 @@ class Item extends React.Component {
         <Image style={styles.avatar} source={{
             uri: this.props.imageCreator
           }}/>
-        <Text style={styles.text}>{this.props.name}</Text>
+        <Text style={styles.text}>{this.props.nameCreator}</Text>
       </View>
       {this.renderIcon("ios-more")}
     </View>)
@@ -73,11 +75,50 @@ class Item extends React.Component {
         {this.renderIcon("ios-send-outline")}
       </TouchableHighlight>
 
-      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this.setState({isOpen: true})}>
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+          this.setState({defaultAnimationDialog: true});
+        }}>
         {this.renderIcon("ios-people-outline")}
       </TouchableHighlight>
     </View>)
   }
+
+  renderDialogAssistants() {
+    return (<Dialog onDismiss={() => {
+        this.setState({defaultAnimationDialog: false});
+      }} width={0.9} visible={this.state.defaultAnimationDialog} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} dialogTitle={<DialogTitle
+      title = "Asistentes" onTouchOutside = {
+        () => {
+          this.setState({defaultAnimationDialog: false});
+        }
+      }
+      style = {{
+                backgroundColor: '#F7F7F8',
+              }}
+      hasTitleBar = {
+        false
+      }
+      align = "center"
+      />} footer={<DialogFooter> < DialogButton text = "OK" bordered = "bordered" onPress = {
+        () => {
+          this.setState({defaultAnimationDialog: false});
+        }
+      }
+      key = "button-2" /> </DialogFooter>}>
+      <DialogContent style={{
+          backgroundColor: '#F7F7F8'
+        }}>
+        <ImageBackground source={require("../assets/images/background.png")} style={{
+            width: "100%"
+          }}>
+
+          <Text>Default Animation</Text>
+          <Text>No onTouchOutside handler. will not dismiss when touch overlay.</Text>
+        </ImageBackground>
+      </DialogContent>
+    </Dialog>)
+  }
+
   renderBarOptions() {
     return (<View style={styles.paddingView}>
 
@@ -137,7 +178,10 @@ class Item extends React.Component {
     console.log('eeeeee');
   }
 
-  _pressAssistants = () => {}
+  _pressAssistants = () => {
+    this.setState({visible: true});
+
+  }
 
   render() {
     // Reduce the name to something
@@ -157,21 +201,27 @@ class Item extends React.Component {
           }}>
           <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
               backgroundColor: "transparent"
-            }} onPress={() => this.goToProfile(this.props.keyCreator)}>
+            }} onPress={() => this.goToProfile()}>
 
             {this.renderHeader()}
 
           </TouchableHighlight>
         </View>
-        <Image resizeMode="contain" style={{
-            backgroundColor: Colors.whiteCrudo,
-            width: "100%",
-            aspectRatio: aspect,
-            borderRadius: 20
-          }} source={{
-            uri: this.props.image
-          }}/> {this.renderBarOptions()}
-
+        <View style={{
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+          <Image resizeMode="contain" style={{
+              backgroundColor: Colors.whiteCrudo,
+              width: "98%",
+              aspectRatio: aspect,
+              borderRadius: 20
+            }} source={{
+              uri: this.props.image
+            }}/>
+        </View>
+        {this.renderBarOptions()}
+        {this.renderDialogAssistants()}
       </ImageBackground>
     </View>)
   }
@@ -225,6 +275,7 @@ const styles = StyleSheet.create({
     marginRight: padding
   }
 })
+
 const mapStateToProps = state => {
   return {dataMyUser: state.dataMyUser, keyUser: state.keyUser}
 }
