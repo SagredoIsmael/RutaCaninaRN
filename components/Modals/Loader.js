@@ -8,44 +8,30 @@ import {
   Image
 } from "react-native";
 import PropTypes from "prop-types";
-import Colors from "../constants/Colors";
+import Colors from "../../constants/Colors";
 
-const icons = [
-  require("../assets/images/loader/dog.png"),
-  require("../assets/images/loader/bone.png"),
-  require("../assets/images/loader/paws.png"),
-  require("../assets/images/loader/toys.png")
-];
-const Loader = ({loading = false, color, size, opacity = 0.4}) => {
-  return (
-    <Modal
-      transparent
-      animationType={"none"}
-      visible={loading}
-      onRequestClose={() => null}
-    >
-      <View
-        style={[
-          styles.modalBackground,
-          {backgroundColor: `rgba(0,0,0,${opacity})`}
-        ]}
-      >
-        <View style={styles.activityIndicatorWrapper}>
-          <Text style={styles.text}> Cargando.. </Text>
-          <Image
-            style={styles.image}
-            source={icons[Math.floor(Math.random() * 3) + 1]}
-            resizeMode="contain"
-          />
-          <ActivityIndicator
-            animating={loading}
-            color={Colors.verdeOscuro}
-            size={"large"}
-          />
-        </View>
+const icons = [require("../../assets/images/loader/dog.png"), require("../../assets/images/loader/bone.png"), require("../../assets/images/loader/paws.png"), require("../../assets/images/loader/toys.png")];
+const Loader = ({
+  loading = false,
+  color,
+  size,
+  opacity = 0.4
+}) => {
+  return (<Modal transparent="transparent" animationType={"none"} visible={loading} onRequestClose={() => null}>
+    <View style={[
+        styles.modalBackground, {
+          backgroundColor: `rgba(0,0,0,${opacity})`
+        }
+      ]}>
+      <View style={styles.activityIndicatorWrapper}>
+        <Text style={styles.text}>
+          Cargando..
+        </Text>
+        <Image style={styles.image} source={icons[Math.floor(Math.random() * 3) + 1]} resizeMode="contain"/>
+        <ActivityIndicator animating={loading} color={Colors.verdeOscuro} size={"large"}/>
       </View>
-    </Modal>
-  );
+    </View>
+  </Modal>);
 };
 
 Loader.propTypes = {

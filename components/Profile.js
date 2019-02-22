@@ -1,13 +1,12 @@
-import React, {Component} from "react";
-import {Permissions, ImagePicker, Font, Constants} from "expo";
-import {connect} from "react-redux";
-import Fire from "../api/Fire";
-import Icon from "react-native-vector-icons/Ionicons";
-import _ from "lodash";
-import {Avatar, Button} from "react-native-elements";
-import PopupDialog, {SlideAnimation} from "./react-native-popup-dialog";
-import {PortalProvider, BlackPortal, WhitePortal} from "react-native-portal";
-import Loader from "./Loader";
+import React, {Component} from "react"
+import {Permissions, ImagePicker, Font, Constants} from "expo"
+import {connect} from "react-redux"
+import Fire from "../api/Fire"
+import Icon from "react-native-vector-icons/Ionicons"
+import _ from "lodash"
+import {Avatar, Button} from "react-native-elements"
+import Loader from "./Modals/Loader"
+import InfoDog from "./Modals/InfoDog"
 import {
   StyleSheet,
   Alert,
@@ -20,10 +19,10 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import * as actions from "../actions";
-import Colors from "../constants/Colors";
+import * as actions from "../actions"
+import Colors from "../constants/Colors"
 
-const screenHeight = Dimensions.get("window").height;
+const screenHeight = Dimensions.get("window").height
 
 class Profile extends React.Component {
   constructor(props) {
@@ -101,76 +100,6 @@ class Profile extends React.Component {
         {name}
       </Text>
     </View>);
-  }
-
-  renderDialogPopup() {
-    return (<PortalProvider>
-      <WhitePortal name="popup"/>
-      <BlackPortal name="popup">
-        <PopupDialog dialogAnimation={slideAnimation} ref={popupDialog => {
-            this.popupDialog = popupDialog;
-          }} height={"60%"} closeButton={(() => {
-            return (<TouchableOpacity onPress={() => this.popupDialog.dismiss()} style={styles.closeButtonContainer}>
-              <Text style={[
-                  styles.closeButton, {
-                    color: "black"
-                  }
-                ]}>X</Text>
-            </TouchableOpacity>);
-          })()}>
-          {
-            this.state.dogSelect
-              ? (<ScrollView>
-                <ImageBackground source={require("../assets/images/background.png")} style={{
-                    width: "100%",
-                    height: screenHeight * 0.6
-                  }}>
-                  <Image style={styles.avatarDogs} source={this.state.dogSelect.avatar
-                      ? {
-                        uri: this.state.dogSelect.avatar
-                      }
-                      : {
-                        uri: (urlPhotoDog = "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f")
-                      }
-}/>
-                  <Text style={{
-                      fontFamily: "bold",
-                      fontSize: 20,
-                      color: "rgba(98,93,144,1)",
-                      marginTop: 5,
-                      textAlign: "center"
-                    }}>
-                    {"¡Hola soy " + this.state.dogSelect.name + "!"}
-                  </Text>
-                  <Text style={{
-                      fontFamily: "regular",
-                      fontSize: 15,
-                      marginTop: 10,
-                      marginLeft: 10,
-                      marginRight: 10,
-                      textAlign: "center",
-                      color: "gray"
-                    }}>
-                    {"Soy " + this.state.dogSelect.gender + " de " + this.state.dogSelect.age + " años y mis padres dicen que parezco " + this.state.dogSelect.breed + ", aunque yo me veo más chic."}
-                  </Text>
-                  <Text style={{
-                      fontFamily: "regular",
-                      fontSize: 15,
-                      marginTop: 10,
-                      marginLeft: 10,
-                      marginRight: 10,
-                      textAlign: "center",
-                      color: "gray"
-                    }}>
-                    {"Me considero " + this.state.dogSelect.conduct + ", a la vez que " + this.state.dogSelect.temperament + ". ¡Tendrías que conocerme!"}
-                  </Text>
-                </ImageBackground>
-              </ScrollView>)
-              : null
-          }
-        </PopupDialog>
-      </BlackPortal>
-    </PortalProvider>);
   }
 
   renderCard(dog, index) {
@@ -335,69 +264,67 @@ class Profile extends React.Component {
   }
 
   render() {
-    return (<PortalProvider>
-      <ScrollView style={styles.container}>
-        <ImageBackground source={require("../assets/images/background.png")} style={{
-            width: "100%",
-            height: screenHeight
-          }}>
-          {
-            this.state.fontLoaded
-              ? (<ScrollView style={{
+    return (<ScrollView style={styles.container}>
+      <ImageBackground source={require("../assets/images/background.png")} style={{
+          width: "100%",
+          height: screenHeight
+        }}>
+        {
+          this.state.fontLoaded
+            ? (<ScrollView style={{
+                flex: 1,
+                marginBottom: 20,
+                marginTop: 0
+              }}>
+              <View style={{
                   flex: 1,
-                  marginBottom: 20,
-                  marginTop: 0
+                  flexDirection: "column",
+                  backgroundColor: Colors.profilegreen,
+                  borderRadius: 5,
+                  alignItems: "center",
+                  marginHorizontal: 10,
+                  height: 250,
+                  marginBottom: 10,
+                  marginTop: 30
                 }}>
                 <View style={{
-                    flex: 1,
-                    flexDirection: "column",
-                    backgroundColor: Colors.profilegreen,
-                    borderRadius: 5,
-                    alignItems: "center",
-                    marginHorizontal: 10,
-                    height: 250,
-                    marginBottom: 10,
-                    marginTop: 30
+                    flex: 3,
+                    flexDirection: "row"
                   }}>
-                  <View style={{
-                      flex: 3,
-                      flexDirection: "row"
-                    }}>
-                    {this.renderPhotoUser()}
-                    <View style={{
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}>
-                      {this.renderTitleUser()}
-                    </View>
-                  </View>
-                  <View style={{
-                      width: 300,
-                      borderWidth: 0.5,
-                      borderColor: "white",
-                      marginHorizontal: 20,
-                      height: 1,
-                      marginVertical: 10
-                    }}/>
+                  {this.renderPhotoUser()}
                   <View style={{
                       flex: 1,
-                      flexDirection: "row",
+                      justifyContent: "center",
                       alignItems: "center"
                     }}>
-                    {this.renderTextCanes()}
-                    {this.renderAddDogButton()}
+                    {this.renderTitleUser()}
                   </View>
                 </View>
-                {this.renderListCards()}
-                <Loader loading={this.state.isLoading} size={"large"} color="#ff66be"/>
-              </ScrollView>)
-              : null
-          }
-        </ImageBackground>
-        {this.renderDialogPopup()}
-      </ScrollView>
-    </PortalProvider>);
+                <View style={{
+                    width: 300,
+                    borderWidth: 0.5,
+                    borderColor: "white",
+                    marginHorizontal: 20,
+                    height: 1,
+                    marginVertical: 10
+                  }}/>
+                <View style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    alignItems: "center"
+                  }}>
+                  {this.renderTextCanes()}
+                  {this.renderAddDogButton()}
+                </View>
+              </View>
+              {this.renderListCards()}
+              <Loader loading={this.state.isLoading} size={"large"} color="#ff66be"/>
+            </ScrollView>)
+            : null
+        }
+      </ImageBackground>
+      <InfoDog isOpenInfoDog={true}/>
+    </ScrollView>)
   }
 
   gotoDogScreen = (keyDog, action) => {
@@ -477,8 +404,6 @@ const styles = StyleSheet.create({
     resizeMode: "cover"
   }
 });
-
-const slideAnimation = new SlideAnimation({slideFrom: "bottom"});
 
 const mapStateToProps = state => {
   return {dataUser: state.dataUser, dataMyUser: state.dataMyUser, keyUser: state.keyUser};

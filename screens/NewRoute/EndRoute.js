@@ -7,7 +7,7 @@ import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
 import Fire from "../../api/Fire"
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Item from "../../components/Item"
-import Loader from '../../components/Loader'
+import Loader from '../../components/Modals/Loader'
 import {
   Alert,
   ScrollView,

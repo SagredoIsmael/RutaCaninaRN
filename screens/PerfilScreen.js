@@ -5,7 +5,7 @@ import Fire from '../api/Fire'
 import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
 import Profile from '../components/Profile.js'
-import Loader from '../components/Loader'
+import Loader from '../components/Modals/Loader'
 import {ScrollView, View, AsyncStorage} from 'react-native'
 
 class PerfilScreen extends React.Component {

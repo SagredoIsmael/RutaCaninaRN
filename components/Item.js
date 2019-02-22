@@ -4,9 +4,8 @@ import Colors from "../constants/Colors"
 import moment from 'moment'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
-import Dialog, {DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 import {showMessage, hideMessage} from 'react-native-flash-message'
-
+import ListAssistans from './Modals/ListAssistans'
 import {
   Image,
   StyleSheet,
@@ -25,7 +24,7 @@ const padding = 12
 class Item extends React.Component {
   state = {
     isSubscribe: false,
-    defaultAnimationDialog: false
+    isOpenListAssistans: false
   }
 
   componentDidMount() {
@@ -76,47 +75,11 @@ class Item extends React.Component {
       </TouchableHighlight>
 
       <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-          this.setState({defaultAnimationDialog: true});
+          this.setState({isOpenListAssistans: true});
         }}>
         {this.renderIcon("ios-people-outline")}
       </TouchableHighlight>
     </View>)
-  }
-
-  renderDialogAssistants() {
-    return (<Dialog onDismiss={() => {
-        this.setState({defaultAnimationDialog: false});
-      }} width={0.9} visible={this.state.defaultAnimationDialog} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} dialogTitle={<DialogTitle
-      title = "Asistentes" onTouchOutside = {
-        () => {
-          this.setState({defaultAnimationDialog: false});
-        }
-      }
-      style = {{
-                backgroundColor: '#F7F7F8',
-              }}
-      hasTitleBar = {
-        false
-      }
-      align = "center"
-      />} footer={<DialogFooter> < DialogButton text = "OK" bordered = "bordered" onPress = {
-        () => {
-          this.setState({defaultAnimationDialog: false});
-        }
-      }
-      key = "button-2" /> </DialogFooter>}>
-      <DialogContent style={{
-          backgroundColor: '#F7F7F8'
-        }}>
-        <ImageBackground source={require("../assets/images/background.png")} style={{
-            width: "100%"
-          }}>
-
-          <Text>Default Animation</Text>
-          <Text>No onTouchOutside handler. will not dismiss when touch overlay.</Text>
-        </ImageBackground>
-      </DialogContent>
-    </Dialog>)
   }
 
   renderBarOptions() {
@@ -178,9 +141,8 @@ class Item extends React.Component {
     console.log('eeeeee');
   }
 
-  _pressAssistants = () => {
-    this.setState({visible: true});
-
+  _pressDismissAssistantsList = () => {
+    this.setState({isOpenListAssistans: false})
   }
 
   render() {
@@ -221,7 +183,7 @@ class Item extends React.Component {
             }}/>
         </View>
         {this.renderBarOptions()}
-        {this.renderDialogAssistants()}
+        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} clickDismiss={this._pressDismissAssistantsList}/>
       </ImageBackground>
     </View>)
   }
