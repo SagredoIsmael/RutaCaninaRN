@@ -146,7 +146,6 @@ class Item extends React.Component {
   }
 
   render() {
-    // Reduce the name to something
     const imgW = this.props.imageWidth || this.state.width;
     const imgH = this.props.imageHeight || this.state.height;
     const aspect = imgW / imgH || 1;

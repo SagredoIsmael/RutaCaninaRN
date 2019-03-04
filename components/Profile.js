@@ -34,7 +34,8 @@ class Profile extends React.Component {
     hasCameraPermission: false,
     isLoading: false,
     fontLoaded: false,
-    dogSelect: null
+    dogSelect: null,
+    isOpenInfoDog: false
   };
 
   async componentDidMount() {
@@ -323,23 +324,24 @@ class Profile extends React.Component {
             : null
         }
       </ImageBackground>
-      <InfoDog isOpenInfoDog={true} avatar={this.state.dogSelect.avatar
-          ? avatar
-          : "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f"} name={this.state.dogSelect.name} gender={this.state.dogSelect.gender} age={this.state.dogSelect.age} breed={this.state.dogSelect.breed} conduct={this.state.dogSelect.conduct} temperament={this.state.dogSelect.temperament}/>
+      <InfoDog isOpenInfoDog={this.state.isOpenInfoDog} clickDismiss={this._pressDismissInfoDog} dogSelect={this.state.dogSelect}/>
     </ScrollView>)
+  }
+
+  _pressDismissInfoDog = () => {
+    this.setState({isOpenInfoDog: false})
   }
 
   gotoDogScreen = (keyDog, action) => {
     this.props.nav.navigate("Dogs", {
       keyDog: keyDog,
       titleHeader: action
-    });
-  };
+    })
+  }
 
   infoDogs = dog => {
-    this.setState({dogSelect: dog});
-    this.popupDialog.show();
-  };
+    this.setState({isOpenInfoDog: true, dogSelect: dog});
+  }
 
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
