@@ -46,13 +46,7 @@ const ListAssistans = ({isOpenListAssistans, clickDismiss, assistants, nav}) => 
             width: "100%"
           }}>
 
-          <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
-              backgroundColor: "transparent"
-            }} onPress={() => nav.navigate("Profile", {keyUser: assistants.keyCreator})}>
-
-            <FlatList data={assistants} renderItem={({item}) => <ItemUser nameCreator={item.nameCreator} imageCreator={item.imageCreator}/>}/>
-
-          </TouchableHighlight>
+          <FlatList data={assistants} renderItem={({item}) => <ItemUser keyCreator={item.keyCreator} nameCreator={item.nameCreator} imageCreator={item.imageCreator} nav={nav} dismissModal={clickDismiss}/>}/>
 
         </ImageBackground>
       </DialogContent>

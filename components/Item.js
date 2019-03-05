@@ -37,10 +37,6 @@ class Item extends React.Component {
     }
   }
 
-  goToProfile = () => {
-    this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator});
-  }
-
   renderIconBar() {
     return (<View style={styles.row}>
       <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
@@ -149,13 +145,9 @@ class Item extends React.Component {
         <View style={{
             marginTop: 10
           }}>
-          <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
-              backgroundColor: "transparent"
-            }} onPress={() => this.goToProfile()}>
 
-            <ItemUser nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator}></ItemUser>
+          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} nav={this.props.nav}></ItemUser>
 
-          </TouchableHighlight>
         </View>
         <View style={{
             justifyContent: 'center',
