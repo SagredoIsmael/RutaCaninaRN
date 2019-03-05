@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import ListAssistans from './Modals/ListAssistans'
+import ItemUser from './ItemUser'
 import {
   Image,
   StyleSheet,
@@ -38,18 +39,6 @@ class Item extends React.Component {
 
   goToProfile = () => {
     this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator});
-  }
-
-  renderHeader() {
-    return (<View style={[styles.row, styles.padding]}>
-      <View style={styles.row}>
-        <Image style={styles.avatar} source={{
-            uri: this.props.imageCreator
-          }}/>
-        <Text style={styles.text}>{this.props.nameCreator}</Text>
-      </View>
-      {this.renderIcon("ios-more")}
-    </View>)
   }
 
   renderIconBar() {
@@ -164,7 +153,7 @@ class Item extends React.Component {
               backgroundColor: "transparent"
             }} onPress={() => this.goToProfile()}>
 
-            {this.renderHeader()}
+            <ItemUser nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator}></ItemUser>
 
           </TouchableHighlight>
         </View>
@@ -182,7 +171,7 @@ class Item extends React.Component {
             }}/>
         </View>
         {this.renderBarOptions()}
-        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} clickDismiss={this._pressDismissAssistantsList}/>
+        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} assistants={this.props.assistants} clickDismiss={this._pressDismissAssistantsList}/>
       </ImageBackground>
     </View>)
   }
