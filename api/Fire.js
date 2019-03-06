@@ -30,6 +30,9 @@ class Fire extends React.Component {
         console.log("UID user: anónimo");
       } else {
         console.log("UID user: ", user.uid);
+
+        const {dataUser} = await this.getInfoUser(user.uid);
+        this.props.insert_dataMyUser({dataUser}) //TODO not found redux here
       }
     });
   }
@@ -105,6 +108,12 @@ class Fire extends React.Component {
 
   updateAttributeRoute = async (attributesDicc, keyRoute) => {
     let ref = firebase.firestore().collection("routes").doc(keyRoute);
+    await ref.set(attributesDicc, {merge: true});
+    return true;
+  }
+
+  updateAssistantsRoute = async (attributesDicc, keyRoute) => {
+    let ref = firebase.firestore().collection("routes").doc(keyRoute).child("assistants");
     await ref.set(attributesDicc, {merge: true});
     return true;
   }
@@ -298,4 +307,8 @@ class Fire extends React.Component {
 
 Fire.shared = new Fire();
 
-export default Fire;
+const mapStateToProps = state => {
+  return {dataMyUser: state.dataMyUser}
+}
+
+export default connect(mapStateToProps, actions)(Fire);

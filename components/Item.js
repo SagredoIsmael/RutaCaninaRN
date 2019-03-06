@@ -7,6 +7,7 @@ import * as actions from '../actions'
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import ListAssistans from './Modals/ListAssistans'
 import ItemUser from './ItemUser'
+import Fire from "../api/Fire"
 import {
   Image,
   StyleSheet,
@@ -107,14 +108,59 @@ class Item extends React.Component {
   }
 
   _pressSubscribe = () => {
-    if (this.props.assistants) {
-      if (this.props.assistants[this.props.keyUser] != null) {
-        showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
-      } else {
-        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-      }
+    if (this.props.dataMyUser.key == '') {
+      this.showAlertLogIn()
     } else {
+      if (this.props.assistants) {
+        var encon = false
+        for (let assistant of this.props.assistants) {
+          if (assistant.keyCreator == this.props.dataMyUser.key) {
+
+            //  await Fire.shared.updateAttributeRoute(attributesDicc, this.props.keyRoute)
+            showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
+            encon = true
+            break
+          }
+        }
+        if (!encon) 
+          this.addSubscribeRoute()
+      } else {
+        this.addSubscribeRoute()
+      }
+    }
+  }
+
+  showAlertLogIn = () => {
+    Alert.alert('Nueva ruta', 'Es necesario iniciar sesión previamente', [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'Iniciar sesión',
+        onPress: () => this.props.navigation.navigate('PerfilStack')
+      }
+    ], {cancelable: true})
+  }
+
+  userRequest = async () => {
+    const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key);
+    this.props.insert_dataMyUser(dataUser);
+  }
+
+  addSubscribeRoute = async () => {
+    await this.userRequest()
+    if (this.props.dataMyUser.name != '') {
+      const attributesSubscribe = {
+        keyCreator: this.props.dataMyUser.key,
+        nameCreator: this.props.dataMyUser.name,
+        imageCreator: this.props.dataMyUser.image
+      }
+      console.log(attributesSubscribe);
+      await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute)
       showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+    } else {
+      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
     }
   }
 
@@ -219,7 +265,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataMyUser: state.dataMyUser, keyUser: state.keyUser}
+  return {dataMyUser: state.dataMyUser}
 }
 
 export default connect(mapStateToProps, actions)(Item)

@@ -14,9 +14,6 @@ class LoginScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    if (Fire.shared.uid != undefined) {
-      this.props.insert_dataMyUser({key: Fire.shared.uid})
-    }
   }
 
   render() {

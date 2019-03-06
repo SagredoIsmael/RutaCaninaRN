@@ -23,7 +23,7 @@ class MisRutasScreen extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return {dataRoutes: state.dataRoutes, keyUser: state.keyUser}
+  return {dataRoutes: state.dataRoutes}
 }
 
 export default connect(mapStateToProps, actions)(MisRutasScreen)

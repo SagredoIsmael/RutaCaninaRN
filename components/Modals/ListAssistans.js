@@ -17,7 +17,6 @@ import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAni
 
 const ListAssistans = ({isOpenListAssistans, clickDismiss, assistants, nav}) => {
   if (assistants != null) {
-    console.log(assistants);
     return (<Dialog onDismiss={() => {
         console.log('click on dismiss');
       }} width={0.9} visible={isOpenListAssistans} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} dialogTitle={<DialogTitle
