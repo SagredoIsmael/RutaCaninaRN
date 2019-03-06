@@ -69,7 +69,7 @@ class RutasScreen extends React.Component {
         posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp)
       }
     })
-    this.props.insert_user(Fire.shared.uid)
+    this.props.insert_dataMyUser({key: Fire.shared.uid})
     this.props.insert_dataRoutes(this.state.posts)
   }
 
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataRoutes: state.dataRoutes, keyUser: state.keyUser}
+  return {dataRoutes: state.dataRoutes}
 }
 
 export default connect(mapStateToProps, actions)(RutasScreen)

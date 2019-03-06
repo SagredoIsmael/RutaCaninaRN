@@ -15,12 +15,12 @@ class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     if (Fire.shared.uid != undefined) {
-      this.props.insert_user(Fire.shared.uid)
+      this.props.insert_dataMyUser({key: Fire.shared.uid})
     }
   }
 
   render() {
-    if (this.props.keyUser == '') {
+    if (this.props.dataMyUser.key == '') {
       return (<ScrollView style={styles.container}>
         <View>
           <Login/>
@@ -28,7 +28,7 @@ class LoginScreen extends React.Component {
       </ScrollView>);
     }
     return (<View>
-      <PerfilScreen nav={this.props.navigation} keyUser={this.props.keyUser}/>
+      <PerfilScreen nav={this.props.navigation} keyUser={this.props.dataMyUser.key}/>
     </View>);
   }
 }
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {dataRoutes: state.dataRoutes, keyUser: state.keyUser}
+  return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
 }
 
 export default connect(mapStateToProps, actions)(LoginScreen)

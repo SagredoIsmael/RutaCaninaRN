@@ -401,7 +401,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  return {dataUser: state.dataUser, dataMyUser: state.dataMyUser, keyUser: state.keyUser};
+  return {dataUser: state.dataUser, dataMyUser: state.dataMyUser};
 };
 
 export default connect(mapStateToProps, actions)(Profile);

@@ -5,13 +5,6 @@ export const insert_dataRoutes = dataRoutes => {
   };
 };
 
-export const insert_user = keyUser => {
-  return {
-    type: "insert_user",
-    payload: keyUser
-  };
-};
-
 export const insert_dataUser = dataUser => {
   return {
     type: "insert_dataUser",

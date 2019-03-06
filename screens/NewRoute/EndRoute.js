@@ -56,7 +56,7 @@ export class EndRoute extends React.Component {
   }
 
   userRequest = async () => {
-    const {dataUser} = await Fire.shared.getInfoUser(this.props.keyUser)
+    const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
     this.props.insert_dataMyUser(dataUser)
   }
 
@@ -97,7 +97,7 @@ export class EndRoute extends React.Component {
   prepareAttributes = () => {
     var attributes = {}
     attributes = this.props.dataNewRoute
-    attributes.keyCreator = this.props.keyUser
+    attributes.keyCreator = this.props.dataMyUser.key
     attributes.imageCreator = this.props.dataMyUser.image
     attributes.nameCreator = this.props.dataMyUser.name
     return attributes
@@ -116,7 +116,7 @@ export class EndRoute extends React.Component {
     ], {cancelable: false})
   }
 
-  renderItem = () => (<Item keyCreator={this.props.keyUser} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>)
+  renderItem = () => (<Item keyCreator={this.props.dataMyUser.key} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>)
 
   render() {
     if (this.props.currentPosition == 2) {
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, keyUser: state.keyUser, refreshRoutes: state.refreshRoutes}
+  return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, refreshRoutes: state.refreshRoutes}
 }
 
 export default connect(mapStateToProps, actions)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(EndRoute))
