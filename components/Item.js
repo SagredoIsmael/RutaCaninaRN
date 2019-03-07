@@ -17,7 +17,8 @@ import {
   Alert,
   Button,
   TouchableOpacity,
-  TouchableHighlight
+  TouchableHighlight,
+  ActivityIndicator
 } from "react-native"
 
 const profileImageSize = 36
@@ -26,7 +27,9 @@ const padding = 12
 class Item extends React.Component {
   state = {
     isSubscribe: false,
-    isOpenListAssistans: false
+    isOpenListAssistans: false,
+    isLoadingAssistants: false,
+    isLoadingSubscribe: false
   }
 
   componentDidMount() {
@@ -40,32 +43,51 @@ class Item extends React.Component {
 
   renderIconBar() {
     return (<View style={styles.row}>
-      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-          this._pressSubscribe()
-        }}>
-        {
-          this.props.assistants
-            ? this.renderIcon("ios-happy-outline")
 
-            : this.renderIcon("ios-person-add-outline")
+      {
+        this.state.isLoadingSubscribe
+          ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
+          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+              this._pressSubscribe()
+            }}>
+            {
+              this.comprobeSubscribe()
+                ? this.renderIcon("ios-happy-outline")
 
-        }
-      </TouchableHighlight>
+                : this.renderIcon("ios-person-add-outline")
 
-      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat}>
+            }
+          </TouchableHighlight>)
+      }
+      < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat
+}>
         {this.renderIcon("ios-chatbubbles-outline")}
       </TouchableHighlight>
 
       <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressMap}>
-        {this.renderIcon("ios-send-outline")}
-      </TouchableHighlight>
+        {this.renderIcon("ios-send-outline")}</TouchableHighlight>
 
-      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-          this.requestAssistants()
-        }}>
-        {this.renderIcon("ios-people-outline")}
-      </TouchableHighlight>
-    </View>)
+      {
+        this.state.isLoadingAssistants
+          ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
+          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+              this.requestAssistants()
+            }}>
+            {this.renderIcon("ios-people-outline")}
+          </TouchableHighlight>)
+      }</View>)
+  }
+
+  comprobeSubscribe = () => {
+    console.log('estos son los asistentes', this.props.assistants);
+    if (this.props.assistants) {
+      for (let assistant of this.props.assistants) {
+        if (assistant.keyCreator == this.props.dataMyUser.key) {
+          return true
+        }
+      }
+    }
+    return false
   }
 
   renderBarOptions() {
@@ -111,21 +133,13 @@ class Item extends React.Component {
     if (this.props.dataMyUser.key == '') {
       this.showAlertLogIn()
     } else {
-      if (this.props.assistants) {
-        var encon = false
-        for (let assistant of this.props.assistants) {
-          if (assistant.keyCreator == this.props.dataMyUser.key) {
-
-            //  await Fire.shared.updateAttributeRoute(attributesDicc, this.props.keyRoute)
-            showMessage({message: "Ya no asistes a la ruta", type: "danger", floating: true})
-            encon = true
-            break
-          }
-        }
-        if (!encon) 
-          this.addSubscribeRoute()
+      this.setState({isLoadingSubscribe: true})
+      if (this.comprobeSubscribe) {
+        console.log('hay que desapuntarse');
+        this.unSubscribeRoute()
       } else {
-        this.addSubscribeRoute()
+        console.log('habría que apuntarse VERDE');
+        //this.subscribeRoute()
       }
     }
   }
@@ -150,7 +164,7 @@ class Item extends React.Component {
     }
   }
 
-  addSubscribeRoute = async () => {
+  subscribeRoute = async () => {
     await this.userRequest()
 
     if (this.props.dataMyUser.name != '') {
@@ -167,6 +181,27 @@ class Item extends React.Component {
     } else {
       showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
     }
+    this.setState({isLoadingSubscribe: false})
+  }
+
+  unSubscribeRoute = async () => {
+    await this.userRequest()
+
+    if (this.props.dataMyUser.name != '') {
+      const attributesSubscribe = {
+        nameCreator: this.props.dataMyUser.name,
+        imageCreator: this.props.dataMyUser.image
+      }
+
+      if (await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.key)) {
+        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+      } else {
+        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+      }
+    } else {
+      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+    }
+    this.setState({isLoadingSubscribe: false})
   }
 
   _pressChat = () => {
@@ -182,9 +217,9 @@ class Item extends React.Component {
   }
 
   requestAssistants = async () => {
+    this.setState({isLoadingAssistants: true})
     const {data} = await Fire.shared.getUserAssistants(this.props.keyRoute)
-    this.setState({assistants: data})
-    this.setState({isOpenListAssistans: true})
+    this.setState({assistants: data, isOpenListAssistans: true, isLoadingAssistants: false})
   }
 
   render() {
@@ -274,7 +309,6 @@ const styles = StyleSheet.create({
     marginRight: padding
   }
 })
-
 const mapStateToProps = state => {
   return {dataMyUser: state.dataMyUser}
 }
