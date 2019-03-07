@@ -79,15 +79,17 @@ class Item extends React.Component {
   }
 
   comprobeSubscribe = () => {
-    console.log('estos son los asistentes', this.props.assistants);
-    if (this.props.assistants) {
-      for (let assistant of this.props.assistants) {
-        if (assistant.keyCreator == this.props.dataMyUser.key) {
+    //TODO: no funciona bien este comprobesbscribe
+    if (this.props.dataMyUser.subscribedRoutes) {
+      for (let assistant of this.props.dataMyUser.subscribedRoutes) {
+        if (assistant == this.props.keyRoute) {
           return true
+          console.log("si que esta suscrito");
         }
       }
     }
     return false
+    console.log("no esta suscrito");
   }
 
   renderBarOptions() {
@@ -139,7 +141,7 @@ class Item extends React.Component {
         this.unSubscribeRoute()
       } else {
         console.log('habría que apuntarse VERDE');
-        //this.subscribeRoute()
+        this.subscribeRoute()
       }
     }
   }
@@ -173,7 +175,7 @@ class Item extends React.Component {
         imageCreator: this.props.dataMyUser.image
       }
 
-      if (await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.key)) {
+      if (await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
         showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
       } else {
         showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
@@ -187,20 +189,8 @@ class Item extends React.Component {
   unSubscribeRoute = async () => {
     await this.userRequest()
 
-    if (this.props.dataMyUser.name != '') {
-      const attributesSubscribe = {
-        nameCreator: this.props.dataMyUser.name,
-        imageCreator: this.props.dataMyUser.image
-      }
+    showMessage({message: "Te has desapuntado de la ruta. ¿Tu perro esta de acuerdo?", type: "danger", floating: true})
 
-      if (await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.key)) {
-        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-      } else {
-        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-      }
-    } else {
-      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-    }
     this.setState({isLoadingSubscribe: false})
   }
 

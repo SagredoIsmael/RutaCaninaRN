@@ -107,12 +107,19 @@ class Fire extends React.Component {
     return true;
   }
 
-  updateAssistantsRoute = async (attributesDicc, keyRoute, keyUser) => {
-    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(keyUser);
+  updateAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
+
+    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid);
 
     try {
       await ref.set(attributesDicc, {merge: true})
-      return true
+
+      subscribedRoutes.push(keyRoute)
+
+      const newSubscribedRoutes = {
+        subscribedRoutes: subscribedRoutes
+      }
+      return this.updateAttributeUser(newSubscribedRoutes);
     } catch ({message}) {
       console.log(message);
       return false
@@ -285,9 +292,14 @@ class Fire extends React.Component {
   }
 
   updateAttributeUser = async attributesDicc => {
-    let ref = this.firestoreMyUser;
-    await ref.set(attributesDicc, {merge: true});
-    return true;
+    try {
+      let ref = this.firestoreMyUser;
+      await ref.set(attributesDicc, {merge: true});
+      return true;
+    } catch ({message}) {
+      console.log('Error', message);
+      alert(message);
+    }
   }
 
   createNewDogWithAttributes = async (attributesDicc, newValuePhotoPathDog) => {
