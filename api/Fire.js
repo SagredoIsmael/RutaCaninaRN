@@ -2,8 +2,6 @@ import uuid from "uuid";
 import React from "react";
 import {Alert} from "react-native";
 import {ImageManipulator} from "expo";
-import {connect} from "react-redux";
-import * as actions from "../actions";
 import getUserInfo from "../utils/getUserInfo";
 import shrinkImageAsync from "../utils/shrinkImageAsync";
 const firebase = require("firebase");
@@ -30,9 +28,6 @@ class Fire extends React.Component {
         console.log("UID user: anónimo");
       } else {
         console.log("UID user: ", user.uid);
-
-        const {dataUser} = await this.getInfoUser(user.uid);
-        this.props.insert_dataMyUser({dataUser}) //TODO not found redux here
       }
     });
   }
@@ -112,10 +107,40 @@ class Fire extends React.Component {
     return true;
   }
 
-  updateAssistantsRoute = async (attributesDicc, keyRoute) => {
-    let ref = firebase.firestore().collection("routes").doc(keyRoute).child("assistants");
-    await ref.set(attributesDicc, {merge: true});
-    return true;
+  updateAssistantsRoute = async (attributesDicc, keyRoute, keyUser) => {
+    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(keyUser);
+
+    try {
+      await ref.set(attributesDicc, {merge: true})
+      return true
+    } catch ({message}) {
+      console.log(message);
+      return false
+    }
+  }
+
+  getUserAssistants = async keyRoute => {
+    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants")
+    try {
+      const queryData = await ref.get()
+      const data = [];
+      queryData.forEach(function(doc) {
+
+        if (doc.exists) {
+          const post = doc.data() || {};
+          const assistant = {
+            key: doc.id,
+            image: post.imageCreator,
+            name: post.nameCreator
+          };
+          data.push(assistant);
+        }
+      });
+      return {data};
+    } catch ({message}) {
+      console.log("Error. No se puede obtener la infoMyUser");
+      alert(message);
+    }
   }
 
   resizeImageRoute = async uri => {
@@ -307,8 +332,4 @@ class Fire extends React.Component {
 
 Fire.shared = new Fire();
 
-const mapStateToProps = state => {
-  return {dataMyUser: state.dataMyUser}
-}
-
-export default connect(mapStateToProps, actions)(Fire);
+export default Fire

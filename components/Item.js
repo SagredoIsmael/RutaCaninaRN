@@ -61,7 +61,7 @@ class Item extends React.Component {
       </TouchableHighlight>
 
       <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-          this.setState({isOpenListAssistans: true});
+          this.requestAssistants()
         }}>
         {this.renderIcon("ios-people-outline")}
       </TouchableHighlight>
@@ -144,21 +144,26 @@ class Item extends React.Component {
   }
 
   userRequest = async () => {
-    const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key);
-    this.props.insert_dataMyUser(dataUser);
+    if (!this.props.dataMyUser.name) {
+      const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
+      this.props.insert_dataMyUser(dataUser)
+    }
   }
 
   addSubscribeRoute = async () => {
     await this.userRequest()
+
     if (this.props.dataMyUser.name != '') {
       const attributesSubscribe = {
-        keyCreator: this.props.dataMyUser.key,
         nameCreator: this.props.dataMyUser.name,
         imageCreator: this.props.dataMyUser.image
       }
-      console.log(attributesSubscribe);
-      await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute)
-      showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+
+      if (await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.key)) {
+        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
+      } else {
+        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+      }
     } else {
       showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
     }
@@ -176,10 +181,16 @@ class Item extends React.Component {
     this.setState({isOpenListAssistans: false})
   }
 
+  requestAssistants = async () => {
+    const {data} = await Fire.shared.getUserAssistants(this.props.keyRoute)
+    this.setState({assistants: data})
+    this.setState({isOpenListAssistans: true})
+  }
+
   render() {
     const imgW = this.props.imageWidth || this.state.width;
     const imgH = this.props.imageHeight || this.state.height;
-    const aspect = imgW / imgH || 1;
+    const aspect = imgW / imgH || 1
 
     var esLocale = require('moment/locale/es');
     moment.locale('es', esLocale);
@@ -209,7 +220,7 @@ class Item extends React.Component {
             }}/>
         </View>
         {this.renderBarOptions()}
-        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} assistants={this.props.assistants} clickDismiss={this._pressDismissAssistantsList}/>
+        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} assistants={this.state.assistants}/>
       </ImageBackground>
     </View>)
   }

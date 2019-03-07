@@ -13,10 +13,12 @@ import {
 } from "react-native"
 import ItemUser from '../ItemUser'
 import Colors from "../../constants/Colors"
+import Fire from "../../api/Fire"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
-const ListAssistans = ({isOpenListAssistans, clickDismiss, assistants, nav}) => {
-  if (assistants != null) {
+const ListAssistans = ({isOpenListAssistans, clickDismiss, nav, assistants}) => {
+
+  if (assistants != null && assistants.length > 0) {
     return (<Dialog onDismiss={() => {
         console.log('click on dismiss');
       }} width={0.9} visible={isOpenListAssistans} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} dialogTitle={<DialogTitle
@@ -45,7 +47,7 @@ const ListAssistans = ({isOpenListAssistans, clickDismiss, assistants, nav}) => 
             width: "100%"
           }}>
 
-          <FlatList data={assistants} renderItem={({item}) => <ItemUser keyCreator={item.keyCreator} nameCreator={item.nameCreator} imageCreator={item.imageCreator} nav={nav} dismissModal={clickDismiss}/>}/>
+          <FlatList data={assistants} renderItem={({item}) => <ItemUser keyCreator={item.key} nameCreator={item.name} imageCreator={item.image} nav={nav} dismissModal={clickDismiss}/>}/>
 
         </ImageBackground>
       </DialogContent>
