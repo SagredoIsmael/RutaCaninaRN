@@ -127,20 +127,20 @@ class Fire extends React.Component {
     }
   }
 
-  deleteAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
+  deleteAssistantsRoute = async (keyRoute, subscribedRoutes) => {
     let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid);
 
     try {
-      await ref.set(attributesDicc, {merge: true})
 
-      subscribedRoutes
-        ? subscribedRoutes.push(keyRoute)
-        : subscribedRoutes = [keyRoute]
+      await ref.delete()
+      var index = subscribedRoutes.indexOf(keyRoute);
+      subscribedRoutes.splice(index, 1);
 
       const newSubscribedRoutes = {
         subscribedRoutes: subscribedRoutes
       }
       return this.updateAttributeUser(newSubscribedRoutes);
+
     } catch ({message}) {
       console.log(message);
       return false
@@ -232,11 +232,12 @@ class Fire extends React.Component {
         };
         return {dataUser};
       } else {
-        console.log("No se puede obtener la infoMyUser");
+        console.log("Error", message);
+        alert("Error en la identificación de tu usuario. Por favor inicia sesión")
       }
     } catch ({message}) {
-      console.log("No se puede obtener la infoMyUser");
-      alert(message);
+      console.log("Error", message);
+      alert("Error en la identificación de tu usuario. Por favor inicia sesión")
     }
   }
 
@@ -313,6 +314,7 @@ class Fire extends React.Component {
   }
 
   updateAttributeUser = async attributesDicc => {
+    console.log('ueeee', attributesDicc);
     try {
       let ref = this.firestoreMyUser;
       await ref.set(attributesDicc, {merge: true});

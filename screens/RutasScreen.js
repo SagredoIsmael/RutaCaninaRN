@@ -35,8 +35,10 @@ class RutasScreen extends React.Component {
   }
 
   userRequest = async () => {
-    const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
-    this.props.insert_dataMyUser(dataUser)
+    if (Fire.shared.uid) {
+      const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
+      this.props.insert_dataMyUser(dataUser)
+    }
   }
 
   makeRemoteRequest = async lastKey => {

@@ -140,14 +140,14 @@ class Item extends React.Component {
   }
 
   showAlertLogIn = () => {
-    Alert.alert('Nueva ruta', 'Es necesario iniciar sesión previamente', [
+    Alert.alert('Apuntarse a la ruta', 'Es necesario iniciar sesión previamente', [
       {
         text: 'Cancelar',
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel'
       }, {
         text: 'Iniciar sesión',
-        onPress: () => this.props.navigation.navigate('PerfilStack')
+        onPress: () => this.props.nav.navigate('PerfilStack')
       }
     ], {cancelable: true})
   }
@@ -181,9 +181,10 @@ class Item extends React.Component {
 
   unSubscribeRoute = async () => {
     if (this.props.dataMyUser.name != '') {
-      if (await Fire.shared.deleteAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
+      if (await Fire.shared.deleteAssistantsRoute(this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
         this.userRequest(true)
         showMessage({message: "Te has desapuntado de la ruta", type: "danger", floating: true})
+        this.setState({isSubscribe: false})
       } else {
         showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
       }
@@ -194,7 +195,7 @@ class Item extends React.Component {
   }
 
   _pressChat = () => {
-    console.log('eeeeee');
+    console.log('chat');
   }
 
   _pressMap = () => {
