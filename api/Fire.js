@@ -107,14 +107,35 @@ class Fire extends React.Component {
     return true;
   }
 
-  updateAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
-
+  addAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
     let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid);
 
     try {
       await ref.set(attributesDicc, {merge: true})
 
-      subscribedRoutes.push(keyRoute)
+      subscribedRoutes
+        ? subscribedRoutes.push(keyRoute)
+        : subscribedRoutes = [keyRoute]
+
+      const newSubscribedRoutes = {
+        subscribedRoutes: subscribedRoutes
+      }
+      return this.updateAttributeUser(newSubscribedRoutes);
+    } catch ({message}) {
+      console.log(message);
+      return false
+    }
+  }
+
+  deleteAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
+    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid);
+
+    try {
+      await ref.set(attributesDicc, {merge: true})
+
+      subscribedRoutes
+        ? subscribedRoutes.push(keyRoute)
+        : subscribedRoutes = [keyRoute]
 
       const newSubscribedRoutes = {
         subscribedRoutes: subscribedRoutes

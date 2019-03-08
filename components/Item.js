@@ -39,6 +39,7 @@ class Item extends React.Component {
         this.setState({width, height})
       });
     }
+    this.userRequest(false)
   }
 
   renderIconBar() {
@@ -51,7 +52,7 @@ class Item extends React.Component {
               this._pressSubscribe()
             }}>
             {
-              this.comprobeSubscribe()
+              this.state.isSubscribe
                 ? this.renderIcon("ios-happy-outline")
 
                 : this.renderIcon("ios-person-add-outline")
@@ -78,18 +79,14 @@ class Item extends React.Component {
       }</View>)
   }
 
-  comprobeSubscribe = () => {
-    //TODO: no funciona bien este comprobesbscribe
+  comprobeSubscribe = async () => {
     if (this.props.dataMyUser.subscribedRoutes) {
       for (let assistant of this.props.dataMyUser.subscribedRoutes) {
         if (assistant == this.props.keyRoute) {
-          return true
-          console.log("si que esta suscrito");
+          this.setState({isSubscribe: true})
         }
       }
     }
-    return false
-    console.log("no esta suscrito");
   }
 
   renderBarOptions() {
@@ -136,13 +133,9 @@ class Item extends React.Component {
       this.showAlertLogIn()
     } else {
       this.setState({isLoadingSubscribe: true})
-      if (this.comprobeSubscribe) {
-        console.log('hay que desapuntarse');
-        this.unSubscribeRoute()
-      } else {
-        console.log('habría que apuntarse VERDE');
-        this.subscribeRoute()
-      }
+      this.state.isSubscribe
+        ? this.unSubscribeRoute()
+        : this.subscribeRoute()
     }
   }
 
@@ -159,23 +152,23 @@ class Item extends React.Component {
     ], {cancelable: true})
   }
 
-  userRequest = async () => {
-    if (!this.props.dataMyUser.name) {
+  userRequest = async (force) => {
+    if (!this.props.dataMyUser.name || this.props.dataMyUser.key == '' || this.props.dataMyUser.name == '' || force) {
       const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
       this.props.insert_dataMyUser(dataUser)
     }
+    this.comprobeSubscribe()
   }
 
   subscribeRoute = async () => {
-    await this.userRequest()
-
     if (this.props.dataMyUser.name != '') {
       const attributesSubscribe = {
         nameCreator: this.props.dataMyUser.name,
         imageCreator: this.props.dataMyUser.image
       }
 
-      if (await Fire.shared.updateAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
+      if (await Fire.shared.addAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
+        this.userRequest(true)
         showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
       } else {
         showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
@@ -187,10 +180,16 @@ class Item extends React.Component {
   }
 
   unSubscribeRoute = async () => {
-    await this.userRequest()
-
-    showMessage({message: "Te has desapuntado de la ruta. ¿Tu perro esta de acuerdo?", type: "danger", floating: true})
-
+    if (this.props.dataMyUser.name != '') {
+      if (await Fire.shared.deleteAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
+        this.userRequest(true)
+        showMessage({message: "Te has desapuntado de la ruta", type: "danger", floating: true})
+      } else {
+        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+      }
+    } else {
+      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+    }
     this.setState({isLoadingSubscribe: false})
   }
 

@@ -34,6 +34,11 @@ class RutasScreen extends React.Component {
     this.makeRemoteRequest()
   }
 
+  userRequest = async () => {
+    const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
+    this.props.insert_dataMyUser(dataUser)
+  }
+
   makeRemoteRequest = async lastKey => {
     if (this.state.loading) {
       return;
@@ -50,6 +55,8 @@ class RutasScreen extends React.Component {
     for (let child of data) {
       posts[child.key] = child;
     }
+    await this.userRequest()
+
     this.addPosts(posts)
 
     // Finish loading, this will stop the refreshing animation.
@@ -69,8 +76,8 @@ class RutasScreen extends React.Component {
         posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp)
       }
     })
-    this.props.insert_dataMyUser({key: Fire.shared.uid})
     this.props.insert_dataRoutes(this.state.posts)
+
   }
 
   refreshList = () => {
