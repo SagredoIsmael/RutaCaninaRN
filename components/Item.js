@@ -228,7 +228,7 @@ class Item extends React.Component {
             marginTop: 10
           }}>
 
-          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} nav={this.props.nav}></ItemUser>
+          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.dataMyUser.key} nav={this.props.nav}></ItemUser>
 
         </View>
         <View style={{
@@ -245,7 +245,7 @@ class Item extends React.Component {
             }}/>
         </View>
         {this.renderBarOptions()}
-        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} assistants={this.state.assistants}/>
+        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} myKeyUser={this.props.dataMyUser.key} assistants={this.state.assistants}/>
       </ImageBackground>
     </View>)
   }

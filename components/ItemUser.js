@@ -39,7 +39,12 @@ export default class ItemUser extends Component {
   }
 
   goToProfile = () => {
-    this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator})
+    console.log(this.props.keyCreator, "yyyy", this.props.myKeyUser);
+    if (this.props.keyCreator == this.props.myKeyUser) {
+      this.props.nav.navigate('PerfilStack')
+    } else {
+      this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator})
+    }
     if (this.props.dismissModal != null) {
       this.props.dismissModal()
     }

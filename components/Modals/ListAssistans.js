@@ -16,7 +16,7 @@ import Colors from "../../constants/Colors"
 import Fire from "../../api/Fire"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
-const ListAssistans = ({isOpenListAssistans, clickDismiss, nav, assistants}) => {
+const ListAssistans = ({isOpenListAssistans, clickDismiss, nav, assistants, myKeyUser}) => {
 
   if (assistants != null && assistants.length > 0) {
     return (<Dialog onDismiss={() => {
@@ -47,7 +47,7 @@ const ListAssistans = ({isOpenListAssistans, clickDismiss, nav, assistants}) => 
             width: "100%"
           }}>
 
-          <FlatList data={assistants} renderItem={({item}) => <ItemUser keyCreator={item.key} nameCreator={item.name} imageCreator={item.image} nav={nav} dismissModal={clickDismiss}/>}/>
+          <FlatList data={assistants} renderItem={({item}) => <ItemUser keyCreator={item.key} nameCreator={item.name} imageCreator={item.image} myKeyUser={myKeyUser} nav={nav} dismissModal={clickDismiss}/>}/>
 
         </ImageBackground>
       </DialogContent>
