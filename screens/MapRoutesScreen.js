@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import * as actions from '../actions'
+import {MapView} from 'expo'
 import {
   Image,
   Platform,
@@ -14,11 +15,25 @@ import {
 
 class MapRoutesScreen extends React.Component {
   static navigationOptions = {
-    title: 'Mapa de rutas'
-  };
+    header: null
+  }
 
   render() {
-    return (<View style={styles.container}></View>);
+    return (<View style={styles.container}>
+      <MapView style={{
+          width: '100%',
+          top: 0,
+          bottom: 0,
+          position: 'absolute'
+        }} region={{
+
+          longitudeDelta: 0.01211,
+          latitudeDelta: 0.01211
+        }} showsMyLocationButton={true} showsUserLocation={true} showsCompass={true} compassStyle={{
+          bottom: 10
+        }}>
+      </MapView>
+      </View>);
   }
 }
 
@@ -31,9 +46,6 @@ export default connect(mapStateToProps, actions)(MapRoutesScreen)
 let styles = StyleSheet.create({
   container: {
     backgroundColor: '#bedce2',
-    paddingHorizontal: 10,
-    paddingTop: 70,
-    paddingBottom: 20,
     flex: 1,
     justifyContent: 'space-between'
   }
