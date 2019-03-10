@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {MapView} from 'expo'
+import Colors from "../constants/Colors"
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   Image,
   Platform,
@@ -51,13 +53,9 @@ class MapRoutesScreen extends React.Component {
 
   renderMarker = marker => {
     return (<MapView.Marker key={marker.id} identifier={marker.id} coordinate={marker.coords} onPress={this.onMarkerPress}>
-      <View style={{
-          width: 35,
-          height: 35,
-          backgroundColor: marker.id === this.state.selectedMarkerId
-            ? 'gold'
-            : 'green'
-        }}></View>
+      <Icon style={{
+          marginRight: 5
+        }} name={"routes"} size={40} color={Colors.pinkChicle}/>
     </MapView.Marker>);
   };
 

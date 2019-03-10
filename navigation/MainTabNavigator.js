@@ -6,18 +6,18 @@ import RutasScreen from "../screens/RutasScreen"
 import LoginScreen from "../screens/LoginScreen"
 import MisRutasScreen from "../screens/MisRutasScreen"
 import MapRoutesScreen from "../screens/MapRoutesScreen"
-
-import {Ionicons} from "@expo/vector-icons";
+import Icon from "react-native-vector-icons/Ionicons"
+import Colors from "../constants/Colors"
 
 const RutasStack = createStackNavigator({Rutas: RutasScreen});
 
 RutasStack.navigationOptions = {
   tabBarLabel: "Rutas cerca",
-  tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} name={Platform.OS === "ios"
-      ? `ios-navigate${focused
+  tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} size={32} name={Platform.OS === "ios"
+      ? `ios-paw${focused
         ? ""
         : "-outline"}`
-      : "md-navigate"
+      : "md-paw"
 }/>)
 };
 
