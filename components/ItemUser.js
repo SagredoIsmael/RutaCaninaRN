@@ -10,24 +10,16 @@ export default class ItemUser extends Component {
 
   render() {
     return (<View style={[styles.row, styles.padding]}>
-      <View style={styles.row}>
-        <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
-            backgroundColor: "transparent"
-          }} onPress={() => this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator})
-}>
+      <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
+          backgroundColor: "transparent"
+        }} onPress={() => this.goToProfile()}>
+        <View style={styles.row}>
           <Image style={styles.avatar} source={{
               uri: this.props.imageCreator
             }}/>
-
-        </TouchableHighlight>
-
-        <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
-            backgroundColor: "transparent"
-          }} onPress={() => this.goToProfile()}>
           <Text style={styles.text}>{this.props.nameCreator}</Text>
-        </TouchableHighlight>
-      </View>
-
+        </View>
+      </TouchableHighlight>
     </View>)
   }
 
@@ -39,11 +31,14 @@ export default class ItemUser extends Component {
   }
 
   goToProfile = () => {
-    console.log(this.props.keyCreator, "yyyy", this.props.myKeyUser);
-    if (this.props.keyCreator == this.props.myKeyUser) {
-      this.props.nav.navigate('PerfilStack')
+    if (this.props.isHiddenOption) {
+      //nothing to do
     } else {
-      this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator})
+      if (this.props.keyCreator == this.props.myKeyUser) {
+        this.props.nav.navigate('PerfilStack')
+      } else {
+        this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator})
+      }
     }
     if (this.props.dismissModal != null) {
       this.props.dismissModal()

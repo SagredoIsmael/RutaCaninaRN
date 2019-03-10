@@ -116,7 +116,7 @@ export class EndRoute extends React.Component {
     ], {cancelable: false})
   }
 
-  renderItem = () => (<Item keyCreator={this.props.dataMyUser.key} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>)
+  renderItem = () => (<Item keyCreator={this.props.dataMyUser.key} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} isHiddenOption={true} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>)
 
   render() {
     if (this.props.currentPosition == 2) {
@@ -152,7 +152,8 @@ export class EndRoute extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginBottom: 40
   }
 })
 

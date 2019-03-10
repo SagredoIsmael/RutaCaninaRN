@@ -43,40 +43,42 @@ class Item extends React.Component {
   }
 
   renderIconBar() {
-    return (<View style={styles.row}>
+    return (<View style={styles.padding}>
+      <View style={styles.row}>
 
-      {
-        this.state.isLoadingSubscribe
-          ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
-          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-              this._pressSubscribe()
-            }}>
-            {
-              this.state.isSubscribe
-                ? this.renderIcon("ios-happy-outline")
+        {
+          this.state.isLoadingSubscribe
+            ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
+            : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+                this._pressSubscribe()
+              }}>
+              {
+                this.state.isSubscribe
+                  ? this.renderIcon("ios-heart")
 
-                : this.renderIcon("ios-person-add-outline")
+                  : this.renderIcon("ios-person-add-outline")
 
-            }
-          </TouchableHighlight>)
-      }
-      < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat
+              }
+            </TouchableHighlight>)
+        }
+        < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat
 }>
-        {this.renderIcon("ios-chatbubbles-outline")}
-      </TouchableHighlight>
+          {this.renderIcon("ios-chatbubbles-outline")}
+        </TouchableHighlight>
 
-      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressMap}>
-        {this.renderIcon("ios-send-outline")}</TouchableHighlight>
+        <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressMap}>
+          {this.renderIcon("ios-send-outline")}</TouchableHighlight>
 
-      {
-        this.state.isLoadingAssistants
-          ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
-          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-              this.requestAssistants()
-            }}>
-            {this.renderIcon("ios-people-outline")}
-          </TouchableHighlight>)
-      }</View>)
+        {
+          this.state.isLoadingAssistants
+            ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
+            : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+                this.requestAssistants()
+              }}>
+              {this.renderIcon("ios-people-outline")}
+            </TouchableHighlight>)
+        }</View>
+    </View>)
   }
 
   comprobeSubscribe = async () => {
@@ -91,9 +93,6 @@ class Item extends React.Component {
 
   renderBarOptions() {
     return (<View style={styles.paddingView}>
-
-      {this.renderIconBar()}
-
       <Text style={styles.text}>{this.props.title}</Text>
       <View style={styles.rowDate}>
         {
@@ -228,7 +227,7 @@ class Item extends React.Component {
             marginTop: 10
           }}>
 
-          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.dataMyUser.key} nav={this.props.nav}></ItemUser>
+          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.dataMyUser.key} nav={this.props.nav} isHiddenOption={this.props.isHiddenOption}></ItemUser>
 
         </View>
         <View style={{
@@ -244,7 +243,13 @@ class Item extends React.Component {
               uri: this.props.image
             }}/>
         </View>
+        {
+          this.props.isHiddenOption
+            ? null
+            : this.renderIconBar()
+        }
         {this.renderBarOptions()}
+
         <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} myKeyUser={this.props.dataMyUser.key} assistants={this.state.assistants}/>
       </ImageBackground>
     </View>)

@@ -306,7 +306,8 @@ class StartRoute extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginBottom: 30
   },
   form: {
     borderTopWidth: 1,

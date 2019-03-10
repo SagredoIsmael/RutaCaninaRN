@@ -218,6 +218,7 @@ class MapRoute extends React.Component {
 const styles = StyleSheet.create({
   container: {
     height: '100%',
+    marginBottom: 35,
     flex: 1,
     alignItems: 'center'
   }
