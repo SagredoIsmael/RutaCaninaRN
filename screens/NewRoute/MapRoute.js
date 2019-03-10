@@ -67,14 +67,10 @@ class MapRoute extends React.Component {
     }
 
     let location = await Expo.Location.getCurrentPositionAsync()
-    //let almeria = (await Expo.Location.geocodeAsync('juan de la encina, Almería'))[0]
     this.setState({
       me: {
         location: location
       }
-      /*  places:{
-        almeria,
-      }*/
     })
   }
 
@@ -101,7 +97,6 @@ class MapRoute extends React.Component {
         }
       }
     }
-    console.log('eeeeee', coords);
     this.onMapPress(coords)
   }
 
@@ -125,6 +120,7 @@ class MapRoute extends React.Component {
         this.setState({isHelper: false})
       if (!this.state.me.location) {
         console.log('Permission not Granted')
+        Alert("Debes aceptar el permiso de localización")
         return (<View/>);
       }
       return (<View style={styles.container}>
