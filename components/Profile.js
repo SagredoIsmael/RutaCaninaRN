@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import {Permissions, ImagePicker, Font, Constants} from "expo"
 import {connect} from "react-redux"
+import * as actions from "../actions"
 import Fire from "../api/Fire"
 import Icon from "react-native-vector-icons/Ionicons"
 import _ from "lodash"
@@ -19,7 +20,6 @@ import {
   TouchableOpacity,
   Dimensions
 } from "react-native";
-import * as actions from "../actions"
 import Colors from "../constants/Colors"
 
 const screenHeight = Dimensions.get("window").height

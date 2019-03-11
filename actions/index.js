@@ -25,3 +25,10 @@ export const insert_dataNewRoute = dataNewRoute => {
     payload: dataNewRoute
   };
 };
+
+export const insert_scrollPositionList = scrollPositionList => {
+  return {
+    type: "insert_scrollPositionList",
+    payload: scrollPositionList
+  };
+};

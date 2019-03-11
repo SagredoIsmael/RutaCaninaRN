@@ -90,7 +90,7 @@ class MapRoutesScreen extends React.Component {
           bottom: 10
         }}>
         {this.props.dataRoutes.map(this.renderMarker)}
-        <InfoRoute isOpenInfoRoute={this.state.isOpenInfoRoute} routeSelect={this.state.routeSelected} clickDismiss={this._pressDismissInfoRoute}/>
+        <InfoRoute isOpenInfoRoute={this.state.isOpenInfoRoute} routeSelect={this.state.routeSelected} clickDismiss={this._pressDismissInfoRoute} nav={this.props.navigation}/>
       </MapView>
     </View>);
   }

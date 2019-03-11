@@ -124,7 +124,6 @@ class Item extends React.Component {
 
     var esLocale = require('moment/locale/es');
     moment.locale('es', esLocale);
-
     return (<View>
       <ImageBackground source={require("../assets/images/background.png")} style={{
           width: "100%"
