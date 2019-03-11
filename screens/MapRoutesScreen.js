@@ -16,6 +16,9 @@ import {
   Button
 } from 'react-native'
 
+const profileImageSize = 36
+const padding = 12
+
 class MapRoutesScreen extends React.Component {
   static navigationOptions = {
     header: null
@@ -68,9 +71,9 @@ class MapRoutesScreen extends React.Component {
 
   renderMarker = marker => {
     return (<MapView.Marker key={marker.key} identifier={marker.key} coordinate={marker.coords} onPress={() => this._pressMarker(marker.key)}>
-      <Icon style={{
-          marginRight: 5
-        }} name={"routes"} size={40} color={Colors.pinkChicle}/>
+      <Image style={styles.avatar} source={{
+          uri: marker.imageCreator
+        }}/>
     </MapView.Marker>);
   };
 
@@ -84,11 +87,11 @@ class MapRoutesScreen extends React.Component {
         }} region={{
           latitude: this.state.me.location.coords.latitude,
           longitude: this.state.me.location.coords.longitude,
-          longitudeDelta: 0.01211,
-          latitudeDelta: 0.01211
+          longitudeDelta: 0.01211 * 10,
+          latitudeDelta: 0.01211 * 10
         }} showsMyLocationButton={true} showsUserLocation={true} showsCompass={true} compassStyle={{
           bottom: 10
-        }}>
+        }} mapType={'hybrid'}>
         {this.props.dataRoutes.map(this.renderMarker)}
         <InfoRoute isOpenInfoRoute={this.state.isOpenInfoRoute} routeSelect={this.state.routeSelected} clickDismiss={this._pressDismissInfoRoute} nav={this.props.navigation}/>
       </MapView>
@@ -106,5 +109,16 @@ let styles = StyleSheet.create({
     backgroundColor: '#bedce2',
     flex: 1,
     justifyContent: 'space-between'
+  },
+  avatar: {
+    aspectRatio: 1,
+    backgroundColor: Colors.whiteCrudo,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: Colors.pinkChicle,
+    borderRadius: profileImageSize / 2,
+    width: profileImageSize,
+    height: profileImageSize,
+    resizeMode: "cover",
+    marginRight: padding
   }
 });
