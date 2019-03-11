@@ -3,7 +3,8 @@ import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {MapView} from 'expo'
 import Colors from "../constants/Colors"
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons"
+import InfoRoute from '../components/Modals/InfoRoute'
 import {
   Image,
   Platform,
@@ -28,7 +29,8 @@ class MapRoutesScreen extends React.Component {
           longitude: -2.463714
         }
       }
-    }
+    },
+    isOpenInfoRoute: false
   }
 
   componentDidMount() {
@@ -51,8 +53,21 @@ class MapRoutesScreen extends React.Component {
     })
   }
 
+  _pressMarker = (markerKey) => {
+    for (let route of this.props.dataRoutes) {
+      if (route.key == markerKey) {
+        this.setState({routeSelected: route, isOpenInfoRoute: true})
+        break
+      }
+    }
+  }
+
+  _pressDismissInfoRoute = () => {
+    this.setState({isOpenInfoRoute: false})
+  }
+
   renderMarker = marker => {
-    return (<MapView.Marker key={marker.id} identifier={marker.id} coordinate={marker.coords} onPress={this.onMarkerPress}>
+    return (<MapView.Marker key={marker.key} identifier={marker.key} coordinate={marker.coords} onPress={() => this._pressMarker(marker.key)}>
       <Icon style={{
           marginRight: 5
         }} name={"routes"} size={40} color={Colors.pinkChicle}/>
@@ -75,11 +90,11 @@ class MapRoutesScreen extends React.Component {
           bottom: 10
         }}>
         {this.props.dataRoutes.map(this.renderMarker)}
+        <InfoRoute isOpenInfoRoute={this.state.isOpenInfoRoute} routeSelect={this.state.routeSelected} clickDismiss={this._pressDismissInfoRoute}/>
       </MapView>
     </View>);
   }
 }
-
 const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes}
 }

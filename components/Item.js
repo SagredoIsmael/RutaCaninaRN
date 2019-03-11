@@ -1,12 +1,10 @@
-import {Ionicons} from "@expo/vector-icons"
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
-import {connect} from 'react-redux'
-import * as actions from '../actions'
-import {showMessage, hideMessage} from 'react-native-flash-message'
+import {Ionicons} from "@expo/vector-icons"
 import ListAssistans from './Modals/ListAssistans'
 import ItemUser from './ItemUser'
+import IconSubscribe from './IconsBarCell/IconSubscribe.js'
 import Fire from "../api/Fire"
 import {
   Image,
@@ -17,19 +15,18 @@ import {
   Alert,
   Button,
   TouchableOpacity,
-  TouchableHighlight,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableHighlight
 } from "react-native"
 
 const profileImageSize = 36
 const padding = 12
 
 class Item extends React.Component {
+
   state = {
-    isSubscribe: false,
     isOpenListAssistans: false,
-    isLoadingAssistants: false,
-    isLoadingSubscribe: false
+    isLoadingAssistants: false
   }
 
   componentDidMount() {
@@ -39,28 +36,13 @@ class Item extends React.Component {
         this.setState({width, height})
       });
     }
-    this.userRequest(false)
   }
 
   renderIconBar() {
     return (<View style={styles.padding}>
       <View style={styles.row}>
+        <IconSubscribe isLoadingSubscribe={this.state.isLoadingSubscribe} keyRoute={this.props.keyRoute}/>
 
-        {
-          this.state.isLoadingSubscribe
-            ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
-            : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-                this._pressSubscribe()
-              }}>
-              {
-                this.state.isSubscribe
-                  ? this.renderIcon("ios-heart")
-
-                  : this.renderIcon("ios-person-add-outline")
-
-              }
-            </TouchableHighlight>)
-        }
         < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat
 }>
           {this.renderIcon("ios-chatbubbles-outline")}
@@ -79,16 +61,6 @@ class Item extends React.Component {
             </TouchableHighlight>)
         }</View>
     </View>)
-  }
-
-  comprobeSubscribe = async () => {
-    if (this.props.dataMyUser.subscribedRoutes) {
-      for (let assistant of this.props.dataMyUser.subscribedRoutes) {
-        if (assistant == this.props.keyRoute) {
-          this.setState({isSubscribe: true})
-        }
-      }
-    }
   }
 
   renderBarOptions() {
@@ -127,72 +99,6 @@ class Item extends React.Component {
       }} name={name} size={40} color={Colors.pinkChicle}/>)
   }
 
-  _pressSubscribe = () => {
-    if (this.props.dataMyUser.key == '') {
-      this.showAlertLogIn()
-    } else {
-      this.setState({isLoadingSubscribe: true})
-      this.state.isSubscribe
-        ? this.unSubscribeRoute()
-        : this.subscribeRoute()
-    }
-  }
-
-  showAlertLogIn = () => {
-    Alert.alert('Apuntarse a la ruta', 'Es necesario iniciar sesión previamente', [
-      {
-        text: 'Cancelar',
-        onPress: () => console.log('Cancel Pressed'),
-        style: 'cancel'
-      }, {
-        text: 'Iniciar sesión',
-        onPress: () => this.props.nav.navigate('PerfilStack')
-      }
-    ], {cancelable: true})
-  }
-
-  userRequest = async (force) => {
-    if (!this.props.dataMyUser.name || this.props.dataMyUser.key == '' || this.props.dataMyUser.name == '' || force) {
-      const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
-      this.props.insert_dataMyUser(dataUser)
-    }
-    this.comprobeSubscribe()
-  }
-
-  subscribeRoute = async () => {
-    if (this.props.dataMyUser.name != '') {
-      const attributesSubscribe = {
-        nameCreator: this.props.dataMyUser.name,
-        imageCreator: this.props.dataMyUser.image
-      }
-
-      if (await Fire.shared.addAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
-        this.userRequest(true)
-        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-      } else {
-        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-      }
-    } else {
-      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-    }
-    this.setState({isLoadingSubscribe: false})
-  }
-
-  unSubscribeRoute = async () => {
-    if (this.props.dataMyUser.name != '') {
-      if (await Fire.shared.deleteAssistantsRoute(this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
-        this.userRequest(true)
-        showMessage({message: "Te has desapuntado de la ruta", type: "danger", floating: true})
-        this.setState({isSubscribe: false})
-      } else {
-        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-      }
-    } else {
-      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-    }
-    this.setState({isLoadingSubscribe: false})
-  }
-
   _pressChat = () => {
     console.log('chat');
   }
@@ -227,7 +133,7 @@ class Item extends React.Component {
             marginTop: 10
           }}>
 
-          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.dataMyUser.key} nav={this.props.nav} isHiddenOption={this.props.isHiddenOption}></ItemUser>
+          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.myKey} nav={this.props.nav} isHiddenOption={this.props.isHiddenOption}></ItemUser>
 
         </View>
         <View style={{
@@ -250,7 +156,7 @@ class Item extends React.Component {
         }
         {this.renderBarOptions()}
 
-        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} myKeyUser={this.props.dataMyUser.key} assistants={this.state.assistants}/>
+        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} myKeyUser={this.props.myKey} assistants={this.state.assistants}/>
       </ImageBackground>
     </View>)
   }
@@ -304,8 +210,5 @@ const styles = StyleSheet.create({
     marginRight: padding
   }
 })
-const mapStateToProps = state => {
-  return {dataMyUser: state.dataMyUser}
-}
 
-export default connect(mapStateToProps, actions)(Item)
+export default Item

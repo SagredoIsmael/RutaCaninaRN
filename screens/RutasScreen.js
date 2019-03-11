@@ -125,7 +125,7 @@ class RutasScreen extends React.Component {
         onRefresh = {
           this._onRefresh
         }
-        />} onPressFooter={this.onPressFooter} data={this.props.dataRoutes} nav={this.props.navigation}/>
+        />} onPressFooter={this.onPressFooter} data={this.props.dataRoutes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
       <ActionButton buttonColor={Colors.pinkChicle} onPress={() => {
           this.goToNewRoute()
         }} size={this.state.loading
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataRoutes: state.dataRoutes}
+  return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
 }
 
 export default connect(mapStateToProps, actions)(RutasScreen)

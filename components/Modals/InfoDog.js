@@ -15,9 +15,7 @@ import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAni
 
 const InfoDogs = ({isOpenInfoDog, dogSelect, clickDismiss}) => {
   if (dogSelect != null) {
-    return (<Dialog onDismiss={() => {
-        console.log(dogSelect);
-      }} width={0.8} style={{
+    return (<Dialog onDismiss={() => {}} width={0.8} style={{
         backgroundColor: '#F7F7F8'
       }} visible={isOpenInfoDog} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={<View> < Button title = "Cerrar" color = {
         Colors.verdeOscuro
