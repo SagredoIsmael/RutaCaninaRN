@@ -22,7 +22,7 @@ class IconSubscribe extends React.Component {
 
   state = {
     isSubscribe: false,
-    isLoadingSubscribe: false,
+    isLoadingSubscribe: false
   }
 
   componentDidMount() {
@@ -31,20 +31,22 @@ class IconSubscribe extends React.Component {
 
   render() {
     return (<View>
-      {this.state.isLoadingSubscribe
-        ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
-        : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-            this._pressSubscribe()
-          }}>
-          {
-            this.state.isSubscribe
-              ? this.renderIcon("ios-heart")
+      {
+        this.state.isLoadingSubscribe
+          ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
+          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
+              this._pressSubscribe()
+            }}>
+            {
+              this.state.isSubscribe
+                ? this.renderIcon("ios-heart")
 
-              : this.renderIcon("ios-person-add-outline")
+                : this.renderIcon("ios-person-add-outline")
 
-          }
-        </TouchableHighlight>)}
-      </View>);
+            }
+          </TouchableHighlight>)
+      }
+    </View>);
   }
 
   _pressSubscribe = () => {
@@ -82,9 +84,7 @@ class IconSubscribe extends React.Component {
         nameCreator: this.props.dataMyUser.name,
         imageCreator: this.props.dataMyUser.image
       }
-      console.log('aver', attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes);
       if (await Fire.shared.addAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
-        console.log('pero aqui no llega');
         this.userRequest(true)
         showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
       } else {
@@ -117,19 +117,18 @@ class IconSubscribe extends React.Component {
       }} name={name} size={40} color={Colors.pinkChicle}/>)
   }
 
-
-    showAlertLogIn = () => {
-      Alert.alert('Apuntarse a la ruta', 'Es necesario iniciar sesión previamente', [
-        {
-          text: 'Cancelar',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel'
-        }, {
-          text: 'Iniciar sesión',
-          onPress: () => this.props.nav.navigate('PerfilStack')
-        }
-      ], {cancelable: true})
-    }
+  showAlertLogIn = () => {
+    Alert.alert('Apuntarse a la ruta', 'Es necesario iniciar sesión previamente', [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel'
+      }, {
+        text: 'Iniciar sesión',
+        onPress: () => this.props.nav.navigate('PerfilStack')
+      }
+    ], {cancelable: true})
+  }
 
 }
 

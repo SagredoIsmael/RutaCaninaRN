@@ -314,7 +314,6 @@ class Fire extends React.Component {
   }
 
   updateAttributeUser = async attributesDicc => {
-    console.log('ueeee', attributesDicc);
     try {
       let ref = this.firestoreMyUser;
       await ref.set(attributesDicc, {merge: true});
