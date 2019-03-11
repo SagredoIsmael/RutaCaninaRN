@@ -31,7 +31,12 @@ class InfoRoute extends React.Component {
     if (this.props.routeSelect != null) {
       return (<Dialog onDismiss={() => {}} width={0.8} style={{
           backgroundColor: '#F7F7F8'
-        }} visible={this.props.isOpenInfoRoute} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={<View> < Button title = "Cerrar" color = {
+        }} visible={this.props.isOpenInfoRoute} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={<View> < Button title = "Ir a la ruta" color = {
+          Colors.verdeOscuro
+        }
+        align = "center" onPress = {
+          () => this._pressRoute()
+        } /> <Button title = "Cerrar" color = {
           Colors.verdeOscuro
         }
         align = "center" onPress = {

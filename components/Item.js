@@ -5,6 +5,7 @@ import {Ionicons} from "@expo/vector-icons"
 import ListAssistans from './Modals/ListAssistans'
 import ItemUser from './ItemUser'
 import IconSubscribe from './IconsBarCell/IconSubscribe.js'
+import ViewMoreText from 'react-native-view-more-text';
 import Fire from "../api/Fire"
 import {
   Image,
@@ -89,7 +90,9 @@ class Item extends React.Component {
             : null
         }
       </View>
-      <Text style={styles.subtitle}>{this.props.description}</Text>
+      <ViewMoreText numberOfLines={1} renderViewMore={this.renderViewMore} renderViewLess={this.renderViewLess}>
+        <Text style={styles.subtitle}>{this.props.description}</Text>
+      </ViewMoreText>
     </View>)
   }
 
@@ -97,6 +100,18 @@ class Item extends React.Component {
     return (<Ionicons style={{
         marginRight: 5
       }} name={name} size={40} color={Colors.pinkChicle}/>)
+  }
+
+  renderViewMore(onPress) {
+    return (<Text style={{
+        color: 'gray'
+      }} onPress={onPress}>Ver más</Text>)
+  }
+
+  renderViewLess(onPress) {
+    return (<Text style={{
+        color: 'gray'
+      }} onPress={onPress}>Ver menos</Text>)
   }
 
   _pressChat = () => {
@@ -163,16 +178,18 @@ class Item extends React.Component {
 const styles = StyleSheet.create({
   text: {
     fontWeight: "600",
-    fontSize: 15
+    fontSize: 20
   },
   subtitle: {
     opacity: 0.7,
-    fontSize: 10,
+    fontSize: 18,
     marginTop: 5
   },
   time: {
     opacity: 0.9,
-    fontSize: 12
+    fontSize: 16,
+    color: Colors.pinkChicle,
+    marginBottom: 5
   },
   row: {
     flexDirection: "row",
@@ -194,8 +211,7 @@ const styles = StyleSheet.create({
     padding
   },
   paddingView: {
-    padding,
-    marginBottom: 10
+    padding
   },
   avatar: {
     aspectRatio: 1,
