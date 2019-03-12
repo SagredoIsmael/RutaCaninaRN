@@ -84,7 +84,7 @@ class MapRoutesScreen extends React.Component {
           top: 0,
           bottom: 0,
           position: 'absolute'
-        }} region={{
+        }} initialRegion={{
           latitude: this.state.me.location.coords.latitude,
           longitude: this.state.me.location.coords.longitude,
           longitudeDelta: 0.01211 * 10,

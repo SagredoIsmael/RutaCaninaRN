@@ -27,21 +27,18 @@ class InfoRoute extends React.Component {
     }
   }
 
+  _buttonsDialogModal() {
+    return (<View>
+      <Button title="Ir a la ruta" color={Colors.verdeOscuro} align="center" onPress={() => this._pressRoute()}/>
+      <Button title="Cerrar" color={Colors.verdeOscuro
+} align="center" onPress={() => this.props.clickDismiss()}/></View>)
+  }
+
   render() {
     if (this.props.routeSelect != null) {
-      return (<Dialog onDismiss={() => {}} width={0.8} style={{
+      return (<Dialog onDismiss={() => {}} width={0.8} onTouchOutside={() => this.props.clickDismiss()} style={{
           backgroundColor: '#F7F7F8'
-        }} visible={this.props.isOpenInfoRoute} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={<View> < Button title = "Ir a la ruta" color = {
-          Colors.verdeOscuro
-        }
-        align = "center" onPress = {
-          () => this._pressRoute()
-        } /> <Button title = "Cerrar" color = {
-          Colors.verdeOscuro
-        }
-        align = "center" onPress = {
-          () => this.props.clickDismiss()
-        } /> < /View>}>
+        }} visible={this.props.isOpenInfoRoute} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={this._buttonsDialogModal()}>
         <DialogContent style={{
             backgroundColor: '#F7F7F8'
           }}>
@@ -60,7 +57,6 @@ class InfoRoute extends React.Component {
     return <View></View>
   }
 }
-
 const styles = StyleSheet.create({
   avatarDogs: {
     width: 130,
@@ -73,7 +69,6 @@ const styles = StyleSheet.create({
     position: "relative"
   }
 });
-
 const mapStateToProps = state => {
   return {scrollPositionList: state.scrollPositionList};
 };

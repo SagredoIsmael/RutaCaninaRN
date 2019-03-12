@@ -17,12 +17,12 @@ const InfoDogs = ({isOpenInfoDog, dogSelect, clickDismiss}) => {
   if (dogSelect != null) {
     return (<Dialog onDismiss={() => {}} width={0.8} style={{
         backgroundColor: '#F7F7F8'
-      }} visible={isOpenInfoDog} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={<View> < Button title = "Cerrar" color = {
+      }} visible={isOpenInfoDog} actionsBordered="actionsBordered" onTouchOutside={() => clickDismiss()} dialogAnimation={new ScaleAnimation()} footer={<Button title = "Cerrar" color = {
         Colors.verdeOscuro
       }
       align = "center" onPress = {
         () => clickDismiss()
-      } /> < /View>}>
+      } />}>
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>
