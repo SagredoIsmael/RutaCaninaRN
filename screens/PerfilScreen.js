@@ -46,7 +46,7 @@ class PerfilScreen extends React.Component {
     if (this.props.dataUser) 
       return (<View>
         <Profile nav={this.props.nav} isMyProfile={this.state.isMyProfile}/>
-        <Loader loading={this.state.isLoading} size={'large'} color="#ff66be"/>
+        <Loader loading={this.state.isLoading}/>
       </View>)
   }
 }

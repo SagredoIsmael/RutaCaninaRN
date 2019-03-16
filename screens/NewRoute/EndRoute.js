@@ -143,7 +143,7 @@ export class EndRoute extends React.Component {
           }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.comprobeChanges()}>
           ¡Crear ruta!
         </AwesomeButtonRick>
-        <Loader loading={this.state.isLoading} color={Colors.verdeOscuro}/>
+        <Loader loading={this.state.isLoading}/>
       </ScrollView>)
     }
     return (<View/>)

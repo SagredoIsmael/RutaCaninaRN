@@ -319,7 +319,7 @@ class Profile extends React.Component {
                 </View>
               </View>
               {this.renderListCards()}
-              <Loader loading={this.state.isLoading} size={"large"} color="#ff66be"/>
+              <Loader loading={this.state.isLoading}/>
             </ScrollView>)
             : null
         }

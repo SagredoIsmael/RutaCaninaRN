@@ -306,7 +306,7 @@ class DogScreen extends React.Component {
 
   render() {
     if (this.state.isFirstLoading) {
-      return <Loader loading={this.state.isLoading} color={Colors.verdeOscuro}/>
+      return <Loader loading={this.state.isLoading}/>
     }
     return (<KeyboardAwareScrollView style={styles.container} resetScrollToCoords={{
         x: 0,
@@ -455,7 +455,7 @@ class DogScreen extends React.Component {
                 </AwesomeButtonRick>
               : null
           }
-          <Loader loading={this.state.isLoading} color={Colors.verdeOscuro}/>
+          <Loader loading={this.state.isLoading}/>
         </ImageBackground>
       </View>
     </KeyboardAwareScrollView>)
