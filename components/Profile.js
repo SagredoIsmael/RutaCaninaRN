@@ -122,7 +122,7 @@ class Profile extends React.Component {
         <View style={{
             marginLeft: 15
           }}>
-          <Avatar small="small" rounded="rounded" source={avatar
+          <Avatar small="small" rounded={true} source={avatar
               ? {
                 uri: avatar
               }

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, Image, TouchableHighlight, StyleSheet} from 'react-native'
 import Colors from "../constants/Colors"
 import {Ionicons} from "@expo/vector-icons"
+import {Avatar} from "react-native-elements"
 
 const profileImageSize = 36
 const padding = 12
@@ -14,9 +15,9 @@ export default class ItemUser extends Component {
           backgroundColor: "transparent"
         }} onPress={() => this.goToProfile()}>
         <View style={styles.row}>
-          <Image style={styles.avatar} source={{
+          <Avatar style={styles.avatar} small="small" rounded={true} source={{
               uri: this.props.imageCreator
-            }}/>
+            }} activeOpacity={0.7}/>
           <Text style={styles.text}>{this.props.nameCreator}</Text>
         </View>
       </TouchableHighlight>
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
     borderRadius: profileImageSize / 2,
     width: profileImageSize,
     height: profileImageSize,
-    resizeMode: "cover",
     marginRight: padding
   },
   row: {
