@@ -114,32 +114,38 @@ class Profile extends React.Component {
         alignItems: "center",
         flexDirection: "row"
       }}>
-      <View style={{
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this.infoDogs(dog)} style={{
           flex: 2,
           flexDirection: "row",
           alignItems: "center"
         }}>
         <View style={{
-            marginLeft: 15
+            flex: 2,
+            flexDirection: "row",
+            alignItems: "center"
           }}>
-          <Avatar small="small" rounded={true} source={avatar
-              ? {
-                uri: avatar
-              }
-              : {
-                uri: (urlPhotoDog = "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f")
-              }
+          <View style={{
+              marginLeft: 15
+            }}>
+            <Avatar small="small" rounded={true} source={avatar
+                ? {
+                  uri: avatar
+                }
+                : {
+                  uri: (urlPhotoDog = "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f")
+                }
 } activeOpacity={0.7}/>
+          </View>
+          <Text style={{
+              fontFamily: "regular",
+              fontSize: 15,
+              marginLeft: 10,
+              color: Colors.verdeOscuro
+            }}>
+            {name}
+          </Text>
         </View>
-        <Text style={{
-            fontFamily: "regular",
-            fontSize: 15,
-            marginLeft: 10,
-            color: Colors.verdeOscuro
-          }}>
-          {name}
-        </Text>
-      </View>
+      </TouchableHighlight>
       <View style={{
           flexDirection: "row",
           justifyContent: "center",
