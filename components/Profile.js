@@ -146,35 +146,7 @@ class Profile extends React.Component {
           </Text>
         </View>
       </TouchableHighlight>
-      <View style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          marginRight: 10
-        }}>
-        <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this.infoDogs(dog)}>
-          <View style={{
-              backgroundColor: Colors.verdeOscuro,
-              width: 70,
-              height: 28,
-              borderRadius: 5,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              marginLeft: 10
-            }}>
-            <Icon name="md-information-circle" color={Colors.whiteCrudo} size={25}/>
-            <Text style={{
-                color: "white",
-                fontFamily: "regular",
-                fontSize: 13,
-                marginLeft: 5
-              }}>
-              Info
-            </Text>
-          </View>
-        </TouchableHighlight>
-        {this.renderButtonSettings(dog)}
-      </View>
+      {this.renderButtonSettings(dog)}
     </View>);
   }
 
@@ -182,7 +154,7 @@ class Profile extends React.Component {
     if (this.props.isMyProfile) 
       return (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this.gotoDogScreen(dog.key, dog.name)}>
         <View style={{
-            backgroundColor: Colors.pinkChicle,
+            backgroundColor: Colors.verdeOscuro,
             width: 35,
             height: 28,
             borderRadius: 5,
@@ -190,7 +162,7 @@ class Profile extends React.Component {
             alignItems: "center",
             marginHorizontal: 10
           }}>
-          <Icon name="md-settings" color="white" size={20}/>
+          <Icon name="md-create" color="white" size={20}/>
         </View>
       </TouchableHighlight>);
     }
