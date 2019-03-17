@@ -24,7 +24,11 @@
       "bundleIdentifier": "com.ismaelsagredo.RutaCaninaRN",
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "¿Permites usar la cámara para tomar fotos de tus canes?"
+        "NSCameraUsageDescription": "¿Permites usar la cámara para tomar fotos de tus canes?",
+        "NSLocationUsageDescription" : "¿Permites usar el servicio de localización para situarte en el mapa?",
+        "NSLocationAlwaysUsageDescription" : "¿Permites usar el servicio de localización para situarte en el mapa?",
+        "NSLocationWhenInUseUsageDescription" : "¿Permites usar el servicio de localización para situarte en el mapa?",
+        "NSPhotoLibraryUsageDescription": "¿Permites usar la librería para ver fotos de tus canes?",
       },
       "config": {
         "googleMapsApiKey": "AIzaSyBFn2gCWT1I0-kEG2v3bm8h1lP69_NA0dk",

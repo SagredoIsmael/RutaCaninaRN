@@ -13,7 +13,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button
+  Button,
+  Alert
 } from 'react-native'
 
 const profileImageSize = 36
@@ -25,11 +26,12 @@ class MapRoutesScreen extends React.Component {
   }
 
   state = {
+    maxZoomLevel: 5,
     me: {
       location: {
         coords: {
-          latitude: 36.834047,
-          longitude: -2.463714
+          latitude: 40.4167047,
+          longitude: -3.7035825
         }
       }
     },
@@ -44,7 +46,7 @@ class MapRoutesScreen extends React.Component {
     let {status} = (await Expo.Permissions.askAsync(Expo.Permissions.LOCATION));
 
     if (status !== 'granted') {
-      console.error('Location Permission Not Granted')
+      console.log('Location Permission Not Granted, status:', status);
       Alert('Es necesario permitir la localización')
     }
 
@@ -87,11 +89,13 @@ class MapRoutesScreen extends React.Component {
         }} initialRegion={{
           latitude: this.state.me.location.coords.latitude,
           longitude: this.state.me.location.coords.longitude,
-          longitudeDelta: 0.01211 * 10,
-          latitudeDelta: 0.01211 * 10
+          longitudeDelta: 0.15,
+          latitudeDelta: 0.15
         }} showsMyLocationButton={true} showsUserLocation={true} showsCompass={true} compassStyle={{
           bottom: 10
-        }} mapType={'hybrid'}>
+        }} mapType={'hybrid'} maxZoomLevel={this.state.maxZoomLevel} onMapReady={() => {
+          this.setState({maxZoomLevel: 20})
+        }}>
         {this.props.dataRoutes.map(this.renderMarker)}
         <InfoRoute isOpenInfoRoute={this.state.isOpenInfoRoute} routeSelect={this.state.routeSelected} clickDismiss={this._pressDismissInfoRoute} nav={this.props.navigation}/>
       </MapView>
