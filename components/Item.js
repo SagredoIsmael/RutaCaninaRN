@@ -26,6 +26,7 @@ const padding = 12
 class Item extends React.Component {
 
   state = {
+    loadingImage: false,
     isOpenListAssistans: false,
     isLoadingAssistants: false
   }
@@ -42,15 +43,15 @@ class Item extends React.Component {
   renderIconBar() {
     return (<View style={styles.padding}>
       <View style={styles.row}>
-        <IconSubscribe isLoadingSubscribe={this.state.isLoadingSubscribe} keyRoute={this.props.keyRoute}/>
+        <IconSubscribe isLoadingSubscribe={this.state.isLoadingSubscribe} keyRoute={this.props.keyRoute} nav={this.props.nav}/>
 
         < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat
 }>
-          {this.renderIcon("ios-chatbubbles-outline")}
+          {this.renderIcon("ios-chatbubbles")}
         </TouchableHighlight>
 
         <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressMap}>
-          {this.renderIcon("ios-send-outline")}</TouchableHighlight>
+          {this.renderIcon("ios-send")}</TouchableHighlight>
 
         {
           this.state.isLoadingAssistants
@@ -58,7 +59,7 @@ class Item extends React.Component {
             : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
                 this.requestAssistants()
               }}>
-              {this.renderIcon("ios-people-outline")}
+              {this.renderIcon("ios-people")}
             </TouchableHighlight>)
         }</View>
     </View>)
@@ -161,7 +162,10 @@ class Item extends React.Component {
               borderRadius: 20
             }} source={{
               uri: this.props.image
-            }}/>
+            }} onLoadStart={() => this.setState({loadingImage: true})} onLoadEnd={() => {
+              this.setState({loadingImage: false})
+            }}></Image>
+          {this.state.loadingImage && <ActivityIndicator size="small" color={Colors.pinkChicle} animating={this.state.loadingImage}/>}
         </View>
         {
           this.props.isHiddenOption

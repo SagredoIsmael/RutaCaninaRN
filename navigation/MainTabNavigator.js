@@ -16,7 +16,7 @@ RutasStack.navigationOptions = {
   tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} size={32} name={Platform.OS === "ios"
       ? `ios-paw${focused
         ? ""
-        : "-outline"}`
+        : ""}`
       : "md-paw"
 }/>)
 };
@@ -28,7 +28,7 @@ PerfilStack.navigationOptions = {
   tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} name={Platform.OS === "ios"
       ? `ios-contact${focused
         ? ""
-        : "-outline"}`
+        : ""}`
       : "md-contact"
 }/>)
 };
@@ -40,7 +40,7 @@ MisRutasStack.navigationOptions = {
   tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} name={Platform.OS === "ios"
       ? `ios-heart${focused
         ? ""
-        : "-outline"}`
+        : ""}`
       : "md-heart"
 }/>)
 };
@@ -52,7 +52,7 @@ MapRoutesStack.navigationOptions = {
   tabBarIcon: ({focused}) => (<TabBarIcon focused={focused} name={Platform.OS === "ios"
       ? `ios-navigate${focused
         ? ""
-        : "-outline"}`
+        : ""}`
       : "md-navigate"
 }/>)
 };

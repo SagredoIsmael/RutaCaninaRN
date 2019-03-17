@@ -216,7 +216,7 @@ class Login extends Component {
                     }} ref={input => (this.emailInput = input)} onSubmitEditing={() => this.passwordInput.focus()} onChangeText={email => this.setState({email})} errorMessage={isEmailValid
                       ? null
                       : "Por favor introduce un email válido"
-}/>
+}></Input>
                   <Input leftIcon={<SimpleIcon
                     name = "lock"
                     color = "rgba(0, 0, 0, 0.38)"
@@ -237,7 +237,8 @@ class Login extends Component {
                       : this.login()} onChangeText={password => this.setState({password})} errorMessage={isPasswordValid
                       ? null
                       : "La contraseña debe tener al menos 8 caracteres"
-}/> {
+}></Input>
+                  {
                     isSignUpPage && (<Input icon={<SimpleIcon
                       name = "lock"
                       color = "rgba(0, 0, 0, 0.38)"
@@ -254,7 +255,7 @@ class Login extends Component {
 } errorMessage={isConfirmationValid
                         ? null
                         : "Ambas contraseñas no coinciden"
-}/>)
+}></Input>)
                   }
                   {
                     isSignUpPage && (<Input value={name} secureTextEntry={false} keyboardAppearance="light" autoCapitalize="words" autoCorrect={false} keyboardType="default" returnKeyType={"done"} blurOnSubmit={true} containerStyle={{
@@ -262,7 +263,7 @@ class Login extends Component {
                         borderBottomColor: "rgba(0, 0, 0, 0.38)"
                       }} inputStyle={{
                         marginLeft: 10
-                      }} placeholder={"Tu nombre"} ref={input => (this.confirmationInput = input)} onSubmitEditing={this.signUp} onChangeText={name => this.setState({name})}/>)
+                      }} placeholder={"Tu nombre"} ref={input => (this.confirmationInput = input)} onSubmitEditing={this.signUp} onChangeText={name => this.setState({name})}></Input>)
                   }
                   <Button buttonStyle={styles.loginButton} containerStyle={{
                       marginTop: 32,

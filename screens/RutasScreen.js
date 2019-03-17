@@ -126,7 +126,7 @@ class RutasScreen extends React.Component {
           this._onRefresh
         }
         />} onPressFooter={this.onPressFooter} data={this.props.dataRoutes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
-      <ActionButton buttonColor={Colors.pinkChicle} onPress={() => {
+      <ActionButton buttonColor={Colors.background} onPress={() => {
           this.goToNewRoute()
         }} size={this.state.loading
           ? 0

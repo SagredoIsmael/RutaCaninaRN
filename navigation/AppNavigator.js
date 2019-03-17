@@ -1,5 +1,5 @@
 import React from "react"
-import {createStackNavigator} from "react-navigation"
+import {createStackNavigator, createAppContainer} from "react-navigation"
 import MainTabNavigator from "./MainTabNavigator"
 import DogScreen from "../screens/DogScreen"
 import NewRouteScreen from "../screens/NewRoute/NewRouteScreen"
@@ -31,4 +31,6 @@ const AppStackNavigator = createStackNavigator({
   }
 });
 
-export default AppStackNavigator;
+const App = createAppContainer(AppStackNavigator);
+
+export default App;

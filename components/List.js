@@ -46,7 +46,7 @@ class List extends React.Component {
   renderSeparator = () => {
     return (<View style={{
         height: 1.5,
-        backgroundColor: Colors.pinkChicle,
+        backgroundColor: Colors.background,
         alignItems: "center",
         justifyContent: "center",
         marginLeft: "14%",

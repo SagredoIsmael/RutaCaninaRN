@@ -15,7 +15,8 @@ import {
   TouchableHighlight,
   View,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 
 class IconSubscribe extends React.Component {
@@ -41,7 +42,7 @@ class IconSubscribe extends React.Component {
               this.state.isSubscribe
                 ? this.renderIcon("ios-heart")
 
-                : this.renderIcon("ios-person-add-outline")
+                : this.renderIcon("ios-person-add")
 
             }
           </TouchableHighlight>)
