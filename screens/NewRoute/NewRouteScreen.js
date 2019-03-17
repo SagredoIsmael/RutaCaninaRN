@@ -45,8 +45,8 @@ class NewRouteScreen extends React.Component {
       headerStyle: {
         backgroundColor: Colors.background
       },
-      headerRight: (<Icon.Button name='info' backgroundColor="transparent" size={32} color={Colors.verdeOscuro} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>),
-      headerLeft: (<Icon1.Button name='md-arrow-back' backgroundColor="transparent" size={28} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.showAlert()}></Icon1.Button>)
+      headerRight: (<Icon.Button name='info' backgroundColor="transparent" size={28} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>),
+      headerLeft: (<Icon1.Button name='md-arrow-back' backgroundColor="transparent" size={32} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.showAlert()}></Icon1.Button>)
     }
   }
 
@@ -109,7 +109,12 @@ class NewRouteScreen extends React.Component {
           <View style={styles.slide1}>
             <StartRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childStart = ref)} nav={this.props.navigation}/>
           </View>
-
+          <View style={styles.slide1}>
+            <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
+          </View>
+          <View style={styles.slide1}>
+            <EndRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childEnd = ref)} nav={this.props.navigation} refreshList={this.refreshList}/>
+          </View>
         </Swiper>
       </ImageBackground>
     </View>);

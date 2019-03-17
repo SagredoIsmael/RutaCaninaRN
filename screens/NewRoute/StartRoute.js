@@ -8,7 +8,7 @@ import AutoTypingText from 'react-native-auto-typing-text'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
 import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
-import {GiftedForm, GiftedFormModal, GiftedFormManager} from 'react-native-gifted-form'
+import {GiftedForm} from 'react-native-gifted-form'
 import {createRouter, NavigationProvider, StackNavigation, withNavigation} from '@expo/ex-navigation';
 import {
   ScrollView,
@@ -98,7 +98,6 @@ class StartRoute extends React.Component {
 
   componentDidMount() {
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
-    this.activateHelper()
     this.props.onRef(this)
   }
 

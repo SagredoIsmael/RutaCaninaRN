@@ -31,8 +31,7 @@ class MapRoute extends React.Component {
           longitude: -2.463714
         }
       }
-    },
-    isHelper: true
+    }
   }
 
   componentDidMount() {
@@ -43,11 +42,6 @@ class MapRoute extends React.Component {
 
   componentWillUnmount() {
     this.props.onRef(undefined)
-  }
-
-  componentDidUpdate() {
-    if (this.state.isHelper) 
-      this.activateHelper()
   }
 
   activateHelper = () => {
@@ -116,8 +110,6 @@ class MapRoute extends React.Component {
 
   render() {
     if (this.props.currentPosition == 1) {
-      if (this.state.isHelper) 
-        this.setState({isHelper: false})
       if (!this.state.me.location) {
         console.log('Permission not Granted')
         Alert("Debes aceptar el permiso de localización")

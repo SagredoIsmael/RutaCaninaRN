@@ -27,7 +27,6 @@ export class EndRoute extends React.Component {
 
   state = {
     secondStepActive: true,
-    isHelper: true,
     isLoading: false,
     isEditingRoute: false
   }
@@ -40,11 +39,6 @@ export class EndRoute extends React.Component {
 
   componentWillUnmount() {
     this.props.onRef(undefined)
-  }
-
-  componentDidUpdate() {
-    if (this.state.isHelper) 
-      this.activateHelper()
   }
 
   activateHelper = () => {
@@ -120,8 +114,6 @@ export class EndRoute extends React.Component {
 
   render() {
     if (this.props.currentPosition == 2) {
-      if (this.state.isHelper) 
-        this.setState({isHelper: false})
       return (<ScrollView style={styles.container}>
         <CopilotStep text="Vista previa de tu ruta. ¡Click en 'Crear ruta' si todo está genial!" order={1} name="createRoute">
           <WalkthroughableView style={{
