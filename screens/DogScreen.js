@@ -49,7 +49,7 @@ class DogScreen extends React.Component {
         backgroundColor: Colors.background
       },
       headerRight: (<Button onPress={() => ourself.comprobeChanges('guardar')} title={'Guardar'} color={Colors.pinkChicle}/>),
-      headerLeft: (<Icon.Button name='md-arrow-back' backgroundColor="transparent" color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.comprobeChanges('volver')}></Icon.Button>)
+      headerLeft: (<Icon.Button name='md-arrow-back' backgroundColor="transparent" size={32} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.comprobeChanges('volver')}></Icon.Button>)
     }
   }
 

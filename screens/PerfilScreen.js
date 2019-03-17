@@ -7,8 +7,15 @@ import Login from '../components/Login.js'
 import Profile from '../components/Profile.js'
 import Loader from '../components/Modals/Loader'
 import {ScrollView, View, AsyncStorage} from 'react-native'
+import Icon from "react-native-vector-icons/Ionicons"
 
 class PerfilScreen extends React.Component {
+  static ourself = null;
+  constructor(props) {
+    super(props)
+    ourself = this
+  }
+
   static navigationOptions = {
     title: 'Su perfil',
     headerTitleStyle: {
@@ -17,11 +24,8 @@ class PerfilScreen extends React.Component {
     },
     headerStyle: {
       backgroundColor: Colors.profilegreen
-    }
-  }
-
-  constructor(props) {
-    super(props);
+    },
+    headerLeft: (<Icon.Button name='md-arrow-back' backgroundColor="transparent" color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} size={32} onPress={() => ourself.props.navigation.goBack(null)}></Icon.Button>)
   }
 
   state = {
