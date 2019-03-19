@@ -56,7 +56,6 @@ class MapRoute extends React.Component {
     let {status} = (await Expo.Permissions.askAsync(Expo.Permissions.LOCATION));
 
     if (status !== 'granted') {
-      console.error('Location Permission Not Granted')
       Alert('Es necesario permitir la localización')
     }
 

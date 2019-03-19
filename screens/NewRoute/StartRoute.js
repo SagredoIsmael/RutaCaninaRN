@@ -8,8 +8,10 @@ import AutoTypingText from 'react-native-auto-typing-text'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
 import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
-import {GiftedForm} from 'react-native-gifted-form'
-import {createRouter, NavigationProvider, StackNavigation, withNavigation} from '@expo/ex-navigation';
+import {createRouter, NavigationProvider, StackNavigation, withNavigation} from '@expo/ex-navigation'
+import {Fumi} from 'react-native-textinput-effects';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import {
   ScrollView,
   StyleSheet,
@@ -66,34 +68,36 @@ class StartRoute extends React.Component {
     })
   }
 
-  handleValueChange(values) {
+  handleValueChange(type, value) {
 
-    if (values.nameRoute != null) 
-      this.props.dataNewRoute.title = values.nameRoute
+    switch (type) {
+      case "name":
+        this.props.dataNewRoute.title = value
+        break;
 
-    if (values.dateRoute != null) {
-      const dateFormat = moment(values.dateRoute).format('DD-MM-YYYY')
-      this.props.dataNewRoute.date = dateFormat
-      this.setState({date: dateFormat})
-    }
+      case "date":
+        const dateFormat = moment(value).format('DD-MM-YYYY')
+        this.props.dataNewRoute.date = dateFormat
+        this.setState({date: dateFormat})
+        break;
 
-    if (values.timeRoute != null) {
-      const timeFormat = moment(values.timeRoute).format('HH:mm')
-      this.props.dataNewRoute.time = timeFormat
-      this.setState({time: timeFormat})
-    }
+      case "time":
+        const timeFormat = moment(value).format('HH:mm')
+        this.props.dataNewRoute.time = timeFormat
+        this.setState({time: timeFormat})
+        break;
 
-    if (values.descriptionRoute != null) {
-      this.props.dataNewRoute.description = values.descriptionRoute
-      this.setState({description: values.descriptionRoute})
-    }
+      case "description":
+        this.props.dataNewRoute.description = value
+        this.setState({description: value})
+        break;
 
-    if (values.duration != null) {
-      this.props.dataNewRoute.duration = values.duration[0]
+      case "duration":
+        this.props.dataNewRoute.duration = value[0]
+        break;
     }
 
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
-    this.setState({form: values})
   }
 
   componentDidMount() {
@@ -157,129 +161,9 @@ class StartRoute extends React.Component {
                     width: '85%',
                     height: '85%'
                   }}>
-                  <GiftedForm formName='signupForm' openModal={(params) => {
-                      this.setModalVisible(true, params)
-                    }} scrollEnabled={false} onValueChange={(values) => this.handleValueChange(values)} closeModal={() => {
-                      this.setModalVisible(false)
-                    }} clearOnClose={false} validators={{
-                      nameRoute: {
-                        title: 'Nombre',
-                        validate: [
-                          {
-                            validator: 'isLength',
-                            arguments: [
-                              1, 100
-                            ],
-                            message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
-                          }
-                        ]
-                      },
-                      photoRoute: {
-                        title: 'Foto',
-                        validate: [
-                          {
-                            validator: 'isLength',
-                            arguments: [
-                              1, 100
-                            ],
-                            message: '{TITLE} must be between {ARGS[0]} and {ARGS[1]} characters'
-                          }
-                        ]
-                      }
-                    }}>
-                    <GiftedForm.TextInputWidget name='nameRoute' title='Nombre' value={this.props.dataNewRoute.title} image={require('../../assets/images/formIcon/nameRoute.png')} placeholder='Ruta por Cabo de Gata' clearButtonMode='while-editing'/>
-
-                    <GiftedForm.SeparatorWidget/>
-
-                    <GiftedForm.ModalWidget title={this.state.date} displayValue='Fecha' image={require('../../assets/images/formIcon/date.png')} scrollEnabled={false}>
-                      <GiftedForm.SeparatorWidget/>
-
-                      <GiftedForm.DatePickerIOSWidget name='dateRoute' mode='date' getDefaultDate={() => {
-                          return new Date()
-                        }} minimumDate={new Date()} style={{
-                          height: '1000%'
-                        }}/>
-                    </GiftedForm.ModalWidget>
-
-                    <GiftedForm.ModalWidget title={this.state.time} image={require('../../assets/images/formIcon/time.png')} displayValue='Hora' scrollEnabled={false}>
-                      <GiftedForm.SeparatorWidget/>
-
-                      <GiftedForm.DatePickerIOSWidget name='timeRoute' mode='time' getDefaultDate={() => {
-                          return new Date()
-                        }} style={{
-                          height: '1000%'
-                        }}/>
-                    </GiftedForm.ModalWidget>
-
-                    <GiftedForm.ModalWidget title='Duración aprox.' image={require('../../assets/images/formIcon/duration.png')} displayValue='Duración aprox.'>
-
-                      <GiftedForm.SeparatorWidget/>
-
-                      <GiftedForm.SelectWidget name='duration' title='Duración aproximada' multiple={false}>
-                        <GiftedForm.OptionWidget title='1 hora' value='1 hora'/>
-                        <GiftedForm.OptionWidget title='1 hora y media' value='1h y media'/>
-                        <GiftedForm.OptionWidget title='2 horas' value='2 horas'/>
-                        <GiftedForm.OptionWidget title='2 horas y media' value='2h y media'/>
-                        <GiftedForm.OptionWidget title='3 horas' value='3 horas'/>
-                        <GiftedForm.OptionWidget title='3 horas y media' value='3h y media'/>
-                        <GiftedForm.OptionWidget title='4 horas' value='4 horas'/>
-                        <GiftedForm.OptionWidget title='4 horas y media' value='4h y media'/>
-                        <GiftedForm.OptionWidget title='Más de 5 horas..' value='5 horas'/>
-                      </GiftedForm.SelectWidget>
-                    </GiftedForm.ModalWidget>
-
-                    <GiftedForm.SeparatorWidget/>
-
-                    <GiftedForm.ModalWidget title={this.state.description} name='descriptionRoute' displayValue='Descripción' image={require('../../assets/images/formIcon/description.png')} scrollEnabled={true}>
-                      <GiftedForm.SeparatorWidget/>
-
-                      <GiftedForm.TextAreaWidget name='descriptionRoute' style={{
-                          height: '300%',
-                          width: '120%',
-                          marginTop: 20,
-                          paddingLeft: 70,
-                          paddingRight: 70,
-                          backgroundColor: 'white'
-                        }} autoFocus={true} placeholder='Ejemplo: Realizaremos una ruta muy divertida por la montaña, es recomendable llevar calzado adecuado. Nos encontraremos con dos fuentes de agua por el camino para poder hidratar a nuestros canes. Existe una zona de 2 kms en la que podremos soltar a nuestros canes y que disfruten jugando. ¡Cualquier duda podemos hablarla por el chat de la ruta! Será genial, animaros!'/>
-                    </GiftedForm.ModalWidget>
-
-                    <GiftedForm.SeparatorWidget/>
-
-                    <GiftedForm.RowValueWidget name='photoRoute' title='Foto de la ruta' value={this.state.photoStatus} image={require('../../assets/images/formIcon/photo.png')} placeholder='Selecciona foto' onPress={() => {
-                        this._pickImage()
-                      }}></GiftedForm.RowValueWidget>
-
-                  </GiftedForm>
-
-                  <Modal animationType={"slide"} transparent={false} visible={this.state.modalVisible} onRequestClose={() => {
-                      alert("Modal has been closed.")
-                    }} style={{
-                      flex: 1
-                    }}>
-                    <View style={{
-                        height: '100%',
-                        justifyContent: 'center',
-                        backgroundColor: Colors.whiteCrudo
-                      }}>
-                      <Text style={{
-                          fontSize: 35,
-                          color: Colors.pinkChicle,
-                          marginTop: 30,
-                          textAlignVertical: "center",
-                          textAlign: "center"
-                        }}>
-                        {this.state.modalTitle}
-                      </Text>
-                      {this.state.modalContent}
-                      <AwesomeButtonRick type="secondary" style={{
-                          alignSelf: 'center',
-                          marginTop: 50,
-                          marginBottom: 40
-                        }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.setModalVisible(!this.state.modalVisible)}>
-                        Aceptar
-                      </AwesomeButtonRick>
-                    </View>
-                  </Modal>
+                  <Fumi label={'Nombre de la ruta'} iconClass={MaterialCommunityIcons} iconName={'routes'} iconColor={Colors.pinkChicle} onChangeText={(text) => {
+                      this.handleValueChange('name', text)
+                    }} value={this.props.dataNewRoute.title} iconSize={20} iconWidth={40} inputPadding={16}/>
                 </WalkthroughableView>
               </CopilotStep>)
           }
