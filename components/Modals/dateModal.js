@@ -10,20 +10,70 @@ import {
   ScrollView,
   TouchableHighlight,
   Button,
-  Platform,
-  DatePickerIOS
+  Platform
 } from "react-native"
 import {connect} from "react-redux"
 import * as actions from "../../actions"
 import Colors from "../../constants/Colors"
-import Item from "../Item"
+import moment from 'moment'
+import {Calendar, LocaleConfig} from 'react-native-calendars'
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
+LocaleConfig.locales['es'] = {
+  monthNames: [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+  ],
+  monthNamesShort: [
+    'Ene.',
+    'Feb.',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Sept.',
+    'Oct.',
+    'Nov.',
+    'Dic.'
+  ],
+  dayNames: [
+    'Domingo',
+    'Lunes',
+    'Martes',
+    'Miercoles',
+    'Jueves',
+    'Viernes',
+    'Sábado'
+  ],
+  dayNamesShort: [
+    'Dom.',
+    'Lun.',
+    'Mar.',
+    'Mie.',
+    'Juev.',
+    'Vie.',
+    'Sab.'
+  ]
+};
+
+LocaleConfig.defaultLocale = 'es';
 
 class dateModal extends React.Component {
 
   state = {
-    dateSelected: new Date(),
+    dateSelected: moment(new Date()).format('YYYY-MM-DD')
   }
 
   _pressSelectDate = () => {
@@ -31,48 +81,52 @@ class dateModal extends React.Component {
     this.props.clickDismiss()
   }
 
-  componentWillMount(){
-    if (Platform.OS === 'ios') this.setState({ isIOS: true })
-  }
-
   _buttonsDialogModal() {
     return (<View>
       <Button title="Seleccionar" color={Colors.verdeOscuro} align="center" onPress={() => this._pressSelectDate()}/>
-      </View>)
+    </View>)
   }
 
   render() {
+    var esLocale = require('moment/locale/es')
+    moment.locale('es', esLocale)
+    var date = moment(this.state.dateSelected, 'YYYY-MM-DD')
+
     return (<Dialog onDismiss={() => {}} width={1} onTouchOutside={() => this.props.clickDismiss()} style={{
         backgroundColor: '#F7F7F8'
       }} visible={this.props.isOpenDateModal} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={this._buttonsDialogModal()}>
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>
-        {this.state.isIOS? (  <DatePickerIOS
-        date={new Date()}
-        onDateChange={date => this.setState({ dateSelected: date })}
-        minuteInterval={15}
-        minimumDate={new Date()}
-        mode={"date"}
-      />) : (null)}
 
+        <Calendar current={new Date(date)} minDate={new Date()} onDayPress={(day) => {
+            this.setState({dateSelected: day["dateString"]})
+          }}/>
+        <Text style={{
+            marginTop: 40,
+            fontSize: 20,
+            alignSelf: "center",
 
+            color: Colors.verdeOscuro,
+            marginLeft: -15
+          }}>
+          Fecha de la ruta:
+        </Text>
+        <Text style={{
+            marginTop: 10,
+            fontSize: 20,
+            alignSelf: "center",
+            color: Colors.verdeOscuro,
+            marginLeft: -15
+          }}>
+          {moment(this.state.dateSelected, 'YYYY-MM-DD').format("dddd DD MMM")}
+
+        </Text>
       </DialogContent>
     </Dialog>)
   }
 }
-const styles = StyleSheet.create({
-  avatarDogs: {
-    width: 130,
-    height: 130,
-    borderRadius: 63,
-    borderWidth: 3,
-    borderColor: Colors.verdeOscuro,
-    marginTop: 10,
-    alignSelf: "center",
-    position: "relative"
-  }
-});
+const styles = StyleSheet.create({});
 const mapStateToProps = state => {
   return {scrollPositionList: state.scrollPositionList};
 };

@@ -67,7 +67,14 @@ class StartRoute extends React.Component {
     })
   }
 
-  handleValueChange(type, value) {
+  changeValueFromComponent = (type, value) => {
+    this.handleValueChange(type, value)
+  }
+
+  handleValueChange = (type, value) => {
+    console.log('entro');
+    console.log('this.propsdataroute.son:', this.props.dataNewRoute);
+
     switch (type) {
       case "name":
         this.props.dataNewRoute.title = value
@@ -175,8 +182,8 @@ class StartRoute extends React.Component {
                       <Fumi label={'Fecha de la ruta'} style={{
                           marginTop: 10
                         }} iconClass={MaterialCommunityIcons} iconName={'calendar-today'} iconColor={Colors.pinkChicle} onChangeText={(text) => {
-                          this.handleValueChange('date', text)
-                        }} value={this.props.dataNewRoute.date} iconSize={20} iconWidth={40} inputPadding={16}/>
+                          this.changeValueFromComponent('date', text)
+                        }} value={moment(this.props.dataNewRoute.date, 'YYYY-MM-DD').format("dddd DD MMM")} iconSize={20} iconWidth={40} inputPadding={16}/>
                     </View>
 
                   </TouchableOpacity>
