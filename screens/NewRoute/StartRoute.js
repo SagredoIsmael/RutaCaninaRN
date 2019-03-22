@@ -12,7 +12,11 @@ import {createRouter, NavigationProvider, StackNavigation, withNavigation} from 
 import {Fumi} from 'react-native-textinput-effects';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import DateModal from '../../components/Modals/dateModal'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+import DateModal from '../../components/Modals/DateModal'
+import PickerModal from '../../components/Modals/PickerModal'
 import {
   ScrollView,
   StyleSheet,
@@ -38,7 +42,9 @@ class StartRoute extends React.Component {
     hasCameraPermission: false,
     isTypingName: true,
     modalVisible: false,
-    isOpenDateModal: false
+    isOpenDateModal: false,
+    isOpenPickerModal: false,
+    isOpenDescriptionModal: false
   }
 
   setModalVisible(visible, params = null) {
@@ -81,9 +87,11 @@ class StartRoute extends React.Component {
         break;
 
       case "date":
-        const dateFormat = moment(value).format('DD-MM-YYYY')
+        const dateFormat = moment(value).format('YYYY-MM-DD')
         this.props.dataNewRoute.date = dateFormat
-        this.setState({date: dateFormat})
+        this.setState({
+          date: moment(dateFormat, 'YYYY-MM-DD').format("dddd DD MMM")
+        })
         break;
 
       case "time":
@@ -99,9 +107,10 @@ class StartRoute extends React.Component {
 
       case "duration":
         this.props.dataNewRoute.duration = value[0]
+        this.setState({duration: value})
         break;
     }
-
+    console.log('como vamos', this.props.dataNewRoute);
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
   }
 
@@ -140,8 +149,8 @@ class StartRoute extends React.Component {
     return date
   }
 
-  _pressDismissDateModal = () => {
-    this.setState({isOpenDateModal: false})
+  _pressDismissModals = () => {
+    this.setState({isOpenDateModal: false, isOpenPickerModal: false, isOpenDescriptionModal: false})
   }
 
   render() {
@@ -149,7 +158,6 @@ class StartRoute extends React.Component {
       return (<View style={styles.container}>
         <ScrollView style={styles.container}>
           <View style={{
-              marginTop: 10,
               alignItems: 'center'
             }}>
             <AutoTypingText text={'¿Creamos una ruta? ¡Genial!'} charMovingTime={40} delay={0} style={{
@@ -164,7 +172,7 @@ class StartRoute extends React.Component {
               ? (null)
               : (<CopilotStep text="Primero rellena el formulario con la info de la ruta" order={1} name="dateRoute">
                 <WalkthroughableView style={{
-                    marginTop: 20,
+                    marginTop: 10,
                     marginLeft: 10,
                     alignSelf: 'flex-start',
                     width: '85%',
@@ -172,7 +180,7 @@ class StartRoute extends React.Component {
                   }}>
 
                   <Fumi label={'Nombre de la ruta'} style={{
-                      marginTop: 10
+                      marginTop: 5
                     }} iconClass={MaterialCommunityIcons} iconName={'routes'} iconColor={Colors.pinkChicle} onChangeText={(text) => {
                       this.handleValueChange('name', text)
                     }} value={this.props.dataNewRoute.title} iconSize={20} iconWidth={40} inputPadding={16}/>
@@ -180,12 +188,41 @@ class StartRoute extends React.Component {
                   <TouchableOpacity onPress={() => this.setState({isOpenDateModal: true})}>
                     <View pointerEvents='none'>
                       <Fumi label={'Fecha de la ruta'} style={{
-                          marginTop: 10
-                        }} iconClass={MaterialCommunityIcons} iconName={'calendar-today'} iconColor={Colors.pinkChicle} onChangeText={(text) => {
-                          this.changeValueFromComponent('date', text)
-                        }} value={moment(this.props.dataNewRoute.date, 'YYYY-MM-DD').format("dddd DD MMM")} iconSize={20} iconWidth={40} inputPadding={16}/>
+                          marginTop: 5
+                        }} iconClass={MaterialCommunityIcons} iconName={'calendar-today'} iconColor={Colors.pinkChicle} value={this.state.date} iconSize={20} iconWidth={40} inputPadding={16}/>
                     </View>
+                  </TouchableOpacity>
 
+                  <TouchableOpacity onPress={() => this.setState({isOpenPickerModal: true})}>
+                    <View pointerEvents='none'>
+                      <Fumi label={'Hora de la ruta'} style={{
+                          marginTop: 5
+                        }} iconClass={Ionicons} iconName={'md-time'} iconColor={Colors.pinkChicle} value={this.state.time} iconSize={20} iconWidth={40} inputPadding={16}/>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({isOpenPickerModal: true})}>
+                    <View pointerEvents='none'>
+                      <Fumi label={'Duración aprox.'} style={{
+                          marginTop: 5
+                        }} iconClass={MaterialIcons} iconName={'timelapse'} iconColor={Colors.pinkChicle} value={this.state.duration} iconSize={20} iconWidth={40} inputPadding={16}/>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this.setState({isOpenDescriptionModal: true})}>
+                    <View pointerEvents='none'>
+                      <Fumi label={'Descripción'} style={{
+                          marginTop: 5
+                        }} iconClass={SimpleLineIcons} iconName={'note'} iconColor={Colors.pinkChicle} value={this.state.description} iconSize={20} iconWidth={40} inputPadding={16}/>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity onPress={() => this._pickImage()}>
+                    <View pointerEvents='none'>
+                      <Fumi label={'Foto de la ruta'} style={{
+                          marginTop: 5
+                        }} iconClass={FontAwesomeIcon} iconName={'photo'} iconColor={Colors.pinkChicle} value={this.state.photoStatus} iconSize={20} iconWidth={40} inputPadding={16}/>
+                    </View>
                   </TouchableOpacity>
 
                 </WalkthroughableView>
@@ -205,7 +242,9 @@ class StartRoute extends React.Component {
           }
           <TouchableOpacity onPress={() => this.props.start()} ref={component => this.touchable = component}/>
         </ScrollView>
-        <DateModal isOpenDateModal={this.state.isOpenDateModal} clickDismiss={this._pressDismissDateModal} changeValueDate={this.handleValueChange}/>
+        <DateModal isOpenDateModal={this.state.isOpenDateModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
+        <PickerModal isOpenPickerModal={this.state.isOpenPickerModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
+
       </View>)
     }
     return (<View/>)

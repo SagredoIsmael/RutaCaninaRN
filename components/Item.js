@@ -71,7 +71,7 @@ class Item extends React.Component {
       <View style={styles.rowDate}>
         {
           this.props.date != ''
-            ? <Text style={styles.time}>{moment(this.props.date, 'DD-MM-YYYY').format("dddd DD MMM")}
+            ? <Text style={styles.time}>{moment(this.props.date, 'YYYY-MM-DD').format("dddd DD MMM")}
               </Text>
             : null
         }

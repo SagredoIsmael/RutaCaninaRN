@@ -2,18 +2,11 @@ import React from "react";
 import {
   StyleSheet,
   View,
-  Modal,
-  ActivityIndicator,
   Text,
   Image,
-  ImageBackground,
   ScrollView,
-  TouchableHighlight,
   Button,
-  Platform
 } from "react-native"
-import {connect} from "react-redux"
-import * as actions from "../../actions"
 import Colors from "../../constants/Colors"
 import moment from 'moment'
 import {Calendar, LocaleConfig} from 'react-native-calendars'
@@ -70,7 +63,7 @@ LocaleConfig.locales['es'] = {
 
 LocaleConfig.defaultLocale = 'es';
 
-class dateModal extends React.Component {
+class DateModal extends React.Component {
 
   state = {
     dateSelected: moment(new Date()).format('YYYY-MM-DD')
@@ -116,7 +109,7 @@ class dateModal extends React.Component {
             marginTop: 10,
             fontSize: 20,
             alignSelf: "center",
-            color: Colors.verdeOscuro,
+            color: Colors.pinkChicle,
             marginLeft: -15
           }}>
           {moment(this.state.dateSelected, 'YYYY-MM-DD').format("dddd DD MMM")}
@@ -126,9 +119,5 @@ class dateModal extends React.Component {
     </Dialog>)
   }
 }
-const styles = StyleSheet.create({});
-const mapStateToProps = state => {
-  return {scrollPositionList: state.scrollPositionList};
-};
 
-export default connect(mapStateToProps, actions)(dateModal);
+export default DateModal

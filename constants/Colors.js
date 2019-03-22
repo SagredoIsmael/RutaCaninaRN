@@ -6,6 +6,7 @@ export default {
   profilegreen: "#bedce2",
   azuliOS: "#0D61FE",
   tintColor,
+  greenSuccesfull : "rgb(28, 255, 0)",
   tabIconDefault: "#ccc",
   tabIconSelected: tintColor,
   verdeOscuro: "#859a9b",
