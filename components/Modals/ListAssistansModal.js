@@ -16,7 +16,7 @@ import Colors from "../../constants/Colors"
 import Fire from "../../api/Fire"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
-const ListAssistans = ({isOpenListAssistans, clickDismiss, nav, assistants, myKeyUser}) => {
+const ListAssistansModal = ({isOpenListAssistans, clickDismiss, nav, assistants, myKeyUser}) => {
 
   if (assistants != null && assistants.length > 0) {
     return (<Dialog onDismiss={() => {
@@ -80,4 +80,4 @@ const ListAssistans = ({isOpenListAssistans, clickDismiss, nav, assistants, myKe
 
 const styles = StyleSheet.create({})
 
-export default ListAssistans;
+export default ListAssistansModal;

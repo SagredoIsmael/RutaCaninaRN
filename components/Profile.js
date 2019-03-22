@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/Ionicons"
 import _ from "lodash"
 import {Avatar, Button} from "react-native-elements"
 import Loader from "./Modals/Loader"
-import InfoDog from "./Modals/InfoDog"
+import InfoDog from "./Modals/InfoDogModal"
 import {
   StyleSheet,
   Alert,
@@ -17,7 +17,6 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
-  TouchableOpacity,
   Dimensions
 } from "react-native";
 import Colors from "../constants/Colors"

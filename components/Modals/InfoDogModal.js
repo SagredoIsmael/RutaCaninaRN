@@ -13,7 +13,7 @@ import {
 import Colors from "../../constants/Colors"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
-const InfoDogs = ({isOpenInfoDog, dogSelect, clickDismiss}) => {
+const InfoDogModal = ({isOpenInfoDog, dogSelect, clickDismiss}) => {
   if (dogSelect != null) {
     return (<Dialog onDismiss={() => {}} width={0.8} style={{
         backgroundColor: '#F7F7F8'
@@ -85,4 +85,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default InfoDogs;
+export default InfoDogModal;

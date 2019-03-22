@@ -17,7 +17,7 @@ import Colors from "../../constants/Colors"
 import Item from "../Item"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
-class InfoRoute extends React.Component {
+class InfoRouteModal extends React.Component {
 
   _pressRoute = () => {
     this.props.insert_scrollPositionList({keyRoute: this.props.routeSelect.key})
@@ -73,4 +73,4 @@ const mapStateToProps = state => {
   return {scrollPositionList: state.scrollPositionList};
 };
 
-export default connect(mapStateToProps, actions)(InfoRoute);
+export default connect(mapStateToProps, actions)(InfoRouteModal);

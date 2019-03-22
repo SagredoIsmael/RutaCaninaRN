@@ -2,7 +2,7 @@ import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
 import {Ionicons} from "@expo/vector-icons"
-import ListAssistans from './Modals/ListAssistans'
+import ListAssistans from './Modals/ListAssistansModal'
 import ItemUser from './ItemUser'
 import IconSubscribe from './IconsBarCell/IconSubscribe.js'
 import ViewMoreText from 'react-native-view-more-text';

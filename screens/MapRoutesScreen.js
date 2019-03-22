@@ -4,7 +4,7 @@ import * as actions from '../actions'
 import {MapView} from 'expo'
 import Colors from "../constants/Colors"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import InfoRoute from '../components/Modals/InfoRoute'
+import InfoRoute from '../components/Modals/InfoRouteModal'
 import {
   Image,
   Platform,
