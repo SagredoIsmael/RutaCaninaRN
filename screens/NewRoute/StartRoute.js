@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import DateModal from '../../components/Modals/DateModal'
-import PickerModal from '../../components/Modals/PickerModal'
+
 import {
   ScrollView,
   StyleSheet,
@@ -27,7 +27,9 @@ import {
   Dimensions,
   Alert,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  TimePickerAndroid,
+  Plataform
 } from 'react-native'
 
 var screenWidth = Dimensions.get('window').width
@@ -39,11 +41,11 @@ const WalkthroughableView = walkthroughable(View)
 class StartRoute extends React.Component {
 
   state = {
+    time: "12:30",
     hasCameraPermission: false,
     isTypingName: true,
     modalVisible: false,
     isOpenDateModal: false,
-    isOpenPickerModal: false,
     isOpenDescriptionModal: false
   }
 
@@ -78,8 +80,6 @@ class StartRoute extends React.Component {
   }
 
   handleValueChange = (type, value) => {
-    console.log('entro');
-    console.log('this.propsdataroute.son:', this.props.dataNewRoute);
 
     switch (type) {
       case "name":
@@ -95,9 +95,8 @@ class StartRoute extends React.Component {
         break;
 
       case "time":
-        const timeFormat = moment(value).format('HH:mm')
-        this.props.dataNewRoute.time = timeFormat
-        this.setState({time: timeFormat})
+        this.props.dataNewRoute.time = value
+        this.setState({time: value})
         break;
 
       case "description":
@@ -110,7 +109,6 @@ class StartRoute extends React.Component {
         this.setState({duration: value})
         break;
     }
-    console.log('como vamos', this.props.dataNewRoute);
     this.props.insert_dataNewRoute(this.props.dataNewRoute)
   }
 
@@ -150,10 +148,14 @@ class StartRoute extends React.Component {
   }
 
   _pressDismissModals = () => {
-    this.setState({isOpenDateModal: false, isOpenPickerModal: false, isOpenDescriptionModal: false})
+    this.setState({isOpenDateModal: false, isOpenDescriptionModal: false})
   }
 
   render() {
+    const isIOS = false
+    if (Plataform === 'ios') 
+      isIOS = true
+
     if (this.props.currentPosition == 0) {
       return (<View style={styles.container}>
         <ScrollView style={styles.container}>
@@ -193,19 +195,25 @@ class StartRoute extends React.Component {
                     </View>
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => this.setState({isOpenPickerModal: true})}>
+                  <TouchableOpacity onPress={async () => {
+                      const {action, hour, minute} = await TimePickerAndroid.open({
+                        hour: parseFloat(this.state.time.substring(0, 2)),
+                        minute: parseFloat(this.state.time.substring(3, 5)),
+                        is24Hour: true
+                      });
+                      if (action === TimePickerAndroid.timeSetAction) {
+                        var time = this.state.time.substring(0, 2) + ":" + this.state.time.substring(3, 5)
+
+                        this.handleValueChange("time", time)
+                      }
+                      if (action === TimePickerAndroid.dismissedAction) {
+                        console.log("Dismissed");
+                      }
+                    }}>
                     <View pointerEvents='none'>
                       <Fumi label={'Hora de la ruta'} style={{
                           marginTop: 5
-                        }} iconClass={Ionicons} iconName={'md-time'} iconColor={Colors.pinkChicle} value={this.state.time} iconSize={20} iconWidth={40} inputPadding={16}/>
-                    </View>
-                  </TouchableOpacity>
-
-                  <TouchableOpacity onPress={() => this.setState({isOpenPickerModal: true})}>
-                    <View pointerEvents='none'>
-                      <Fumi label={'Duración aprox.'} style={{
-                          marginTop: 5
-                        }} iconClass={MaterialIcons} iconName={'timelapse'} iconColor={Colors.pinkChicle} value={this.state.duration} iconSize={20} iconWidth={40} inputPadding={16}/>
+                        }} iconClass={Ionicons} iconName={'md-time'} iconColor={Colors.pinkChicle} value={this.props.dataNewRoute.time} iconSize={20} iconWidth={40} inputPadding={16}/>
                     </View>
                   </TouchableOpacity>
 
@@ -243,8 +251,6 @@ class StartRoute extends React.Component {
           <TouchableOpacity onPress={() => this.props.start()} ref={component => this.touchable = component}/>
         </ScrollView>
         <DateModal isOpenDateModal={this.state.isOpenDateModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
-        <PickerModal isOpenPickerModal={this.state.isOpenPickerModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
-
       </View>)
     }
     return (<View/>)

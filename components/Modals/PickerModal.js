@@ -6,7 +6,7 @@ import {
   Image,
   ScrollView,
   Button,
-  Picker,
+  Picker
 } from "react-native"
 import Colors from "../../constants/Colors"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
@@ -14,7 +14,9 @@ import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAni
 class PickerModal extends React.Component {
 
   state = {
-    services: [ 'one', 'two', 'three', 'four', 'five' ],
+    services: [
+      'one', 'two', 'three', 'four', 'five'
+    ],
     pickerSelected: ""
   }
 
@@ -30,9 +32,9 @@ class PickerModal extends React.Component {
   }
 
   render() {
-    let serviceItems = this.state.services.map( (s, i) => {
-            return <Picker.Item key={i} value={s} label={s} />
-        });
+    let serviceItems = this.state.services.map((s, i) => {
+      return <Picker.Item key={i} value={s} label={s}/>
+    });
 
     return (<Dialog onDismiss={() => {}} width={1} onTouchOutside={() => this.props.clickDismiss()} style={{
         backgroundColor: '#F7F7F8'
@@ -40,7 +42,6 @@ class PickerModal extends React.Component {
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>
-
 
         <Text style={{
             marginTop: 40,
@@ -52,12 +53,12 @@ class PickerModal extends React.Component {
           }}>
           Hora de la ruta:
         </Text>
-        <Picker
-          selectedValue={this.state.language}
-          style={{height: 200, width: 100, alignSelf: "center" }}
-          onValueChange={(itemValue, itemIndex) =>
-            this.setState({language: itemValue})
-          }>
+        <Picker selectedValue={this.state.language} style={{
+            height: 200,
+            width: 100,
+            alignSelf: "center"
+          }} onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})
+}>
           {serviceItems}
         </Picker>
       </DialogContent>
