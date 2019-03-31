@@ -51,12 +51,8 @@ const ListAssistansModal = ({isOpenListAssistans, clickDismiss, nav, assistants,
   }
   return (<Dialog onDismiss={() => {
       console.log('click on dismiss');
-    }} width={0.9} visible={isOpenListAssistans} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} dialogTitle={<DialogTitle
-    title = "Asistentes" onTouchOutside = {
-      () => {
-        console.log('click en title');
-      }
-    }
+    }} width={0.9} visible={isOpenListAssistans} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} onTouchOutside={() => clickDismiss()} dialogTitle={<DialogTitle
+    title = "Asistentes"
     style = {{
                 backgroundColor: '#F7F7F8',
               }}
@@ -64,16 +60,22 @@ const ListAssistansModal = ({isOpenListAssistans, clickDismiss, nav, assistants,
       false
     }
     align = "center"
-    />} footer={<View> < Button title = "Cerrar" color = {
+    />} footer={<Button title = "Cerrar" color = {
       Colors.verdeOscuro
     }
     align = "center" onPress = {
       () => clickDismiss()
-    } /> < /View>}>
+    } />}>
     <DialogContent style={{
         backgroundColor: '#F7F7F8'
       }}>
-      <Text>Aún no hay ningún asistente. ¡Anímate y sé el primero!</Text>
+      <ImageBackground source={require("../../assets/images/background.png")} style={{
+          width: "100%"
+        }}>
+        <Text>
+          Aún no hay ningún asistente. ¡Anímate y sé el primero!
+        </Text>
+      </ImageBackground>
     </DialogContent>
   </Dialog>)
 }

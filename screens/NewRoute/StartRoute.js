@@ -16,7 +16,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import DateModal from '../../components/Modals/DateModal'
-
+import TimePickerIosModal from '../../components/Modals/TimePickerIosModal'
 import {
   ScrollView,
   StyleSheet,
@@ -29,7 +29,7 @@ import {
   Modal,
   TouchableHighlight,
   TimePickerAndroid,
-  Plataform
+  Platform
 } from 'react-native'
 
 var screenWidth = Dimensions.get('window').width
@@ -41,10 +41,12 @@ const WalkthroughableView = walkthroughable(View)
 class StartRoute extends React.Component {
 
   state = {
+    isIOS: false,
     time: "12:30",
     hasCameraPermission: false,
     isTypingName: true,
     modalVisible: false,
+    isOpenTimePickerIosModal: false,
     isOpenDateModal: false,
     isOpenDescriptionModal: false
   }
@@ -73,6 +75,9 @@ class StartRoute extends React.Component {
     this.setState({
       hasCameraPermission: status === "granted"
     })
+
+    if (Platform.OS === 'ios') 
+      this.setState({isIOS: true})
   }
 
   changeValueFromComponent = (type, value) => {
@@ -147,14 +152,32 @@ class StartRoute extends React.Component {
     return date
   }
 
+  _timePickerAndroid = async () => {
+
+    const {action, hour, minute} = await TimePickerAndroid.open({
+      hour: parseFloat(this.state.time.substring(0, 2)),
+      minute: parseFloat(this.state.time.substring(3, 5)),
+      is24Hour: true
+    });
+
+    if (action === TimePickerAndroid.timeSetAction) {
+      var min = minute
+      if (min == "0") 
+        min = "00"
+      var time = hour + ":" + min
+
+      this.handleValueChange("time", time)
+    }
+    if (action === TimePickerAndroid.dismissedAction) {
+      console.log("Dismissed");
+    }
+  }
+
   _pressDismissModals = () => {
-    this.setState({isOpenDateModal: false, isOpenDescriptionModal: false})
+    this.setState({isOpenDateModal: false, isOpenTimePickerIosModal: false, isOpenDescriptionModal: false})
   }
 
   render() {
-    const isIOS = false
-    if (Plataform === 'ios') 
-      isIOS = true
 
     if (this.props.currentPosition == 0) {
       return (<View style={styles.container}>
@@ -196,19 +219,9 @@ class StartRoute extends React.Component {
                   </TouchableOpacity>
 
                   <TouchableOpacity onPress={async () => {
-                      const {action, hour, minute} = await TimePickerAndroid.open({
-                        hour: parseFloat(this.state.time.substring(0, 2)),
-                        minute: parseFloat(this.state.time.substring(3, 5)),
-                        is24Hour: true
-                      });
-                      if (action === TimePickerAndroid.timeSetAction) {
-                        var time = this.state.time.substring(0, 2) + ":" + this.state.time.substring(3, 5)
-
-                        this.handleValueChange("time", time)
-                      }
-                      if (action === TimePickerAndroid.dismissedAction) {
-                        console.log("Dismissed");
-                      }
+                      this.state.isIOS
+                        ? (this.setState({isOpenTimePickerIosModal: true}))
+                        : (this._timePickerAndroid())
                     }}>
                     <View pointerEvents='none'>
                       <Fumi label={'Hora de la ruta'} style={{
@@ -251,6 +264,8 @@ class StartRoute extends React.Component {
           <TouchableOpacity onPress={() => this.props.start()} ref={component => this.touchable = component}/>
         </ScrollView>
         <DateModal isOpenDateModal={this.state.isOpenDateModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
+        <TimePickerIosModal isOpenTimePickerIosModal={this.state.isOpenTimePickerIosModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
+
       </View>)
     }
     return (<View/>)
