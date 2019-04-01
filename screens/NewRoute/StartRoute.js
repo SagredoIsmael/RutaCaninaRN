@@ -17,6 +17,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
 import DateModal from '../../components/Modals/DateModal'
 import TimePickerIosModal from '../../components/Modals/TimePickerIosModal'
+import TextInputModal from '../../components/Modals/TextInputModal'
 import {
   ScrollView,
   StyleSheet,
@@ -265,7 +266,7 @@ class StartRoute extends React.Component {
         </ScrollView>
         <DateModal isOpenDateModal={this.state.isOpenDateModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
         <TimePickerIosModal isOpenTimePickerIosModal={this.state.isOpenTimePickerIosModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
-
+        <TextInputModal isOpenDescriptionModal={this.state.isOpenDescriptionModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
       </View>)
     }
     return (<View/>)

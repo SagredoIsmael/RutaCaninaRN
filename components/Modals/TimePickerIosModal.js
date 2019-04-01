@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ScrollView,
-  Button,
-  DatePickerIOS
-} from "react-native"
+import {StyleSheet, View, Text, Button, DatePickerIOS} from "react-native"
 import Colors from "../../constants/Colors"
 import moment from 'moment'
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
@@ -43,7 +35,7 @@ class TimePickerIosModal extends React.Component {
         }}>
 
         <Text style={{
-            marginTop: 40,
+            marginTop: 5,
             fontSize: 20,
             alignSelf: "center",
 
@@ -52,7 +44,7 @@ class TimePickerIosModal extends React.Component {
           }}>
           Hora de la ruta
         </Text>
-          <DatePickerIOS date={this.state.time} mode={'time'} onDateChange={(time)=>this._selectedTime(time)}/>
+        <DatePickerIOS date={this.state.time} mode={'time'} onDateChange={(time) => this._selectedTime(time)}/>
       </DialogContent>
     </Dialog>)
   }
