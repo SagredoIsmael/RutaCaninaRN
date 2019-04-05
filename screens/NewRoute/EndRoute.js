@@ -77,18 +77,15 @@ export class EndRoute extends React.Component {
                 //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
                 //Create route
-                const {data1} = await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
-
-                console.log('yepe', data1);
+                const keyRoute = await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo) //TODO: no trae bien el key route, cuando lo traiga bien igual funciona directamente ( 1- llama a dar de alta al usuario, 2? igual falta refresh usuario)
 
                 //Subscribe me
                 const attributesSubscribe = {
                   nameCreator: this.props.dataMyUser.name,
                   imageCreator: this.props.dataMyUser.image
                 }
-                console.log('que si');
-                console.log('por aqui vamossss', attributesSubscribe, data.id);
-                await Fire.shared.addAssistantsRoute(attributesSubscribe, data.id, this.props.dataMyUser.subscribedRoutes)
+
+                await Fire.shared.addAssistantsRoute(attributesSubscribe, keyRoute, this.props.dataMyUser.subscribedRoutes)
               }
               this.setState({isLoading: false})
               this.goToBack()
