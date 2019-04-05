@@ -19,6 +19,13 @@ export const insert_dataMyUser = dataMyUser => {
   };
 };
 
+export const reset_newRoute = dataNewRoute => {
+  return {
+    type: "reset_newRoute",
+    payload: dataNewRoute
+  };
+};
+
 export const insert_dataNewRoute = dataNewRoute => {
   return {
     type: "insert_dataNewRoute",

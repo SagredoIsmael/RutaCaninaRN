@@ -77,7 +77,7 @@ class StartRoute extends React.Component {
       hasCameraPermission: status === "granted"
     })
 
-    if (Platform.OS === 'ios') 
+    if (Platform.OS === 'ios')
       this.setState({isIOS: true})
   }
 
@@ -163,7 +163,7 @@ class StartRoute extends React.Component {
 
     if (action === TimePickerAndroid.timeSetAction) {
       var min = minute
-      if (min == "0") 
+      if (min == "0")
         min = "00"
       var time = hour + ":" + min
 
