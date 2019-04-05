@@ -11,7 +11,8 @@ import {
   View,
   Alert,
   Text,
-  Dimensions
+  Dimensions,
+  Platform
 } from 'react-native'
 
 var {
@@ -100,9 +101,12 @@ class MapRoute extends React.Component {
 
     let where = (await Expo.Location.reverseGeocodeAsync(coords.nativeEvent.coordinate))[0]
 
-    var streetName = where.street + ", " + where.name
-
-    this.setState({descripMarker: streetName})
+    if (Platform.OS === 'ios'){
+      this.setState({descripMarker: where.name})
+    }else{
+      var streetName = where.street + ", " + where.name
+      this.setState({descripMarker: streetName})
+    }
     this.marker.showCallout()
   }
 
