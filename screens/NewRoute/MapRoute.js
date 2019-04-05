@@ -24,14 +24,15 @@ const WalkthroughableView = walkthroughable(View)
 class MapRoute extends React.Component {
 
   state = {
+    maxZoomLevel: 5,
     me: {
       location: {
         coords: {
-          latitude: 36.834047,
-          longitude: -2.463714
+          latitude: 40.4167047,
+          longitude: -3.7035825
         }
       }
-    }
+    },
   }
 
   componentDidMount() {
@@ -95,10 +96,13 @@ class MapRoute extends React.Component {
 
   onMapPress = async (coords) => {
     this.setState({coordsMarker: coords.nativeEvent.coordinate})
-    console.log(this.state.coordsMarker);
     this.changeValueNewRoute(coords.nativeEvent.coordinate)
+
     let where = (await Expo.Location.reverseGeocodeAsync(coords.nativeEvent.coordinate))[0]
-    this.setState({descripMarker: where.name})
+
+    var streetName = where.street + ", " + where.name
+
+    this.setState({descripMarker: streetName})
     this.marker.showCallout()
   }
 
@@ -115,91 +119,72 @@ class MapRoute extends React.Component {
         return (<View/>);
       }
       return (<View style={styles.container}>
-        <CopilotStep text="Para encontrar un lugar puedes ayudarte del buscador" order={2} name="findPlace">
+        <CopilotStep text="Mueve el mapa hasta encontrar tu punto de encuentro. Una vez localizado, haz click encima para colocar el pin" order={1} name="map">
           <WalkthroughableView style={{
               width: '80%',
-              top: 0,
-              alignItems: 'center',
-              height: '12%',
-              position: 'absolute'
-            }}/>
-        </CopilotStep>
-        <CopilotStep text="Mueve el mapa hasta encontrar tu punto de encuentro. Una vez localizado, pincha encima para colocar el pin." order={1} name="map">
-          <WalkthroughableView style={{
-              width: '80%',
-              top: 0,
-              bottom: 60,
-              height: '80%'
+              height: '100%',
             }}>
             <MapView style={{
-                width: '100%',
-                top: 0,
-                bottom: 0,
-                position: 'absolute'
+                top:50,
+                flex:1,
+
               }} region={{
                 latitude: this.state.me.location.coords.latitude,
                 longitude: this.state.me.location.coords.longitude,
-                longitudeDelta: 0.01211,
-                latitudeDelta: 0.01211
+                longitudeDelta: 0.15,
+                latitudeDelta: 0.15
               }} onPress={(coords) => this.onMapPress(coords)} showsMyLocationButton={true} showsUserLocation={true} showsCompass={true} compassStyle={{
                 bottom: 10,
                 left: 10
-              }}>
+              }} maxZoomLevel={this.state.maxZoomLevel} onMapReady={() => {
+                this.setState({maxZoomLevel: 20}) }}>
               {
                 this.state.coordsMarker
                   ? <Expo.MapView.Marker ref={this.setMarkerRef} coordinate={this.state.coordsMarker} description={this.state.descripMarker} title='Punto de encuentro'/>
                   : null
               }
             </MapView>
+            <GooglePlacesAutocomplete placeholder='¿Dónde quedamos?' minLength={2} autoFocus={false} autoCorrect={true} listViewDisplayed='false' fetchDetails={true} renderDescription={(row) => row.description} onPress={(data, details = null) => {
+                if (details && details.geometry && details.geometry.location) {
+                  this.onChangePositionMap(details.geometry.location)
+                }
+              }} getDefaultValue={() => {
+                return ''
+              }} query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
+                language: 'es',
+                types: 'geocode'
+              }} styles={{
+                container:{
+                  position:'absolute',
+                  width:'100%'
+                },
+                description: {
+                  fontWeight: 'bold'
+                },
+                textInputContainer: {
+                  backgroundColor: 'rgba(0,0,0,0)',
+                  borderWidth: 0,
+                },
+                textInput: {
+                  color: '#5d5d5d',
+                  fontSize: 16,
+                  borderWidth: 0,
+                  borderRadius: 25
+                },
+                listView: {
+                  backgroundColor: Colors.whiteCrudo,
+                }
+              }} currentLocation={false} currentLocationLabel="Current location" nearbyPlacesAPI='GooglePlacesSearch' GoogleReverseGeocodingQuery={{
+                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+              }} GooglePlacesSearchQuery={{
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                rankby: 'distance',
+                types: 'food'
+              }} filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_1']} debounce={200} renderLeftButton={() => <Text></Text>} renderRightButton={() => <Text></Text>}/>
           </WalkthroughableView>
         </CopilotStep>
-        <GooglePlacesAutocomplete placeholder='¿Dónde quedamos?' minLength={2} autoFocus={false} autoCorrect={true} listViewDisplayed='false' fetchDetails={true} renderDescription={(row) => row.description} onPress={(data, details = null) => {
-            console.log(data)
-            console.log(details)
-            if (details && details.geometry && details.geometry.location) {
-              this.onChangePositionMap(details.geometry.location)
-            }
-          }} getDefaultValue={() => {
-            return ''
-          }} query={{
-            // available options: https://developers.google.com/places/web-service/autocomplete
-            key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
-            language: 'es',
-            types: 'geocode'
-          }} styles={{
-            description: {
-              fontWeight: 'bold'
-            },
-            textInputContainer: {
-              backgroundColor: 'rgba(0,0,0,0)',
-              top: 0,
-              width: '80%',
-              height: '10%',
-              borderWidth: 0
-            },
-            textInput: {
-              marginLeft: 0,
-              marginRight: 0,
-              paddingTop: 10,
-              paddingBottom: 10,
-              paddingLeft: 20,
-              height: 30,
-              color: '#5d5d5d',
-              fontSize: 16,
-              borderWidth: 0,
-              borderRadius: 25
-            },
-            listView: {
-              backgroundColor: Colors.whiteCrudo,
-              top: 10
-            }
-          }} currentLocation={false} currentLocationLabel="Current location" nearbyPlacesAPI='GooglePlacesSearch' GoogleReverseGeocodingQuery={{
-            // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-          }} GooglePlacesSearchQuery={{
-            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-            rankby: 'distance',
-            types: 'food'
-          }} filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_1']} debounce={200} renderLeftButton={() => <Text></Text>} renderRightButton={() => <Text></Text>}/>
       </View>)
     }
     return (<View/>)
@@ -208,8 +193,6 @@ class MapRoute extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100%',
-    marginBottom: 35,
     flex: 1,
     alignItems: 'center'
   }
