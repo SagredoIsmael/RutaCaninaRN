@@ -65,7 +65,7 @@ export class EndRoute extends React.Component {
         if (this.props.dataNewRoute.time == '') {
           this._showSimpleAlert('¡Wuau!', 'La hora de la ruta es un campo obligatorio')
         } else {
-          if (this.props.dataNewRoute.title == '') {
+          if (this.props.dataNewRoute.description == '') {
             this._showSimpleAlert('¡Wuau!', 'La descripción la ruta es un campo obligatorio')
           } else {
             if (this.props.dataNewRoute.coords.length == 0) {
@@ -76,7 +76,19 @@ export class EndRoute extends React.Component {
               if (this.state.isEditingRoute) {
                 //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
-                await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
+                //Create route
+                const {data1} = await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
+
+                console.log('yepe', data1);
+
+                //Subscribe me
+                const attributesSubscribe = {
+                  nameCreator: this.props.dataMyUser.name,
+                  imageCreator: this.props.dataMyUser.image
+                }
+                console.log('que si');
+                console.log('por aqui vamossss', attributesSubscribe, data.id);
+                await Fire.shared.addAssistantsRoute(attributesSubscribe, data.id, this.props.dataMyUser.subscribedRoutes)
               }
               this.setState({isLoading: false})
               this.goToBack()

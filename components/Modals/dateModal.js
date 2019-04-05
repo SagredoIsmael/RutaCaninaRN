@@ -91,20 +91,9 @@ class DateModal extends React.Component {
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>
-
         <Calendar current={new Date(date)} minDate={new Date()} onDayPress={(day) => {
             this.setState({dateSelected: day["dateString"]})
           }}/>
-        <Text style={{
-            marginTop: 40,
-            fontSize: 20,
-            alignSelf: "center",
-
-            color: Colors.verdeOscuro,
-            marginLeft: -15
-          }}>
-          Fecha de la ruta:
-        </Text>
         <Text style={{
             marginTop: 10,
             fontSize: 20,
@@ -113,8 +102,8 @@ class DateModal extends React.Component {
             marginLeft: -15
           }}>
           {moment(this.state.dateSelected, 'YYYY-MM-DD').format("dddd DD MMM")}
-
         </Text>
+
       </DialogContent>
     </Dialog>)
   }

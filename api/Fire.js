@@ -79,7 +79,7 @@ class Fire extends React.Component {
   createNewRouteWithAttributes = async (attributesDicc, newValuePhotoPathRoute) => {
     let ref = firebase.firestore().collection("routes")
     await ref.add(attributesDicc).then(data => {
-      if (newValuePhotoPathRoute != null) 
+      if (newValuePhotoPathRoute != null)
         return this.uploadImageRouteAsync(newValuePhotoPathRoute, data.id)
     }).catch(function(error) {
       console.error("Error adding new route: ", error);
@@ -89,7 +89,18 @@ class Fire extends React.Component {
   uploadImageRouteAsync = async (uri, keyRoute) => {
     const image = await this.resizeImageRoute(uri);
     const response = await fetch(image);
-    const blob = await response.blob();
+    const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                resolve(xhr.response);
+            };
+            xhr.onerror = (e) => {
+                reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
+            xhr.send(null);
+        });
     const ref = firebase.storage().ref().child("routesPhotos").child(keyRoute).child("photo");
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL();
@@ -102,7 +113,7 @@ class Fire extends React.Component {
   updateAttributeRoute = async (attributesDicc, keyRoute) => {
     let ref = firebase.firestore().collection("routes").doc(keyRoute);
     await ref.set(attributesDicc, {merge: true});
-    return true;
+    return true
   }
 
   addAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
@@ -170,7 +181,7 @@ class Fire extends React.Component {
   }
 
   resizeImageRoute = async uri => {
-    const manipResult = await ImageManipulator.manipulate(uri, [/*  {
+    const manipResult = await ImageManipulator.manipulateAsync(uri, [/*  {
         resize: {
           width: 350,
           height: 250
@@ -240,7 +251,7 @@ class Fire extends React.Component {
   }
 
   resizeImage = async uri => {
-    const manipResult = await ImageManipulator.manipulate(uri, [
+    const manipResult = await ImageManipulator.manipulateAsync(uri, [
       {
         resize: {
           width: 200,
@@ -254,7 +265,18 @@ class Fire extends React.Component {
   uploadImageUserAsync = async uri => {
     const image = await this.resizeImage(uri);
     const response = await fetch(image);
-    const blob = await response.blob();
+    const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                resolve(xhr.response);
+            };
+            xhr.onerror = (e) => {
+                reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
+            xhr.send(null);
+        });
     const ref = firebase.storage().ref().child("usersPhotos").child(this.uid).child("photo");
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL();
@@ -295,7 +317,18 @@ class Fire extends React.Component {
   uploadImageDogAsync = async (uri, keyDog) => {
     const image = await this.resizeImage(uri);
     const response = await fetch(image);
-    const blob = await response.blob();
+    const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                resolve(xhr.response);
+            };
+            xhr.onerror = (e) => {
+                reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
+            xhr.send(null);
+        });
     const ref = firebase.storage().ref().child("dogsPhotos").child(this.uid).child(keyDog);
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL();
