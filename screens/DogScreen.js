@@ -135,13 +135,13 @@ class DogScreen extends React.Component {
     var attributes = {}
     if (this.state.isEditingDog) {
       const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
-      if (this.state.newValueNameDog != dog.name)
+      if (this.state.newValueNameDog != dog.name && this.state.newValueNameDog != '')
         attributes.name = this.state.newValueNameDog
-      if (this.state.newValueAgeDog != dog.age)
+      if (this.state.newValueAgeDog != dog.age && this.state.newValueAgeDog != '')
         attributes.age = this.state.newValueAgeDog
       if (this.intToGender(this.state.newValueGenderDog) != dog.gender)
         attributes.gender = this.intToGender(this.state.newValueGenderDog)
-      if (this.state.newValueBreedDog != dog.breed)
+      if (this.state.newValueBreedDog != dog.breed && this.state.newValueBreedDog != '')
         attributes.breed = this.state.newValueBreedDog
       if (optionsTemperament[this.state.newValueTemperamentDog] != dog.temperament)
         attributes.temperament = optionsTemperament[this.state.newValueTemperamentDog]
