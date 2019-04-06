@@ -369,7 +369,11 @@ class Fire extends React.Component {
   createNewDogWithAttributes = async (attributesDicc, newValuePhotoPathDog) => {
     let ref = firebase.firestore().collection("users").doc(this.uid).collection("dogs");
     await ref.add(attributesDicc).then(data => {
-      return this.uploadImageDogAsync(newValuePhotoPathDog, data.id);
+      if (newValuePhotoPathDog){
+        return this.uploadImageDogAsync(newValuePhotoPathDog, data.id);
+      }else{
+        return true
+      }
     }).catch(function(error) {
       console.error("Error adding new dog: ", error);
     })

@@ -62,12 +62,7 @@ class DogScreen extends React.Component {
     isEditingDog: false,
     newValueConductDog: [1],
     newValueTemperamentDog: [2],
-    newValueAvatarDog: '',
     newValueGenderDog: 0,
-    newValueNameDog: '',
-    newValueAgeDog: '',
-    newValueBreedDog: '',
-    newValueKeyDog: ''
   }
 
   componentDidMount() {
@@ -107,18 +102,24 @@ class DogScreen extends React.Component {
           break
 
         case 'guardar':
-          this.setState({isLoading: true});
           if (this.state.isEditingDog) {
+            this.setState({isLoading: true});
+
             await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+            this.userRequest()
+            this.goToBack()
           } else {
             if (Object.keys(attributesDicc).length < 6) {
               this._showSimpleAlert('¡Wuau!', 'Hay que rellenar todos los campos')
             } else {
+              this.setState({isLoading: true});
+
               await Fire.shared.createNewDogWithAttributes(attributesDicc, this.state.newValueAvatarDog)
+              this.userRequest()
+              this.goToBack()
             }
           }
-          this.userRequest()
-          this.goToBack()
+          this.setState({isLoading: false});
           break
 
         default:
@@ -148,13 +149,19 @@ class DogScreen extends React.Component {
         attributes.conduct = optionsConduct[this.state.newValueConductDog]
     } else {
       attributes = {
-        name: this.state.newValueNameDog,
-        age: this.state.newValueAgeDog,
         gender: this.intToGender(this.state.newValueGenderDog),
         temperament: optionsTemperament[this.state.newValueTemperamentDog],
         conduct: optionsConduct[this.state.newValueConductDog],
-        breed: this.state.newValueBreedDog
       }
+      if (this.state.newValueNameDog){
+        attributes.name = this.state.newValueNameDog
+      }
+      if (this.state.newValueAgeDog){
+        attributes.age = this.state.newValueAgeDog
+      }
+      if (this.state.newValueBreedDog){
+        attributes.breed = this.state.newValueBreedDog
+        }
     }
     return attributes
   }
@@ -193,7 +200,7 @@ class DogScreen extends React.Component {
       aspect: [4, 3]
     })
     if (!result.cancelled) {
-      if (keyDog != '') { //updating photo dog
+      if (keyDog) { //updating photo dog
         this.setState({isLoading: true})
         uploadUrl = await Fire.shared.uploadImageDogAsync(result.uri, keyDog)
         uploadUrl
@@ -220,9 +227,13 @@ class DogScreen extends React.Component {
   }
 
   renderImageDog(urlPhotoDog) {
-    if (urlPhotoDog == '')
-      urlPhotoDog = 'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.png?alt=media&token=821fdff6-ad3d-4547-b7cf-2dd21230f0df' 
-    return (<Image style={styles.avatar} source={{uri: urlPhotoDog}}/>)
+    return (<Image style={styles.avatar} source={urlPhotoDog
+        ? {
+          uri: urlPhotoDog
+        }
+        : {
+          uri: 'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.png?alt=media&token=821fdff6-ad3d-4547-b7cf-2dd21230f0df'
+        }}/>)
     }
 
   showAlertDelete = () => {
@@ -473,7 +484,7 @@ let styles = StyleSheet.create({
     height: 130,
     borderRadius: 63,
     borderWidth: 3,
-    borderColor: Colors.whiteCrudo,
+    borderColor: Colors.verdeOscuro,
     marginBottom: 20,
     alignSelf: 'center',
     position: 'relative',

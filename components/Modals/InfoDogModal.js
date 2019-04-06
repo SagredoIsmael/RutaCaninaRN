@@ -30,9 +30,14 @@ const InfoDogModal = ({isOpenInfoDog, dogSelect, clickDismiss}) => {
           <ImageBackground source={require("../../assets/images/background.png")} style={{
               width: "100%"
             }}>
-            <Image style={styles.avatarDogs} source={{
-                uri: dogSelect.avatar
-              }}/>
+
+            <Image style={styles.avatarDogs} source={dogSelect.avatar
+                ? {
+                  uri: dogSelect.avatar
+                }
+                : {
+                  uri: 'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.png?alt=media&token=821fdff6-ad3d-4547-b7cf-2dd21230f0df'
+                }}/>
             <Text style={{
                 fontFamily: "bold",
                 fontSize: 20,
