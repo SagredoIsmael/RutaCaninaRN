@@ -77,7 +77,7 @@ export class EndRoute extends React.Component {
                 //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
                 //Create route
-                const keyRoute = await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo) //TODO: no trae bien el key route, cuando lo traiga bien igual funciona directamente ( 1- llama a dar de alta al usuario, 2? igual falta refresh usuario)
+                const keyRoute = await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
 
                 //Subscribe me
                 const attributesSubscribe = {

@@ -78,12 +78,15 @@ class Fire extends React.Component {
 
   createNewRouteWithAttributes = async (attributesDicc, newValuePhotoPathRoute) => {
     let ref = firebase.firestore().collection("routes")
+    var newIdRoute = -1
     await ref.add(attributesDicc).then(data => {
       if (newValuePhotoPathRoute != null)
-        return this.uploadImageRouteAsync(newValuePhotoPathRoute, data.id)
+        this.uploadImageRouteAsync(newValuePhotoPathRoute, data.id)
+        newIdRoute = data.id
     }).catch(function(error) {
       console.error("Error adding new route: ", error);
     })
+    return newIdRoute
   }
 
   uploadImageRouteAsync = async (uri, keyRoute) => {
