@@ -4,6 +4,7 @@ import {connect} from "react-redux"
 import * as actions from "../actions"
 import Fire from "../api/Fire"
 import Icon from "react-native-vector-icons/Ionicons"
+import IconFoundation from "react-native-vector-icons/Foundation"
 import _ from "lodash"
 import {Avatar, Button} from "react-native-elements"
 import Loader from "./Modals/Loader"
@@ -150,24 +151,28 @@ class Profile extends React.Component {
   }
 
   renderButtonSettings(dog) {
-    if (this.props.isMyProfile) 
+    if (this.props.isMyProfile)
       return (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this.gotoDogScreen(dog.key, dog.name)}>
         <View style={{
             backgroundColor: Colors.verdeOscuro,
-            width: 35,
+            width: 60,
             height: 28,
             borderRadius: 5,
             justifyContent: "center",
             alignItems: "center",
-            marginHorizontal: 10
+            marginHorizontal: 10,
+            flexDirection: 'row'
           }}>
+          <IconFoundation name="paw" color={Colors.pinkChicle} size={20} style={{
+              marginRight:5
+            }}/>
           <Icon name="md-create" color="white" size={20}/>
         </View>
       </TouchableHighlight>);
     }
-  
+
   renderAddDogButton() {
-    if (this.props.isMyProfile) 
+    if (this.props.isMyProfile)
       return (<View style={{
           flex: 1,
           marginRight: 25
@@ -183,7 +188,7 @@ class Profile extends React.Component {
           }} onPress={() => this.gotoDogScreen(null, "Nuevo can")} underlayColor="transparent"/>
       </View>);
     }
-  
+
   renderTextCanes() {
     var text = "Mis canes";
     var fontSize = 20;
@@ -220,7 +225,7 @@ class Profile extends React.Component {
   }
 
   renderPhotoUser() {
-    if (this.props.isMyProfile) 
+    if (this.props.isMyProfile)
       return (<View style={{
           flex: 1,
           justifyContent: "center",
@@ -332,7 +337,8 @@ class Profile extends React.Component {
         ? this.userRequest()
         : Alert.alert("¡Wuau!", "Error al cargar la foto", [
           {
-            text: "Aceptar"
+            text: "Aceptar",
+            onPress: () => this.setState({isLoading: false})
           }
         ], {cancelable: false})
     }

@@ -2,6 +2,7 @@ import uuid from "uuid";
 import React from "react";
 import {Alert} from "react-native";
 import {ImageManipulator} from "expo";
+import ImageResizer from 'react-native-image-resizer';
 import getUserInfo from "../utils/getUserInfo";
 import shrinkImageAsync from "../utils/shrinkImageAsync";
 const firebase = require("firebase");
@@ -266,20 +267,25 @@ class Fire extends React.Component {
   }
 
   uploadImageUserAsync = async uri => {
-    const image = await this.resizeImage(uri);
-    const response = await fetch(image);
+    //const image = await this.resizeImage(uri);
+
+   fetch(uri)
+  .then(async (response) => {
+
+    console.log("response", response);
+
     const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = () => {
-                resolve(xhr.response);
-            };
-            xhr.onerror = (e) => {
-                reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", uri, true);
-            xhr.send(null);
-        });
+          const xhr = new XMLHttpRequest();
+          xhr.onload = () => {
+              resolve(xhr.response)
+          };
+          xhr.onerror = (e) => {
+              reject(new TypeError("Network request failed"));
+          };
+          xhr.responseType = "blob";
+          xhr.open("GET", uri, true);
+          xhr.send(null);
+      });
     const ref = firebase.storage().ref().child("usersPhotos").child(this.uid).child("photo");
     const snapshot = await ref.put(blob);
     const urlPhoto = await snapshot.ref.getDownloadURL();
@@ -287,6 +293,13 @@ class Fire extends React.Component {
       image: urlPhoto
     };
     return this.updateAttributeUser(attributesDicc);
+  })
+  .catch((err) => {
+    alert("Error al subir la foto.")
+    console.log(err);
+  })
+
+
   };
 
   ////////DOGS API///////////////////
