@@ -312,7 +312,7 @@ class Fire extends React.Component {
           const img = post.image;
           const route = {
             key: doc.id,
-            image: img || "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f",
+            image: img || "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.png?alt=media&token=821fdff6-ad3d-4547-b7cf-2dd21230f0df",
             name: (title || "Desconocido").trim(),
             ...post
           };

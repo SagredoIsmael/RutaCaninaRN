@@ -132,7 +132,7 @@ class Profile extends React.Component {
                   uri: avatar
                 }
                 : {
-                  uri: (urlPhotoDog = "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.jpg?alt=media&token=ee194433-edab-4ff1-8dcd-aaa5d0de072f")
+                  uri: (urlPhotoDog = "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FavatarDog.png?alt=media&token=821fdff6-ad3d-4547-b7cf-2dd21230f0df")
                 }
 } activeOpacity={0.7}/>
           </View>
