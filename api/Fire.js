@@ -268,39 +268,34 @@ class Fire extends React.Component {
 
   uploadImageUserAsync = async uri => {
     //const image = await this.resizeImage(uri);
+     fetch(uri)
+    .then(async (response) => {
 
-   fetch(uri)
-  .then(async (response) => {
+      const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = () => {
+                resolve(xhr.response)
+            };
+            xhr.onerror = (e) => {
+                reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob";
+            xhr.open("GET", uri, true);
+            xhr.send(null);
+        });
+      const ref = firebase.storage().ref().child("usersPhotos").child(this.uid).child("photo");
+      const snapshot = await ref.put(blob);
+      const urlPhoto = await snapshot.ref.getDownloadURL();
+      const attributesDicc = {
+        image: urlPhoto
+      };
+      return this.updateAttributeUser(attributesDicc);
+    })
+    .catch((err) => {
+      console.log("Error al subir la foto :", err);
+    })
 
-    console.log("response", response);
-
-    const blob = await new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.onload = () => {
-              resolve(xhr.response)
-          };
-          xhr.onerror = (e) => {
-              reject(new TypeError("Network request failed"));
-          };
-          xhr.responseType = "blob";
-          xhr.open("GET", uri, true);
-          xhr.send(null);
-      });
-    const ref = firebase.storage().ref().child("usersPhotos").child(this.uid).child("photo");
-    const snapshot = await ref.put(blob);
-    const urlPhoto = await snapshot.ref.getDownloadURL();
-    const attributesDicc = {
-      image: urlPhoto
-    };
-    return this.updateAttributeUser(attributesDicc);
-  })
-  .catch((err) => {
-    alert("Error al subir la foto.")
-    console.log(err);
-  })
-
-
-  };
+  }
 
   ////////DOGS API///////////////////
 
