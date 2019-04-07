@@ -2,7 +2,6 @@ import uuid from "uuid";
 import React from "react";
 import {Alert} from "react-native";
 import {ImageManipulator} from "expo";
-import ImageResizer from 'react-native-image-resizer';
 import getUserInfo from "../utils/getUserInfo";
 import shrinkImageAsync from "../utils/shrinkImageAsync";
 const firebase = require("firebase");

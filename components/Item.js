@@ -116,7 +116,7 @@ class Item extends React.Component {
   }
 
   _pressChat = () => {
-    console.log('chat');
+    this.props.nav.navigate('ChatRouteScreen', {keyRoute :this.props.keyRoute})
   }
 
   _pressMap = () => {

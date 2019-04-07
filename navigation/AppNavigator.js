@@ -6,6 +6,7 @@ import NewRouteScreen from "../screens/NewRoute/NewRouteScreen"
 import Profile from "../screens/PerfilScreen"
 import MapRoutes from "../screens/MapRoutesScreen"
 import RoutesList from "../screens/RutasScreen"
+import ChatRouteScreen from "../screens/ChatRouteScreen"
 
 const AppStackNavigator = createStackNavigator({
   Main: {
@@ -19,6 +20,9 @@ const AppStackNavigator = createStackNavigator({
   },
   NewRoute: {
     screen: NewRouteScreen
+  },
+  ChatRouteScreen: {
+    screen: ChatRouteScreen
   },
   Profile: {
     screen: Profile
