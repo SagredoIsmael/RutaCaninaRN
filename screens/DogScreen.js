@@ -72,21 +72,18 @@ class DogScreen extends React.Component {
   setNewStates = () => {
     const dog = this.findDogByKey(this.props.navigation.getParam('keyDog'))
     if (dog !== undefined && dog !== null) {
-      this.setState({isEditingDog: true})
       this.setState({
-        newValueConductDog: [this.conductToInt(dog.conduct)]
+        isEditingDog: true,
+        newValueConductDog: [this.conductToInt(dog.conduct)],
+        newValueTemperamentDog: [this.temperamentToInt(dog.temperament)],
+        newValueNameDog: dog.name,
+        newValueAgeDog: dog.age,
+        newValueBreedDog: dog.breed,
+        newValueGenderDog: this.genderToInt(dog.gender),
+        switchSelectorValue: this.genderToInt(dog.gender),
+        newValueAvatarDog: dog.avatar,
+        newValueKeyDog: dog.key
       })
-      this.setState({
-        newValueTemperamentDog: [this.temperamentToInt(dog.temperament)]
-      })
-      this.setState({newValueNameDog: dog.name})
-      this.setState({newValueAgeDog: dog.age})
-      this.setState({newValueBreedDog: dog.breed})
-      this.setState({
-        newValueGenderDog: this.genderToInt(dog.gender)
-      })
-      this.setState({newValueAvatarDog: dog.avatar})
-      this.setState({newValueKeyDog: dog.key})
     }
     this.setState({isFirstLoading: false})
   }
@@ -358,7 +355,7 @@ class DogScreen extends React.Component {
                 }} borderColor={Colors.pinkChicle} labelStyle={Colors.pinkChicle}/>
             </View>
           </View>
-          <SwitchSelector options={this.state.newValueGenderDog == 0
+          <SwitchSelector options={this.state.switchSelectorValue == 0
               ? [
                 {
                   label: '  Hembra',
