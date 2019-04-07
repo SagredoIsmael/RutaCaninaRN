@@ -42,6 +42,16 @@ class Fire extends React.Component {
     return firebase.auth().signOut();
   }
 
+
+
+  //API MESSAGES Chat
+
+  sendMessage = messages => {
+    console.log('mensajes son:', messages);
+  };
+
+
+
   //API ROUTES///////////////////
 
   // Download Data Route
