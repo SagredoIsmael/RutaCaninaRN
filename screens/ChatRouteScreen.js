@@ -46,8 +46,9 @@ class ChatRouteScreen extends React.Component {
 
   get user() {
     return {
-      name: "isma",
+      name: this.props.dataMyUser.name,
       _id: Fire.shared.uid,
+      user: this.props.dataMyUser.image
     };
   }
 
@@ -59,14 +60,18 @@ class ChatRouteScreen extends React.Component {
     return (
       <GiftedChat
         messages={this.state.messages}
+        placeholder={"Escribe tu mensaje.."}
         onSend={Fire.shared.sendMessage}
+        isAnimated={true}
+        showUserAvatar={true}
+        onPressAvatar={} //Go to pprofile avatar
         user={this.user}
       />);
   }
 }
 
 const mapStateToProps = state => {
-  return {dataRoutes: state.dataRoutes}
+  return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
 }
 
 export default connect(mapStateToProps, actions)(ChatRouteScreen)
