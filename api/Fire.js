@@ -46,11 +46,28 @@ class Fire extends React.Component {
 
   //API MESSAGES Chat
 
-  sendMessage = messages => {
-    console.log('mensajes son:', messages);
-  };
+  sendMessage = (messages) => {
+    for (let i = 0; i < messages.length; i++) {
+      const { text, user } = messages[i];
+      const message = {
+        text,
+        userId: user._id,
+        userName: user.name,
+        userAvatar: user.user,
+        timestamp: this.timestamp,
+      }
+      console.log(user);
+      console.log(message);
+      
+      this.append(message, user.keyRoute);
+    }
+  }
 
-
+   append = (message, keyRoute) => {
+     let randomStringID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+     let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("chat").doc(randomStringID)
+     ref.set(message, {merge: false});
+   }
 
   //API ROUTES///////////////////
 

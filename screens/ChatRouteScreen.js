@@ -48,7 +48,8 @@ class ChatRouteScreen extends React.Component {
     return {
       name: this.props.dataMyUser.name,
       _id: Fire.shared.uid,
-      user: this.props.dataMyUser.image
+      user: this.props.dataMyUser.image,
+      keyRoute: this.props.navigation.state.params.keyRoute
     };
   }
 
@@ -64,7 +65,7 @@ class ChatRouteScreen extends React.Component {
         onSend={Fire.shared.sendMessage}
         isAnimated={true}
         showUserAvatar={true}
-        onPressAvatar={} //Go to pprofile avatar
+        //onPressAvatar={} //Go to pprofile avatar
         user={this.user}
       />);
   }
@@ -79,10 +80,6 @@ export default connect(mapStateToProps, actions)(ChatRouteScreen)
 let styles = StyleSheet.create({
   container: {
     backgroundColor: '#bedce2',
-    paddingHorizontal: 10,
-    paddingTop: 70,
-    paddingBottom: 20,
     flex: 1,
-    justifyContent: 'space-between'
   }
 });

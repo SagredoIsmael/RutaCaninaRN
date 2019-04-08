@@ -15,7 +15,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import DateModal from '../../components/Modals/DateModal'
+import DateModal from '../../components/Modals/dateModal'
 import TimePickerIosModal from '../../components/Modals/TimePickerIosModal'
 import TextInputModal from '../../components/Modals/TextInputModal'
 import {
