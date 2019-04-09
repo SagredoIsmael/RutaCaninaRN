@@ -165,15 +165,17 @@ class MapRoute extends React.Component {
                   width:'100%'
                 },
                 description: {
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
+                  fontSize: 12,
                 },
                 textInputContainer: {
                   backgroundColor: 'rgba(0,0,0,0)',
                   borderWidth: 0,
+
                 },
                 textInput: {
                   color: '#5d5d5d',
-                  fontSize: 16,
+                  fontSize: 14,
                   borderWidth: 0,
                   borderRadius: 25
                 },
