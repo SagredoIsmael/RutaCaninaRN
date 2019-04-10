@@ -58,7 +58,7 @@ class Fire extends React.Component {
       }
       console.log(user);
       console.log(message);
-      
+
       this.append(message, user.keyRoute);
     }
   }
@@ -68,6 +68,38 @@ class Fire extends React.Component {
      let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("chat").doc(randomStringID)
      ref.set(message, {merge: false});
    }
+
+   getMessages = async (keyRoute) => {
+     let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("chat")
+     try {
+       const querySnapshot = await ref.get();
+       const data = [];
+       querySnapshot.forEach(function(doc) {
+         if (doc.exists) {
+           const post = doc.data() || {};
+           const _id = doc.id
+           const text = post.text
+           const createdAt = new Date(post.timestamp);
+           const user = {
+             _id : post.userId,
+             name : post.userName,
+             avatar : post.userAvatar
+           }
+           const message = {
+             _id,
+             text,
+             createdAt,
+             user,
+           };
+           data.push(message);
+         }
+       });
+       return {data};
+     } catch ({message}) {
+       alert(message);
+     }
+   };
+
 
   //API ROUTES///////////////////
 

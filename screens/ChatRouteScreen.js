@@ -53,6 +53,18 @@ class ChatRouteScreen extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this._getMessages()
+  }
+
+  _getMessages = async() => {
+    const messages = await Fire.shared.getMessages(this.props.navigation.state.params.keyRoute)
+    console.log('jibiri, ', messages.data)
+    if (messages.data) this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages.data, messages.data),
+    }))
+  }
+
   goToBack() {
     this.props.navigation.goBack(null)
   }
