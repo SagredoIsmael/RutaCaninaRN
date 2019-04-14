@@ -60,7 +60,7 @@ const MapLocationModal = ({isOpenMapLocation, location, descriptionMarker, click
             longitudeDelta: 0.15,
             latitudeDelta: 0.15
           }} showsMyLocationButton={false} showsUserLocation={false} showsCompass={false} mapType={'hybrid'}
-            maxZoomLevel={5} onMapReady={() => { this.marker.showCallout() }}>
+            maxZoomLevel={20} onMapReady={() => { this.marker.showCallout() }}>
           <MapView.Marker ref={setMarkerRef} coordinate={location} description={descriptionMarker} title='Punto de encuentro'/>
         </MapView>
       </DialogContent>
