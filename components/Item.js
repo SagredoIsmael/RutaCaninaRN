@@ -18,7 +18,8 @@ import {
   Button,
   TouchableOpacity,
   ActivityIndicator,
-  TouchableHighlight
+  TouchableHighlight,
+  Platform
 } from "react-native"
 
 const profileImageSize = 36
@@ -30,7 +31,8 @@ class Item extends React.Component {
     loadingImage: false,
     isOpenListAssistans: false,
     isOpenMapLocation: false,
-    isLoadingAssistants: false
+    isLoadingAssistants: false,
+    descriptionMarker: ''
   }
 
   componentDidMount() {
@@ -40,6 +42,10 @@ class Item extends React.Component {
         this.setState({width, height})
       });
     }
+  }
+
+  componentWillMount(){
+    this._getDescriptionFromLocation()
   }
 
   renderIconBar() {
@@ -65,6 +71,17 @@ class Item extends React.Component {
             </TouchableHighlight>)
         }</View>
     </View>)
+  }
+
+  _getDescriptionFromLocation = async() => {
+    let where = (await Expo.Location.reverseGeocodeAsync(this.props.coords))[0]
+
+    if (Platform.OS === 'ios'){
+      this.setState({descriptionMarker: where.name})
+    }else{
+      var streetName = where.street + ", " + where.name
+      this.setState({descriptionMarker:streetName})
+    }
   }
 
   renderBarOptions() {
@@ -177,7 +194,7 @@ class Item extends React.Component {
         {this.renderBarOptions()}
 
         <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissModals} myKeyUser={this.props.myKey} assistants={this.state.assistants}/>
-        <MapLocation isOpenMapLocation={this.state.isOpenMapLocation} location={this.props.coords} clickDismiss={this._pressDismissModals} />
+        <MapLocation isOpenMapLocation={this.state.isOpenMapLocation} location={this.props.coords} descriptionMarker={this.state.descriptionMarker} clickDismiss={this._pressDismissModals} />
       </ImageBackground>
     </View>)
   }

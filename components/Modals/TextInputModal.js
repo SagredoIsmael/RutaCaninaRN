@@ -11,6 +11,7 @@ import {
 } from "react-native"
 import Colors from "../../constants/Colors"
 import { Keyboard } from 'react-native'
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
@@ -28,7 +29,13 @@ class TextInputModal extends React.Component {
 
   _buttonsDialogModal() {
     return (<View>
-      <Button title="Aceptar" color={Colors.verdeOscuro} align="center" onPress={() => this._pressSelectPicker()}/>
+      <AwesomeButtonRick type="secondary" style={{
+            alignSelf: 'center',
+            marginTop: 0,
+            marginBottom: 15
+          }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this._pressSelectPicker()}>
+          Aceptar
+      </AwesomeButtonRick>
     </View>)
   }
 

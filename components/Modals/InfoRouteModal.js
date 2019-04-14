@@ -15,6 +15,7 @@ import {connect} from "react-redux"
 import * as actions from "../../actions"
 import Colors from "../../constants/Colors"
 import Item from "../Item"
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
 class InfoRouteModal extends React.Component {
@@ -28,17 +29,32 @@ class InfoRouteModal extends React.Component {
   }
 
   _buttonsDialogModal() {
-    return (<View>
-      <Button title="Ir a la ruta" color={Colors.verdeOscuro} align="center" onPress={() => this._pressRoute()}/>
-      <Button title="Cerrar" color={Colors.verdeOscuro
-} align="center" onPress={() => this.props.clickDismiss()}/></View>)
+    return (
+      <View>
+        <AwesomeButtonRick type="secondary" style={{
+              alignSelf: 'center',
+              marginTop: 0,
+              marginBottom: 15
+            }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this._pressRoute()}>
+            Ir a la ruta
+        </AwesomeButtonRick>
+
+        <AwesomeButtonRick type="secondary" style={{
+              alignSelf: 'center',
+              marginTop: 0,
+              marginBottom: 5
+            }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this.props.clickDismiss()}>
+            Cerrar
+        </AwesomeButtonRick>
+      </View>)
   }
 
   render() {
     if (this.props.routeSelect != null) {
       return (<Dialog onDismiss={() => {}} width={0.8} onTouchOutside={() => this.props.clickDismiss()} style={{
           backgroundColor: '#F7F7F8'
-        }} visible={this.props.isOpenInfoRoute} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={this._buttonsDialogModal()}>
+        }} visible={this.props.isOpenInfoRoute} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()}
+        footer={this._buttonsDialogModal()}>
         <DialogContent style={{
             backgroundColor: '#F7F7F8'
           }}>

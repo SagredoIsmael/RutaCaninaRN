@@ -8,25 +8,44 @@ import {
   Text,
   Image,
   ImageBackground,
-  Button
+  Button,
+  Platform,
+  Linking
 } from "react-native"
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Colors from "../../constants/Colors"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
-const MapLocationModal = ({isOpenMapLocation, location, clickDismiss}) => {
+const MapLocationModal = ({isOpenMapLocation, location, descriptionMarker, clickDismiss}) => {
 
   if (location != null) {
     return (<Dialog onDismiss={() => {}} width={0.8} height={0.8} style={{
         backgroundColor: '#F7F7F8'
-      }} visible={isOpenMapLocation} actionsBordered="actionsBordered" onTouchOutside={() => clickDismiss()} dialogAnimation={new ScaleAnimation()} footer={<Button title = "Cerrar" color = {
-        Colors.verdeOscuro
-      }
-      align = "center" onPress = {
-        () => clickDismiss()
-      } />}>
+      }} visible={isOpenMapLocation} actionsBordered="actionsBordered" onTouchOutside={() => clickDismiss()} dialogAnimation={new ScaleAnimation()} footer={
+        <View style={{
+          flexDirection: 'column',
+          justifyContent: 'space-between'}}>
+          <AwesomeButtonRick type="secondary" style={{
+                alignSelf: 'center',
+                marginTop: 0,
+                marginBottom: 15
+              }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => goToExternalAppMap(location)}>
+              Cómo llegar
+          </AwesomeButtonRick>
+
+          <AwesomeButtonRick type="secondary" style={{
+                alignSelf: 'center',
+                marginTop: 0,
+                marginBottom: 5
+              }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => clickDismiss()}>
+              Cerrar
+          </AwesomeButtonRick>
+        </View>
+      }>
       <DialogContent style={{
           backgroundColor: '#F7F7F8',
-          height: '90%'
+          width: '100%',
+          height: '80%'
         }}>
         <MapView style={{
             width: '100%',
@@ -41,11 +60,23 @@ const MapLocationModal = ({isOpenMapLocation, location, clickDismiss}) => {
             longitudeDelta: 0.15,
             latitudeDelta: 0.15
           }} showsMyLocationButton={false} showsUserLocation={false} showsCompass={false} mapType={'hybrid'} maxZoomLevel={20}>
+          <MapView.Marker coordinate={location} description={descriptionMarker} title='Punto de encuentro'/>
         </MapView>
       </DialogContent>
     </Dialog>)
   }
   return <View></View>
+}
+
+export const goToExternalAppMap = (location) => {
+  const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' })
+  const latLng = `${location.latitude},${location.longitude}`
+  const label = 'Punto de encuentro de la ruta'
+  const url = Platform.select({
+    ios: `${scheme}${label}@${latLng}`,
+    android: `${scheme}${latLng}(${label})`
+  });
+  Linking.openURL(url)
 }
 
 const styles = StyleSheet.create({

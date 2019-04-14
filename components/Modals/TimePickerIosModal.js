@@ -3,6 +3,8 @@ import {StyleSheet, View, Text, Button, DatePickerIOS} from "react-native"
 import Colors from "../../constants/Colors"
 import moment from 'moment'
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
+
 
 class TimePickerIosModal extends React.Component {
 
@@ -17,7 +19,13 @@ class TimePickerIosModal extends React.Component {
 
   _buttonsDialogModal() {
     return (<View>
-      <Button title="Seleccionar" color={Colors.verdeOscuro} align="center" onPress={() => this._pressSelectPicker()}/>
+      <AwesomeButtonRick type="secondary" style={{
+            alignSelf: 'center',
+            marginTop: 0,
+            marginBottom: 5
+          }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this._pressSelectPicker()}>
+          Seleccionar
+      </AwesomeButtonRick>
     </View>)
   }
 

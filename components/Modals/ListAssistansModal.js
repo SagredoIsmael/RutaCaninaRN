@@ -13,6 +13,7 @@ import {
 } from "react-native"
 import ItemUser from '../ItemUser'
 import Colors from "../../constants/Colors"
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Fire from "../../api/Fire"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
@@ -30,12 +31,14 @@ const ListAssistansModal = ({isOpenListAssistans, clickDismiss, nav, assistants,
         false
       }
       align = "center"
-      />} footer={<Button title = "Cerrar" color = {
-        Colors.verdeOscuro
-      }
-      align = "center" onPress = {
-        () => clickDismiss()
-      } />}>
+      />} footer={
+        <AwesomeButtonRick type="secondary" style={{
+            alignSelf: 'center',
+            marginTop: 0,
+            marginBottom: 5
+          }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => clickDismiss()}>
+          Cerrar
+      </AwesomeButtonRick>}>
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>
@@ -60,12 +63,15 @@ const ListAssistansModal = ({isOpenListAssistans, clickDismiss, nav, assistants,
       false
     }
     align = "center"
-    />} footer={<Button title = "Cerrar" color = {
-      Colors.verdeOscuro
-    }
-    align = "center" onPress = {
-      () => clickDismiss()
-    } />}>
+    />} footer={
+      <AwesomeButtonRick type="secondary" style={{
+        alignSelf: 'center',
+        marginTop: 0,
+        marginBottom: 5
+      }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => clickDismiss()}>
+      Cerrar
+      </AwesomeButtonRick>
+    }>
     <DialogContent style={{
         backgroundColor: '#F7F7F8'
       }}>

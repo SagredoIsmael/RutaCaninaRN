@@ -9,6 +9,7 @@ import {
 } from "react-native"
 import Colors from "../../constants/Colors"
 import moment from 'moment'
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import {Calendar, LocaleConfig} from 'react-native-calendars'
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
@@ -76,7 +77,14 @@ class DateModal extends React.Component {
 
   _buttonsDialogModal() {
     return (<View>
-      <Button title="Seleccionar" color={Colors.verdeOscuro} align="center" onPress={() => this._pressSelectDate()}/>
+      <AwesomeButtonRick type="secondary" style={{
+            alignSelf: 'center',
+            marginTop: 0,
+            marginBottom: 15
+          }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => this._pressSelectDate()}>
+          Seleccionar
+      </AwesomeButtonRick>
+
     </View>)
   }
 
@@ -87,7 +95,8 @@ class DateModal extends React.Component {
 
     return (<Dialog onDismiss={() => {}} width={1} onTouchOutside={() => this.props.clickDismiss()} style={{
         backgroundColor: '#F7F7F8'
-      }} visible={this.props.isOpenDateModal} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()} footer={this._buttonsDialogModal()}>
+      }} visible={this.props.isOpenDateModal} actionsBordered="actionsBordered" dialogAnimation={new ScaleAnimation()}
+      footer={this._buttonsDialogModal()}>
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>

@@ -10,6 +10,7 @@ import {
   ScrollView,
   Button
 } from "react-native"
+import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Colors from "../../constants/Colors"
 import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAnimation} from 'react-native-popup-dialog'
 
@@ -17,12 +18,16 @@ const InfoDogModal = ({isOpenInfoDog, dogSelect, clickDismiss}) => {
   if (dogSelect != null) {
     return (<Dialog onDismiss={() => {}} width={0.8} style={{
         backgroundColor: '#F7F7F8'
-      }} visible={isOpenInfoDog} actionsBordered="actionsBordered" onTouchOutside={() => clickDismiss()} dialogAnimation={new ScaleAnimation()} footer={<Button title = "Cerrar" color = {
-        Colors.verdeOscuro
-      }
-      align = "center" onPress = {
-        () => clickDismiss()
-      } />}>
+      }} visible={isOpenInfoDog} actionsBordered="actionsBordered" onTouchOutside={() => clickDismiss()} dialogAnimation={new ScaleAnimation()}
+      footer={
+        <AwesomeButtonRick type="secondary" style={{
+            alignSelf: 'center',
+            marginTop: 0,
+            marginBottom: 5
+          }} height={35} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.whiteCrudo} onPress={value => clickDismiss()}>
+          Cerrar
+        </AwesomeButtonRick>
+      }>
       <DialogContent style={{
           backgroundColor: '#F7F7F8'
         }}>
