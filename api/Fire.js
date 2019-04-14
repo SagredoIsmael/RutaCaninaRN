@@ -19,6 +19,10 @@ class Fire extends React.Component {
       messagingSenderId: "242809173599"
     });
 
+    firebase.firestore().settings( { timestampsInSnapshots: true })
+
+
+
     // Listen for auth
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) {
@@ -41,7 +45,6 @@ class Fire extends React.Component {
   logOutUser() {
     return firebase.auth().signOut();
   }
-
 
 
   //API MESSAGES Chat
@@ -149,27 +152,18 @@ class Fire extends React.Component {
   }
 
   uploadImageRouteAsync = async (uri, keyRoute) => {
-    const image = await this.resizeImageRoute(uri);
-    const response = await fetch(image);
-    const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = () => {
-                resolve(xhr.response);
-            };
-            xhr.onerror = (e) => {
-                reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", uri, true);
-            xhr.send(null);
-        });
     const ref = firebase.storage().ref().child("routesPhotos").child(keyRoute).child("photo");
-    const snapshot = await ref.put(blob);
-    const urlPhoto = await snapshot.ref.getDownloadURL();
-    const attributesDicc = {
-      image: urlPhoto
-    };
-    return this.updateAttributeRoute(attributesDicc, keyRoute);
+
+    const resultFetch = await this._fetchUploadImage(ref, uri)
+
+    if (resultFetch){
+      const attributesDicc = {
+        image: resultFetch
+      };
+      return this.updateAttributeRoute(attributesDicc, keyRoute);
+    }else{
+      return false
+    }
   }
 
   updateAttributeRoute = async (attributesDicc, keyRoute) => {
@@ -240,16 +234,6 @@ class Fire extends React.Component {
       console.log("Error. No se puede obtener la infoMyUser");
       alert(message);
     }
-  }
-
-  resizeImageRoute = async uri => {
-    const manipResult = await ImageManipulator.manipulateAsync(uri, [/*  {
-        resize: {
-          width: 350,
-          height: 250
-        }
-      } */], {format: "jpeg"});
-    return manipResult.uri;
   }
 
   //API USER/////////////////////
@@ -324,35 +308,53 @@ class Fire extends React.Component {
     return manipResult.uri;
   }
 
-  uploadImageUserAsync = async uri => {
-    //const image = await this.resizeImage(uri);
-     fetch(uri)
-    .then(async (response) => {
+  _fetchUploadImage = async (ref, uri) => {
+    const blob = await new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.onload = () => {
+              resolve(xhr.response)
+          };
+          xhr.onerror = (e) => {
+              reject(new TypeError("Network request failed"));
+          };
+          xhr.responseType = "blob";
+          xhr.open("GET", uri, true);
+          xhr.send(null);
+      });
 
-      const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = () => {
-                resolve(xhr.response)
-            };
-            xhr.onerror = (e) => {
-                reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", uri, true);
-            xhr.send(null);
+      const metadata = {
+        contentType: 'image/jpeg',
+      }
+
+      return (downloadURL = await new Promise((resolve, reject) => {
+      try {
+        ref.put(blob, metadata).then(snapshot => {
+          snapshot.ref.getDownloadURL().then(downloadURL => {
+            resolve(downloadURL);
+          });
         });
-      const ref = firebase.storage().ref().child("usersPhotos").child(this.uid).child("photo");
-      const snapshot = await ref.put(blob);
-      const urlPhoto = await snapshot.ref.getDownloadURL();
+      } catch (err) {
+        reject(err);
+      }
+      }));
+  }
+
+  uploadImageUserAsync = async uri => {
+
+    //const uriImageResize = this.resizeImage(uri)
+
+    const ref = firebase.storage().ref().child("usersPhotos").child(this.uid).child("photo");
+
+    const resultFetch = await this._fetchUploadImage(ref, uri)
+
+    if (resultFetch){
       const attributesDicc = {
-        image: urlPhoto
+        image: resultFetch
       };
       return this.updateAttributeUser(attributesDicc);
-    })
-    .catch((err) => {
-      console.log("Error al subir la foto :", err);
-    })
-
+    }else{
+      return false
+    }
   }
 
   ////////DOGS API///////////////////
@@ -384,27 +386,21 @@ class Fire extends React.Component {
   };
 
   uploadImageDogAsync = async (uri, keyDog) => {
-    const image = await this.resizeImage(uri);
-    const response = await fetch(image);
-    const blob = await new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest();
-            xhr.onload = () => {
-                resolve(xhr.response);
-            };
-            xhr.onerror = (e) => {
-                reject(new TypeError("Network request failed"));
-            };
-            xhr.responseType = "blob";
-            xhr.open("GET", uri, true);
-            xhr.send(null);
-        });
+
+    //const uriImageResize = this.resizeImage(uri)
+
     const ref = firebase.storage().ref().child("dogsPhotos").child(this.uid).child(keyDog);
-    const snapshot = await ref.put(blob);
-    const urlPhoto = await snapshot.ref.getDownloadURL();
-    const attributesDicc = {
-      avatar: urlPhoto
-    };
-    return this.updateAttributeDog(attributesDicc, keyDog);
+
+    const resultFetch = await this._fetchUploadImage(ref, uri)
+
+    if (resultFetch){
+      const attributesDicc = {
+        avatar: resultFetch
+      };
+      return this.updateAttributeDog(attributesDicc, keyDog);
+    }else{
+      return false
+    }
   }
 
   updateAttributeDog = async (attributesDicc, keyDog) => {
