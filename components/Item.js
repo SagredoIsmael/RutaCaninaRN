@@ -3,6 +3,7 @@ import Colors from "../constants/Colors"
 import moment from 'moment'
 import {Ionicons} from "@expo/vector-icons"
 import ListAssistans from './Modals/ListAssistansModal'
+import MapLocation from './Modals/MapLocationModal'
 import ItemUser from './ItemUser'
 import IconSubscribe from './IconsBarCell/IconSubscribe.js'
 import ViewMoreText from 'react-native-view-more-text';
@@ -28,6 +29,7 @@ class Item extends React.Component {
   state = {
     loadingImage: false,
     isOpenListAssistans: false,
+    isOpenMapLocation: false,
     isLoadingAssistants: false
   }
 
@@ -120,11 +122,11 @@ class Item extends React.Component {
   }
 
   _pressMap = () => {
-    console.log('eeeeee');
+    this.setState({isOpenMapLocation: true})
   }
 
-  _pressDismissAssistantsList = () => {
-    this.setState({isOpenListAssistans: false})
+  _pressDismissModals = () => {
+    this.setState({isOpenListAssistans: false, isOpenMapLocation:false})
   }
 
   requestAssistants = async () => {
@@ -174,7 +176,8 @@ class Item extends React.Component {
         }
         {this.renderBarOptions()}
 
-        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissAssistantsList} myKeyUser={this.props.myKey} assistants={this.state.assistants}/>
+        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissModals} myKeyUser={this.props.myKey} assistants={this.state.assistants}/>
+        <MapLocation isOpenMapLocation={this.state.isOpenMapLocation} location={this.props.coords} clickDismiss={this._pressDismissModals} />
       </ImageBackground>
     </View>)
   }
