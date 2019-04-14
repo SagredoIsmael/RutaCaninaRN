@@ -1,4 +1,5 @@
-import React from "react";
+import React from "react"
+import {MapView} from 'expo'
 import {
   StyleSheet,
   View,
@@ -15,7 +16,7 @@ import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAni
 const MapLocationModal = ({isOpenMapLocation, location, clickDismiss}) => {
 
   if (location != null) {
-    return (<Dialog onDismiss={() => {}} width={0.8} style={{
+    return (<Dialog onDismiss={() => {}} width={0.8} height={0.8} style={{
         backgroundColor: '#F7F7F8'
       }} visible={isOpenMapLocation} actionsBordered="actionsBordered" onTouchOutside={() => clickDismiss()} dialogAnimation={new ScaleAnimation()} footer={<Button title = "Cerrar" color = {
         Colors.verdeOscuro
@@ -24,20 +25,23 @@ const MapLocationModal = ({isOpenMapLocation, location, clickDismiss}) => {
         () => clickDismiss()
       } />}>
       <DialogContent style={{
-          backgroundColor: '#F7F7F8'
+          backgroundColor: '#F7F7F8',
+          height: '90%'
         }}>
-        <View>
-        <Text style={{
-            fontSize: 15,
-            marginTop: 10,
-            marginLeft: 10,
-            marginRight: 10,
-            textAlign: "center",
-            color: "gray"
-          }}>
-          {"Mis coordenadas son: ", location.latitude}
-        </Text>
-        </View>
+        <MapView style={{
+            width: '100%',
+            height: '100%',
+            top: 5,
+            bottom: 5,
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }} region={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            longitudeDelta: 0.15,
+            latitudeDelta: 0.15
+          }} showsMyLocationButton={false} showsUserLocation={false} showsCompass={false} mapType={'hybrid'} maxZoomLevel={20}>
+        </MapView>
       </DialogContent>
     </Dialog>)
   }
