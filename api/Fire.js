@@ -56,11 +56,9 @@ class Fire extends React.Component {
         text,
         userId: user._id,
         userName: user.name,
-        userAvatar: user.user,
+        userAvatar: user.avatar,
         timestamp: this.timestamp,
       }
-      console.log(user);
-      console.log(message);
 
       this.append(message, user.keyRoute);
     }

@@ -48,7 +48,7 @@ class ChatRouteScreen extends React.Component {
     return {
       name: this.props.dataMyUser.name,
       _id: Fire.shared.uid,
-      user: this.props.dataMyUser.image,
+      avatar: this.props.dataMyUser.image,
       keyRoute: this.props.navigation.state.params.keyRoute
     };
   }
@@ -59,25 +59,46 @@ class ChatRouteScreen extends React.Component {
 
   _getMessages = async() => {
     const messages = await Fire.shared.getMessages(this.props.navigation.state.params.keyRoute)
-    console.log('jibiri, ', messages.data)
-    if (messages.data) this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages.data, messages.data),
-    }))
+    if (messages.data) this._addMessagesToChat(messages.data)
   }
 
   goToBack() {
     this.props.navigation.goBack(null)
   }
 
+  _sendMessage = (message) => {
+    Fire.shared.sendMessage(message)
+    this._addMessagesToChat(message)
+  }
+
+  _goToProfile = (user) => {
+    console.log('este es el user, ', user);
+    if (user._id){
+      if (user._id == Fire.shared.uid) {
+        this.props.navigation.navigate('PerfilStack')
+      } else {
+        this.props.navigation.navigate("Profile", {keyUser: user._id})
+      }
+    }
+  }
+
+  _addMessagesToChat = (messages) => {
+    console.log('message es:', messages);
+    if (messages) this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }))
+  }
+
+
   render() {
     return (
       <GiftedChat
         messages={this.state.messages}
         placeholder={"Escribe tu mensaje.."}
-        onSend={Fire.shared.sendMessage}
+        onSend={this._sendMessage}
         isAnimated={true}
         showUserAvatar={true}
-        //onPressAvatar={} //Go to pprofile avatar
+        onPressAvatar={this._goToProfile} //Go to pprofile avatar
         user={this.user}
       />);
   }
