@@ -19,6 +19,12 @@ export const insert_dataMyUser = dataMyUser => {
   };
 };
 
+export const clear_key_dataMyUser = () => {
+  return {
+    type: "CLEAR_KEY"
+  };
+};
+
 export const reset_newRoute = dataNewRoute => {
   return {
     type: "reset_newRoute",

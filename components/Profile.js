@@ -41,13 +41,13 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     await Font.loadAsync({georgia: require("../assets/fonts/Georgia.ttf"), regular: require("../assets/fonts/Montserrat-Regular.ttf"), light: require("../assets/fonts/Montserrat-Light.ttf"), bold: require("../assets/fonts/Montserrat-Bold.ttf")});
-    this.setState({fontLoaded: true});
+    this.setState({fontLoaded: true})
   }
 
   userRequest = async () => {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key);
     this.props.insert_dataMyUser(dataUser);
-    this.setState({isLoading: false});
+    this.setState({isLoading: false})
   }
 
   async componentWillMount() {
@@ -352,11 +352,7 @@ class Profile extends React.Component {
 
   _signOut = () => {
     Fire.shared.logOutUser()
-    //TODO: implement reset insert_dataMyUser
-    var dataMyUser = this.props.dataMyUser
-    dataMyUser.key = ''
-    this.props.insert_dataMyUser(dataMyUser)
-    this.props.nav.navigate("Profile")
+    this.props.clear_key_dataMyUser()
   }
 
   infoDogs = dog => {
