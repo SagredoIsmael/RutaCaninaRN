@@ -5,6 +5,7 @@ import * as actions from "../actions"
 import Fire from "../api/Fire"
 import Icon from "react-native-vector-icons/Ionicons"
 import IconFoundation from "react-native-vector-icons/Foundation"
+import IconAntDesign from "react-native-vector-icons/AntDesign"
 import _ from "lodash"
 import {Avatar, Button} from "react-native-elements"
 import Loader from "./Modals/Loader"
@@ -282,6 +283,20 @@ class Profile extends React.Component {
                     }}>
                     {this.renderTitleUser()}
                   </View>
+                  <View style={{
+                      justifyContent: "flex-start",
+                    }}>
+                    <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._logOut()}>
+                      <View style={{
+                          flexDirection: "row",
+                          justifyContent: "flex-end",
+                          top: 2,
+                          right: 2
+                        }}>
+                          <IconAntDesign name="setting" color={Colors.pinkChicle} size={28}/>
+                      </View>
+                    </TouchableHighlight>
+                  </View>
                 </View>
                 <View style={{
                     width: 300,
@@ -319,6 +334,29 @@ class Profile extends React.Component {
       keyDog: keyDog,
       titleHeader: action
     })
+  }
+
+  _logOut = () => {
+    Alert.alert("¡Wuau!", "¿Seguro que desea cerrar sesión?", [
+      {
+        text: 'Cancelar',
+        style: 'cancel'
+      }, {
+        text: 'Cerrar sesión',
+        onPress: () => {
+          this._signOut()
+        }
+      }
+    ], {cancelable: true})
+  }
+
+  _signOut = () => {
+    Fire.shared.logOutUser()
+    //TODO: implement reset insert_dataMyUser
+    var dataMyUser = this.props.dataMyUser
+    dataMyUser.key = ''
+    this.props.insert_dataMyUser(dataMyUser)
+    this.props.nav.navigate("Profile")
   }
 
   infoDogs = dog => {

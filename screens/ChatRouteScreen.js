@@ -72,7 +72,6 @@ class ChatRouteScreen extends React.Component {
   }
 
   _goToProfile = (user) => {
-    console.log('este es el user, ', user);
     if (user._id){
       if (user._id == Fire.shared.uid) {
         this.props.navigation.navigate('PerfilStack')
@@ -83,7 +82,6 @@ class ChatRouteScreen extends React.Component {
   }
 
   _addMessagesToChat = (messages) => {
-    console.log('message es:', messages);
     if (messages) this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }))
@@ -98,7 +96,8 @@ class ChatRouteScreen extends React.Component {
         onSend={this._sendMessage}
         isAnimated={true}
         showUserAvatar={true}
-        onPressAvatar={this._goToProfile} //Go to pprofile avatar
+        //inverted={false}
+        onPressAvatar={this._goToProfile}
         user={this.user}
       />);
   }
