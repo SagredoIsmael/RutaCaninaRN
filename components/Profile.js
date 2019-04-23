@@ -247,6 +247,23 @@ class Profile extends React.Component {
     </View>);
   }
 
+  renderButtonProfileSettings() {
+    if (this.props.isMyProfile) {
+      return (
+        <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._logOut()}>
+          <View style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              top: 2,
+              right: 2
+            }}>
+              <IconAntDesign name="setting" color={Colors.pinkChicle} size={28}/>
+          </View>
+        </TouchableHighlight>
+      )
+    }
+  }
+
   render() {
     return (<ScrollView style={styles.container}>
       <ImageBackground source={require("../assets/images/background.png")} style={{
@@ -286,16 +303,7 @@ class Profile extends React.Component {
                   <View style={{
                       justifyContent: "flex-start",
                     }}>
-                    <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._logOut()}>
-                      <View style={{
-                          flexDirection: "row",
-                          justifyContent: "flex-end",
-                          top: 2,
-                          right: 2
-                        }}>
-                          <IconAntDesign name="setting" color={Colors.pinkChicle} size={28}/>
-                      </View>
-                    </TouchableHighlight>
+                    {this.renderButtonProfileSettings()}
                   </View>
                 </View>
                 <View style={{
