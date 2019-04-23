@@ -93,9 +93,7 @@ class RutasScreen extends React.Component {
 
   refreshList = () => {
     showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
-    setTimeout(this.makeRemoteRequest(),
-    5000
-    )
+    this.makeRemoteRequest()
   };
 
   goToNewRoute = () => {

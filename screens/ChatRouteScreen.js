@@ -21,7 +21,6 @@ class ChatRouteScreen extends React.Component {
 
   static ourself = null;
 
-
   static navigationOptions = ({navigation}) => {
     return {
       title: 'Chat de la ruta',
@@ -87,9 +86,15 @@ class ChatRouteScreen extends React.Component {
   }
 
   _addMessagesToChat = (messages) => {
-    if (messages) this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }))
+
+    if (messages) {
+      const messagesSorted = [].concat(messages)
+      .sort((a, b) => a.createdAt < b.createdAt)
+
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, messagesSorted),
+      }))
+    }
   }
 
 
