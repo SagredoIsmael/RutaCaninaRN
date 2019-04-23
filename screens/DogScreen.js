@@ -65,7 +65,7 @@ class DogScreen extends React.Component {
     isEditingDog: false,
     newValueConductDog: [1],
     newValueTemperamentDog: [2],
-    newValueGenderDog: 0,
+    newValueGenderDog: 1,
   }
 
   componentDidMount() {
