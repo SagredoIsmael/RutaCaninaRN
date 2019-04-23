@@ -25,11 +25,14 @@ import {
   Button,
   ScrollView,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from 'react-native';
 
 const optionsConduct = ['granuja y sinvergüenza', 'torbellino', 'pasota total']
 const optionsTemperament = ['muy dulce', 'apacible y amigable', 'independiente y libre', 'prudente y pedante', 'alterable e irritable']
+
+let widthScreen = Dimensions.get('window').width;
 
 class DogScreen extends React.Component {
   static ourself = null;
@@ -495,7 +498,9 @@ let styles = StyleSheet.create({
     alignSelf: 'center',
     paddingVertical: 20,
     fontWeight: 'bold',
-    fontSize: 16
+    fontSize: widthScreen/24,
+    marginLeft: 2,
+    marginRight: 2,
   },
   title: {
     fontSize: 30
