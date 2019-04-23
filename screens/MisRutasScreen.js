@@ -9,13 +9,21 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button
+  Button,
+  BackHandler
 } from 'react-native';
 
 class MisRutasScreen extends React.Component {
   static navigationOptions = {
     title: 'Mis Rutas'
   };
+
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('RutasStack')
+      return true;
+    });
+  }
 
   render() {
     return (<View style={styles.container}></View>);

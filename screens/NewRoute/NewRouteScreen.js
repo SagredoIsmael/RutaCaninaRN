@@ -87,6 +87,10 @@ class NewRouteScreen extends React.Component {
   }
 
   goToBack() {
+    const { navigation } = this.props;
+    const restoreBackButton = navigation.getParam('restoreBackButton', null);
+
+    if (restoreBackButton) restoreBackButton()
     this.props.navigation.goBack(null)
   }
 
@@ -105,8 +109,10 @@ class NewRouteScreen extends React.Component {
   }
 
   refreshList = () => {
-    const {navigation} = this.props
-    navigation.state.params.onResfresh();
+    const { navigation } = this.props;
+    const onRefresh = navigation.getParam('onResfresh', null);
+
+    if (onRefresh) onRefresh()
   }
 
   render() {

@@ -6,12 +6,20 @@ import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
 import Profile from '../components/Profile.js'
 import PerfilScreen from './PerfilScreen.js'
-import {ScrollView, StyleSheet, View} from 'react-native'
+import {ScrollView, StyleSheet, View, BackHandler} from 'react-native'
 
 class LoginScreen extends React.Component {
   static navigationOptions = {
     header: null
-  };
+  }
+
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('RutasStack')
+      return true;
+    });
+  }
+
   constructor(props) {
     super(props);
   }

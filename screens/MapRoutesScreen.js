@@ -14,7 +14,8 @@ import {
   TouchableOpacity,
   View,
   Button,
-  Alert
+  Alert,
+  BackHandler,
 } from 'react-native'
 
 const profileImageSize = 36
@@ -39,6 +40,10 @@ class MapRoutesScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('RutasStack')
+      return true;
+    });
     this._getLocationAsync()
   }
 

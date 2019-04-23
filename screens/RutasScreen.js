@@ -16,8 +16,9 @@ import {
   TouchableHighlight,
   Text,
   StatusBar,
-  Alert
-} from 'react-native';
+  Alert,
+  BackHandler
+} from 'react-native'
 
 class RutasScreen extends React.Component {
   static navigationOptions = {
@@ -31,6 +32,7 @@ class RutasScreen extends React.Component {
   };
 
   componentDidMount() {
+    this._confiBackButtonAndroid()
     this.makeRemoteRequest()
   }
 
@@ -82,14 +84,23 @@ class RutasScreen extends React.Component {
 
   }
 
+  _confiBackButtonAndroid = () => {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('RutasStack')
+      return true;
+    });
+  }
+
   refreshList = () => {
     showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
-    this.makeRemoteRequest()
+    setTimeout(this.makeRemoteRequest(),
+    5000
+    )
   };
 
   goToNewRoute = () => {
     if (Fire.shared.uid != undefined) {
-      this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList})
+      this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList, restoreBackButton: this._confiBackButtonAndroid})
     } else {
       this.showAlertLogIn()
     }

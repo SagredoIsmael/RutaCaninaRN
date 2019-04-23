@@ -13,7 +13,8 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Button
+  Button,
+  BackHandler
 } from 'react-native';
 
 class ChatRouteScreen extends React.Component {
@@ -54,6 +55,10 @@ class ChatRouteScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.goToBack()
+      return true;
+    });
     this._getMessages()
   }
 
