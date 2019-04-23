@@ -20,7 +20,8 @@ import {
   TouchableOpacity,
   View,
   Button,
-  ImageBackground
+  ImageBackground,
+  BackHandler
 } from 'react-native'
 
 class NewRouteScreen extends React.Component {
@@ -50,6 +51,13 @@ class NewRouteScreen extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.showAlert();
+      return true;
+    });
+  }
+
   componentWillMount() {
     this.resetProps()
   }
@@ -64,7 +72,7 @@ class NewRouteScreen extends React.Component {
   }
 
   showAlert = (title, text) => {
-    Alert.alert('¡Wuau!', '¿Seguro que quiere salir sin guardar?', [
+    Alert.alert('¡Wuau!', '¿Seguro que quiere salir sin acabar la ruta?', [
       {
         text: 'Cancelar',
         onPress: () => console.log('Cancel Pressed'),

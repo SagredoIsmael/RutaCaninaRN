@@ -26,7 +26,8 @@ import {
   ScrollView,
   Image,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
+  BackHandler,
 } from 'react-native';
 
 const optionsConduct = ['granuja y sinvergüenza', 'torbellino', 'pasota total']
@@ -69,6 +70,10 @@ class DogScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.comprobeChanges('volver')
+      return true;
+    });
     this.setNewStates()
   }
 
