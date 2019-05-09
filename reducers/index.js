@@ -1,15 +1,15 @@
 import {combineReducers} from 'redux'
-import getRoutes from './getRoutesReducer'
-import getDataUser from './getDataUser'
-import getDataMyUser from './getDataMyUser'
-import getNewRoute from './getNewRoute'
-import scrollPositionList from './getScrollPositionList'
+import routes from './routesReducer'
+import dataUser from './dataUsersReducer'
+import dataMyUser from './dataMyUserReducer'
+import newRoute from './newRouteReducer'
+import routesScrollPos from './routesScrollPositionReducer'
 
 
 export default combineReducers({
-  dataUser: getDataUser,
-  dataMyUser: getDataMyUser,
-  dataRoutes: getRoutes,
-  dataNewRoute: getNewRoute,
-  scrollPositionList: scrollPositionList
+  dataUser: dataUser,
+  dataMyUser: dataMyUser,
+  dataRoutes: routes,
+  dataNewRoute: newRoute,
+  scrollPositionList: routesScrollPos
 })

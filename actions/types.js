@@ -1,0 +1,2 @@
+
+export const RESET_NEW_ROUTE = 'RESET_NEW_ROUTE'

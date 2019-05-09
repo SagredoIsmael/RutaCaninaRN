@@ -1,3 +1,12 @@
+
+import { RESET_NEW_ROUTE } from './types';
+
+
+
+
+
+
+
 export const insert_dataRoutes = dataRoutes => {
   return {
     type: "insert_dataRoutes",
@@ -25,10 +34,9 @@ export const clear_key_dataMyUser = () => {
   };
 };
 
-export const reset_newRoute = dataNewRoute => {
+export const resetNewRoute = () => {
   return {
-    type: "reset_newRoute",
-    payload: dataNewRoute
+    type: RESET_NEW_ROUTE
   };
 };
 

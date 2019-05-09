@@ -1,12 +1,12 @@
 import React from 'react'
 import Colors from '../../constants/Colors'
 import StepIndicator from 'react-native-step-indicator'
-import * as actions from '../../actions'
 import Swiper from 'react-native-swiper'
 import StartRoute from './StartRoute'
 import MapRoute from './MapRoute'
 import EndRoute from './EndRoute'
 import {connect} from 'react-redux'
+import {resetNewRoute} from '../../actions/index'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 
@@ -59,12 +59,7 @@ class NewRouteScreen extends React.Component {
   }
 
   componentWillMount() {
-    this.resetProps()
-  }
-
-  resetProps = () => {
-    this.props.insert_dataNewRoute({title:'', photo:'https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FdefectRoute.jpg?alt=media&token=86c6aedb-8a51-4e70-b42b-78cd4949613f',
-    description:'', date:'', time:'', duration:'', coords:[]})
+    this.props.resetNewRoute()
   }
 
   changeIndex = (index) => {
@@ -193,4 +188,12 @@ const mapStateToProps = state => {
   return {dataNewRoute: state.dataNewRoute}
 }
 
-export default connect(mapStateToProps, actions)(NewRouteScreen)
+const mapDispatchToProps = dispatch => {
+  return {
+    resetNewRoute: () => {
+      dispatch(resetNewRoute())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewRouteScreen)
