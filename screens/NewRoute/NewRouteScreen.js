@@ -6,7 +6,7 @@ import StartRoute from './StartRoute'
 import MapRoute from './MapRoute'
 import EndRoute from './EndRoute'
 import {connect} from 'react-redux'
-import {resetNewRoute} from '../../actions/index'
+import {resetNewRoute} from '../../actions/routesActions'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 

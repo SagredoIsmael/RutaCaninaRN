@@ -29,8 +29,7 @@ class List extends React.Component {
 
   _comprobeScrollPosition = () => {
     if (this.props.scrollPositionList.keyRoute != null) {
-      console.log(this.props.scrollPositionList.keyRoute);
-      console.log(this.props.dataRoutes);
+      
       if (this.props.scrollPositionList.keyRoute != '' && this.props.dataRoutes != null) {
         for (var i = 0; i < this.props.dataRoutes.length; i++) {
           if (this.props.dataRoutes[i].key == this.props.scrollPositionList.keyRoute) {

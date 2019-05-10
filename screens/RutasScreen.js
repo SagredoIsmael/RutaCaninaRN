@@ -2,6 +2,7 @@ import React from 'react'
 import Fire from '../api/Fire'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
+import {insertDataRoutes} from '../actions/routesActions'
 import List from '../components/List'
 import getPermission from '../utils/getPermission'
 import ActionButton from 'react-native-action-button'
@@ -39,7 +40,7 @@ class RutasScreen extends React.Component {
   userRequest = async () => {
     if (Fire.shared.uid) {
       const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
-      this.props.insert_dataMyUser(dataUser)
+      //this.props.insert_dataMyUser(dataUser)  //TODO redux (ya esta creada la accion y el reducer (revisar))
     }
   }
 
@@ -65,9 +66,8 @@ class RutasScreen extends React.Component {
 
     // Finish loading, this will stop the refreshing animation.
     this.setState({loading: false})
-  };
+  }
 
-  // Append the item to our states `data` prop
   addPosts = posts => {
     this.setState(previousState => {
       let data = {
@@ -80,7 +80,7 @@ class RutasScreen extends React.Component {
         posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp)
       }
     })
-    this.props.insert_dataRoutes(this.state.posts)
+    this.props.insertDataRoutes(this.state.posts)
 
   }
 
@@ -157,4 +157,12 @@ const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
 }
 
-export default connect(mapStateToProps, actions)(RutasScreen)
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataRoutes: (routes) => {
+      dispatch(insertDataRoutes(routes))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RutasScreen)

@@ -1,16 +1,17 @@
-import React from 'react';
-import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import React from 'react'
+import {Provider} from 'react-redux'
+import {createStore, applyMiddleware} from 'redux'
+import logger from 'redux-logger'
 import Reducers from './reducers'
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from './navigation/AppNavigator';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native'
+import { AppLoading, Asset, Font, Icon } from 'expo'
+import AppNavigator from './navigation/AppNavigator'
 
 
 export default class App extends React.Component {
 
   constructor(props){
-    super(props);
+    super(props)
     this.state = {
       isLoadingComplete : false,
     }
@@ -25,10 +26,10 @@ export default class App extends React.Component {
           onError={this._handleLoadingError}
           onFinish={this._handleFinishLoading}
         />
-      );
+      )
     }
     return (
-      <Provider store={createStore(Reducers)}>
+      <Provider store={createStore(Reducers, applyMiddleware(logger))}>
         <View style={styles.container}>
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
@@ -39,7 +40,7 @@ export default class App extends React.Component {
         <StatusBar hidden={true} />
         </View>
       </Provider>
-    );
+    )
   }
 
   _loadResourcesAsync = async () => {
@@ -54,18 +55,16 @@ export default class App extends React.Component {
         // to remove this if you are not using it in your app
         'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
       }),
-    ]);
-  };
+    ])
+  }
 
   _handleLoadingError = error => {
-    // In this case, you might want to report the error to your error
-    // reporting service, for example Sentry
-    console.warn(error);
-  };
+    console.warn(error)
+  }
 
   _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
-  };
+    this.setState({ isLoadingComplete: true })
+  }
 }
 
 const styles = StyleSheet.create({
@@ -73,4 +72,4 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#bedce2',
   },
-});
+})

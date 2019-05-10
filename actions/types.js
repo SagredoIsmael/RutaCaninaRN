@@ -1,2 +1,4 @@
 
 export const RESET_NEW_ROUTE = 'RESET_NEW_ROUTE'
+export const SET_DATA_ROUTES = 'SET_DATA_ROUTES'
+export const SET_DATA_MY_USER = 'SET_DATA_MY_USER'
