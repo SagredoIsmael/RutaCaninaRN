@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../../actions'
+import {insertDataNewRoute} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import {MapView} from 'expo'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
@@ -112,7 +112,7 @@ class MapRoute extends React.Component {
 
   changeValueNewRoute = (value) => {
     this.props.dataNewRoute.coords = value
-    this.props.insert_dataNewRoute(this.props.dataNewRoute)
+    this.props.insertDataNewRoute(this.props.dataNewRoute)
   }
 
   render() {
@@ -202,10 +202,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center'
   }
-});
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataNewRoute: (route) => {
+      dispatch(insertDataNewRoute(route))
+    }
+  }
+}
 
 const mapStateToProps = state => {
   return {dataNewRoute: state.dataNewRoute}
 }
 
-export default connect(mapStateToProps, actions)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(MapRoute))
+export default connect(mapStateToProps, mapDispatchToProps)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(MapRoute))

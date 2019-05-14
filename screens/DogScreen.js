@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import Fire from '../api/Fire'
 import {ImagePicker} from 'expo'
 import _ from 'lodash'
-import * as actions from '../actions'
+import {insertDataMyUser} from '../actions/usersActions'
 import Loader from '../components/Modals/Loader'
 import Colors from '../constants/Colors'
 import {Hoshi} from 'react-native-textinput-effects'
@@ -226,7 +226,7 @@ class DogScreen extends React.Component {
 
   userRequest = async () => {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
-    this.props.insert_dataMyUser(dataUser)
+    this.props.insertDataMyUser(dataUser)
     this.setNewStates()
     this.setState({isLoading: false})
   }
@@ -472,11 +472,19 @@ class DogScreen extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
+    }
+  }
+}
+
 const mapStateToProps = state => {
   return {dataMyUser: state.dataMyUser}
 }
 
-export default connect(mapStateToProps, actions)(DogScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(DogScreen)
 
 let styles = StyleSheet.create({
   container: {

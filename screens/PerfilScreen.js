@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../actions'
+import {insertDataMyUser, insertDataUsers} from '../actions/usersActions'
 import Fire from '../api/Fire'
 import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
@@ -37,17 +37,17 @@ class PerfilScreen extends React.Component {
     if (this.props.navigation != null) {
       const keyUser = this.props.navigation.getParam('keyUser', null)
       const {dataUser} = await Fire.shared.getInfoUser(keyUser)
-      this.props.insert_dataUser(dataUser)
+      this.props.insertDataUsers(dataUser)
       this.setState({isMyProfile: false})
     } else {
       const {dataUser} = await Fire.shared.getInfoUser(this.props.keyUser)
-      this.props.insert_dataMyUser(dataUser)
+      this.props.insertDataMyUser(dataUser)
     }
     this.setState({isLoading: false})
   }
 
   render() {
-    if (this.props.dataUser) 
+    if (this.props.dataUser)
       return (<View>
         <Profile nav={this.props.nav} isMyProfile={this.state.isMyProfile}/>
         <Loader loading={this.state.isLoading}/>
@@ -55,8 +55,19 @@ class PerfilScreen extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
+    },
+    insertDataUsers: (users) => {
+      dispatch(insertDataUsers(users))
+    }
+  }
+}
+
 const mapStateToProps = state => {
   return {dataUser: state.dataUser, dataMyUser: state.dataMyUser}
 }
 
-export default connect(mapStateToProps, actions)(PerfilScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(PerfilScreen)

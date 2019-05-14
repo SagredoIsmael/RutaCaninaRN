@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../../actions'
+import {insertDataMyUser} from '../../actions/usersActions'
 import Colors from '../../constants/Colors'
 import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
@@ -51,7 +51,7 @@ export class EndRoute extends React.Component {
 
   userRequest = async () => {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
-    this.props.insert_dataMyUser(dataUser)
+    this.props.insertDataMyUser(dataUser)
   }
 
   comprobeChanges = async () => {
@@ -158,8 +158,16 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
+    }
+  }
+}
+
 const mapStateToProps = state => {
   return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, refreshRoutes: state.refreshRoutes}
 }
 
-export default connect(mapStateToProps, actions)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(EndRoute))
+export default connect(mapStateToProps, mapDispatchToProps)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(EndRoute))

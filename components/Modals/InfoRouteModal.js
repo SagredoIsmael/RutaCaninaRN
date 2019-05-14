@@ -12,7 +12,7 @@ import {
   Button
 } from "react-native"
 import {connect} from "react-redux"
-import * as actions from "../../actions"
+import {insertScrollPositionList} from '../../actions/routesActions'
 import Colors from "../../constants/Colors"
 import Item from "../Item"
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
@@ -21,7 +21,7 @@ import Dialog, {DialogButton, DialogTitle, DialogFooter, DialogContent, ScaleAni
 class InfoRouteModal extends React.Component {
 
   _pressRoute = () => {
-    this.props.insert_scrollPositionList({keyRoute: this.props.routeSelect.key})
+    this.props.insertScrollPositionList({keyRoute: this.props.routeSelect.key})
     this.props.nav.navigate("RutasStack")
     if (this.props.clickDismiss != null) {
       this.props.clickDismiss()
@@ -84,9 +84,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     position: "relative"
   }
-});
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    insertScrollPositionList: (posScroll) => {
+      dispatch(insertScrollPositionList(posScroll))
+    }
+  }
+}
+
 const mapStateToProps = state => {
   return {scrollPositionList: state.scrollPositionList};
-};
+}
 
-export default connect(mapStateToProps, actions)(InfoRouteModal);
+export default connect(mapStateToProps, mapDispatchToProps)(InfoRouteModal);

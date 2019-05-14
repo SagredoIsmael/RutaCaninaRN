@@ -1,8 +1,8 @@
 import React from 'react'
 import Fire from '../api/Fire'
 import {connect} from 'react-redux'
-import * as actions from '../actions'
 import {insertDataRoutes} from '../actions/routesActions'
+import {insertDataMyUser} from '../actions/usersActions'
 import List from '../components/List'
 import getPermission from '../utils/getPermission'
 import ActionButton from 'react-native-action-button'
@@ -40,7 +40,7 @@ class RutasScreen extends React.Component {
   userRequest = async () => {
     if (Fire.shared.uid) {
       const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
-      //this.props.insert_dataMyUser(dataUser)  //TODO redux (ya esta creada la accion y el reducer (revisar))
+      this.props.insertDataMyUser(dataUser)
     }
   }
 
@@ -161,6 +161,9 @@ const mapDispatchToProps = dispatch => {
   return {
     insertDataRoutes: (routes) => {
       dispatch(insertDataRoutes(routes))
+    },
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
     }
   }
 }

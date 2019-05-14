@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../../actions'
+import {insertDataMyUser} from '../../actions/usersActions'
 import Colors from "../../constants/Colors"
 import {Ionicons} from "@expo/vector-icons"
 import Fire from "../../api/Fire"
@@ -74,7 +74,7 @@ class IconSubscribe extends React.Component {
   userRequest = async (force) => {
     if (!this.props.dataMyUser.name || this.props.dataMyUser.key == '' || this.props.dataMyUser.name == '' || force) {
       const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
-      this.props.insert_dataMyUser(dataUser)
+      this.props.insertDataMyUser(dataUser)
     }
     this.comprobeSubscribe()
   }
@@ -137,4 +137,13 @@ const mapStateToProps = state => {
   return {dataMyUser: state.dataMyUser}
 }
 
-export default connect(mapStateToProps, actions)(IconSubscribe)
+
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(IconSubscribe)

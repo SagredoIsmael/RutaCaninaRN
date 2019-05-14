@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../actions'
 import Colors from '../constants/Colors'
 import Icon1 from 'react-native-vector-icons/Ionicons'
 import { GiftedChat } from 'react-native-gifted-chat'
@@ -117,7 +116,7 @@ const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
 }
 
-export default connect(mapStateToProps, actions)(ChatRouteScreen)
+export default connect(mapStateToProps)(ChatRouteScreen)
 
 let styles = StyleSheet.create({
   container: {

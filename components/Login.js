@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import firebase from "firebase";
 import Fire from "../api/Fire";
+import {insertDataMyUser} from '../actions/usersActions'
 import {connect} from "react-redux";
-import * as actions from "../actions";
 import {
   StyleSheet,
   View,
@@ -91,7 +91,7 @@ class Login extends Component {
         this.setState({isPasswordValid: true, isLoading: true});
         //API call
         Fire.shared.loginUser(email, password).then(user => {
-          this.props.insert_dataMyUser({key: user.user.uid});
+          this.props.insertDataMyUser({key: user.user.uid});
           this.setState({isLoading: false});
         }).catch(error => {
           Alert.alert("¡Wuau!", "Usuario o contraseña incorrectos", [
@@ -126,7 +126,7 @@ class Login extends Component {
               name: name
             };
             Fire.shared.updateAttributeUser(attributesDicc);
-            this.props.insert_dataMyUser({key: user.user.uid});
+            this.props.insertDataMyUser({key: user.user.uid});
             this.setState({isLoading: false});
           }).catch(error => {
             Alert.alert("¡Wuau!", "Este email ya está registrado", [
@@ -283,11 +283,19 @@ class Login extends Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
+    }
+  }
+}
+
 const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser};
 };
 
-export default connect(mapStateToProps, actions)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   container: {

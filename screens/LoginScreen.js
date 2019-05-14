@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../actions'
 import Fire from '../api/Fire'
 import Colors from '../constants/Colors'
 import Login from '../components/Login.js'
@@ -49,4 +48,4 @@ const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
 }
 
-export default connect(mapStateToProps, actions)(LoginScreen)
+export default connect(mapStateToProps)(LoginScreen)

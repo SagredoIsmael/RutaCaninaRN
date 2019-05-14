@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../actions'
 import {MapView} from 'expo'
 import Colors from "../constants/Colors"
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
@@ -111,7 +110,7 @@ const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes}
 }
 
-export default connect(mapStateToProps, actions)(MapRoutesScreen)
+export default connect(mapStateToProps)(MapRoutesScreen)
 
 let styles = StyleSheet.create({
   container: {

@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import * as actions from '../actions'
 import {
   Image,
   Platform,
@@ -34,7 +33,7 @@ const mapStateToProps = state => {
   return {dataRoutes: state.dataRoutes}
 }
 
-export default connect(mapStateToProps, actions)(MisRutasScreen)
+export default connect(mapStateToProps)(MisRutasScreen)
 
 let styles = StyleSheet.create({
   container: {

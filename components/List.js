@@ -3,7 +3,7 @@ import {FlatList, View, Button} from "react-native"
 import Colors from "../constants/Colors"
 import Footer from "./Footer"
 import {connect} from "react-redux"
-import * as actions from "../actions"
+import {resetScrollPositionList} from '../actions/routesActions'
 import Item from "./Item"
 import {NavigationEvents} from "react-navigation"
 
@@ -29,12 +29,12 @@ class List extends React.Component {
 
   _comprobeScrollPosition = () => {
     if (this.props.scrollPositionList.keyRoute != null) {
-      
+
       if (this.props.scrollPositionList.keyRoute != '' && this.props.dataRoutes != null) {
         for (var i = 0; i < this.props.dataRoutes.length; i++) {
           if (this.props.dataRoutes[i].key == this.props.scrollPositionList.keyRoute) {
             this.flatListRef.scrollToIndex({animated: true, index: i})
-            this.props.insert_scrollPositionList({keyRoute: ''})
+            this.props.resetScrollPositionList()
             break
           }
         }
@@ -56,6 +56,14 @@ class List extends React.Component {
 
 const mapStateToProps = state => {
   return {scrollPositionList: state.scrollPositionList, dataRoutes: state.dataRoutes};
-};
+}
 
-export default connect(mapStateToProps, actions)(List);
+const mapDispatchToProps = dispatch => {
+  return {
+    resetScrollPositionList: () => {
+      dispatch(resetScrollPositionList())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(List);

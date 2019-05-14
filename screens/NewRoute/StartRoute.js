@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {Permissions, ImagePicker, Font, Constants} from "expo";
-import * as actions from '../../actions'
+import {insertDataNewRoute} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import moment from 'moment'
 import AutoTypingText from 'react-native-auto-typing-text'
@@ -115,7 +115,7 @@ class StartRoute extends React.Component {
         this.setState({duration: value})
         break;
     }
-    this.props.insert_dataNewRoute(this.props.dataNewRoute)
+    this.props.insertDataNewRoute(this.props.dataNewRoute)
   }
 
   componentDidMount() {
@@ -284,8 +284,16 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapDispatchToProps = dispatch => {
+  return {
+    insertDataNewRoute: (route) => {
+      dispatch(insertDataNewRoute(route))
+    }
+  }
+}
+
 const mapStateToProps = state => {
   return {dataNewRoute: state.dataNewRoute}
 }
 
-export default connect(mapStateToProps, actions)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(StartRoute))
+export default connect(mapStateToProps, mapDispatchToProps)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(StartRoute))

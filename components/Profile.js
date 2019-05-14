@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import {Permissions, ImagePicker, Font, Constants} from "expo"
 import {connect} from "react-redux"
-import * as actions from "../actions"
+import {resetDataMyUser, insertDataMyUser} from '../actions/usersActions'
 import Fire from "../api/Fire"
 import Icon from "react-native-vector-icons/Ionicons"
 import IconFoundation from "react-native-vector-icons/Foundation"
@@ -46,7 +46,7 @@ class Profile extends React.Component {
 
   userRequest = async () => {
     const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key);
-    this.props.insert_dataMyUser(dataUser);
+    this.props.insertDataMyUser(dataUser);
     this.setState({isLoading: false})
   }
 
@@ -360,7 +360,7 @@ class Profile extends React.Component {
 
   _signOut = () => {
     Fire.shared.logOutUser()
-    this.props.clear_key_dataMyUser()
+    this.props.resetDataMyUser()
   }
 
   infoDogs = dog => {
@@ -423,10 +423,21 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: "cover"
   }
-});
+})
+
+const mapDispatchToProps = dispatch => {
+  return {
+    resetDataMyUser: () => {
+      dispatch(resetDataMyUser())
+    },
+    insertDataMyUser: (user) => {
+      dispatch(insertDataMyUser(user))
+    }
+  }
+}
 
 const mapStateToProps = state => {
   return {dataUser: state.dataUser, dataMyUser: state.dataMyUser};
 };
 
-export default connect(mapStateToProps, actions)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
