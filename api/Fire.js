@@ -17,11 +17,7 @@ class Fire extends React.Component {
       projectId: "rutacaninarn",
       storageBucket: "rutacaninarn.appspot.com",
       messagingSenderId: "242809173599"
-    });
-
-    firebase.firestore().settings( { timestampsInSnapshots: true })
-
-
+    })
 
     // Listen for auth
     firebase.auth().onAuthStateChanged(async user => {

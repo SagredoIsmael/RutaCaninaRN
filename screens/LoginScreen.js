@@ -15,21 +15,22 @@ class LoginScreen extends React.Component {
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       this.props.navigation.navigate('RutasStack')
-      return true;
-    });
+      return true
+    })
   }
 
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
+    console.log('killo', this.props.dataMyUser.key);
     if (this.props.dataMyUser.key == '') {
       return (<ScrollView style={styles.container}>
         <View>
           <Login/>
         </View>
-      </ScrollView>);
+      </ScrollView>)
     }
     return (<View>
       <PerfilScreen nav={this.props.navigation} keyUser={this.props.dataMyUser.key}/>

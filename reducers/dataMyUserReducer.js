@@ -7,7 +7,7 @@ export default (state = initialState, action) => {
     case SET_DATA_MY_USER:
       return action.payload
     case RESET_DATA_MY_USER:
-      return {initialState}
+      return initialState
     default:
       return state
   }
