@@ -6,10 +6,8 @@ import StartRoute from './StartRoute'
 import MapRoute from './MapRoute'
 import EndRoute from './EndRoute'
 import {connect} from 'react-redux'
-import {resetNewRoute} from '../../actions/routesActions'
 import Icon from 'react-native-vector-icons/SimpleLineIcons'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-
 import {
   Alert,
   Image,
@@ -59,7 +57,6 @@ class NewRouteScreen extends React.Component {
   }
 
   componentWillMount() {
-    this.props.resetNewRoute()
   }
 
   changeIndex = (index) => {
@@ -189,9 +186,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    resetNewRoute: () => {
-      dispatch(resetNewRoute())
-    }
   }
 }
 

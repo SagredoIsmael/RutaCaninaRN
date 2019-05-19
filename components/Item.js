@@ -1,7 +1,7 @@
 import React from "react"
 import Colors from "../constants/Colors"
 import moment from 'moment'
-import {Ionicons} from "@expo/vector-icons"
+import IconSimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import ListAssistans from './Modals/ListAssistansModal'
 import MapLocation from './Modals/MapLocationModal'
 import ItemUser from './ItemUser'
@@ -53,13 +53,13 @@ class Item extends React.Component {
       <View style={styles.row}>
         <IconSubscribe isLoadingSubscribe={this.state.isLoadingSubscribe} keyRoute={this.props.keyRoute} nav={this.props.nav}/>
 
-        < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat
-}>
-          {this.renderIcon("ios-chatbubbles")}
+        <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressChat}>
+          <IconSimpleLineIcons style={{marginRight: 5}} name={'bubbles'} size={30} color={Colors.pinkChicle}/>
         </TouchableHighlight>
 
         <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={this._pressMap}>
-          {this.renderIcon("ios-send")}</TouchableHighlight>
+          <IconSimpleLineIcons style={{marginRight: 5}} name={'location-pin'} size={30} color={Colors.pinkChicle}/>
+        </TouchableHighlight>
 
         {
           this.state.isLoadingAssistants
@@ -67,7 +67,7 @@ class Item extends React.Component {
             : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
                 this.requestAssistants()
               }}>
-              {this.renderIcon("ios-people")}
+              <IconSimpleLineIcons style={{marginRight: 5}} name={'people'} size={30} color={Colors.pinkChicle}/>
             </TouchableHighlight>)
         }</View>
     </View>)
@@ -116,11 +116,6 @@ class Item extends React.Component {
     </View>)
   }
 
-  renderIcon(name) {
-    return (<Ionicons style={{
-        marginRight: 5
-      }} name={name} size={40} color={Colors.pinkChicle}/>)
-  }
 
   renderViewMore(onPress) {
     return (<Text style={{

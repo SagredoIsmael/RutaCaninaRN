@@ -2,7 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {insertDataMyUser} from '../../actions/usersActions'
 import Colors from "../../constants/Colors"
-import {Ionicons} from "@expo/vector-icons"
+import IconSimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
+import IconOcticons from "react-native-vector-icons/Octicons"
 import Fire from "../../api/Fire"
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
@@ -35,16 +36,20 @@ class IconSubscribe extends React.Component {
       {
         this.state.isLoadingSubscribe
           ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
-          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => {
-              this._pressSubscribe()
-            }}>
+          : (<TouchableHighlight underlayColor="rgba(98,93,144,0)"  onPress={() => {this._pressSubscribe() }}>
             {
               this.state.isSubscribe
-                ? this.renderIcon("ios-heart")
+                ? <View style={styles.row}>
+                    <IconOcticons style={{marginRight: 5}} name={'heart'} size={40} color={Colors.pinkChicle}/>
+                    <Text style={styles.textSmall}>¡Estás apuntado!</Text>
+                  </View>
 
-                : this.renderIcon("ios-person-add")
-
+                : <View style={styles.row}>
+                    <IconSimpleLineIcons style={{marginRight: 5}} name={'heart'} size={30} color={Colors.pinkChicle}/>
+                    <Text style={styles.text}>¡Apúntate!</Text>
+                  </View>
             }
+
           </TouchableHighlight>)
       }
     </View>);
@@ -112,12 +117,6 @@ class IconSubscribe extends React.Component {
     this.setState({isLoadingSubscribe: false})
   }
 
-  renderIcon(name) {
-    return (<Ionicons style={{
-        marginRight: 5
-      }} name={name} size={40} color={Colors.pinkChicle}/>)
-  }
-
   showAlertLogIn = () => {
     Alert.alert('Apuntarse a la ruta', 'Es necesario iniciar sesión previamente', [
       {
@@ -147,3 +146,22 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(IconSubscribe)
+
+
+const styles = StyleSheet.create({
+  text: {
+    opacity: 0.9,
+    fontSize: 14,
+    color: Colors.pinkChicle,
+  },
+  textSmall :{
+    opacity: 0.9,
+    fontSize: 12,
+    color: Colors.pinkChicle,
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+})

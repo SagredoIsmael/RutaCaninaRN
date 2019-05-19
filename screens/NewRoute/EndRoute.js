@@ -103,6 +103,7 @@ export class EndRoute extends React.Component {
     attributes.keyCreator = this.props.dataMyUser.key
     attributes.imageCreator = this.props.dataMyUser.image
     attributes.nameCreator = this.props.dataMyUser.name
+    delete attributes.isEditing
     return attributes
   }
 

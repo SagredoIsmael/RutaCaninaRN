@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableHighlight, StyleSheet} from 'react-native'
 import Colors from "../constants/Colors"
-import {Ionicons} from "@expo/vector-icons"
+import Icon from "react-native-vector-icons/Octicons"
 import {Avatar} from "react-native-elements"
 
 const profileImageSize = 36
@@ -10,6 +10,8 @@ const padding = 12
 export default class ItemUser extends Component {
 
   render() {
+    const isMine = (this.props.keyCreator == this.props.myKeyUser)
+
     return (<View style={[styles.row, styles.padding]}>
       <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
           backgroundColor: "transparent"
@@ -21,14 +23,24 @@ export default class ItemUser extends Component {
           <Text style={styles.text}>{this.props.nameCreator}</Text>
         </View>
       </TouchableHighlight>
+      {
+        isMine? (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._goToEditRoute()} style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            top: 2,
+            right: 2
+          }}>
+            <Icon name="settings" color={Colors.pinkChicle} size={28}/>
+        </TouchableHighlight>)
+        :
+        null
+      }
+
     </View>)
   }
 
-  // {this.renderIcon("ios-more")}
-  renderIcon(name) {
-    return (<Ionicons style={{
-        marginRight: 5
-      }} name={name} size={40} color={Colors.pinkChicle}/>)
+  _goToEditRoute = () => {
+      
   }
 
   goToProfile = () => {

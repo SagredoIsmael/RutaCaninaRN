@@ -1,10 +1,9 @@
 import React from 'react'
 import Fire from '../api/Fire'
 import {connect} from 'react-redux'
-import {insertDataRoutes} from '../actions/routesActions'
+import {insertDataRoutes, resetNewRoute, requestDataRoutes} from '../actions/routesActions'
 import {insertDataMyUser} from '../actions/usersActions'
 import List from '../components/List'
-import getPermission from '../utils/getPermission'
 import ActionButton from 'react-native-action-button'
 import Colors from '../constants/Colors'
 import FlashMessage from 'react-native-flash-message'
@@ -34,7 +33,7 @@ class RutasScreen extends React.Component {
 
   componentDidMount() {
     this._confiBackButtonAndroid()
-    this.makeRemoteRequest()
+    this.routesRequest()
   }
 
   userRequest = async () => {
@@ -44,44 +43,25 @@ class RutasScreen extends React.Component {
     }
   }
 
-  makeRemoteRequest = async lastKey => {
+  routesRequest = async () => {
     if (this.state.loading) {
-      return;
+      return
     }
-    this.setState({loading: true});
+    this.setState({loading: true})
 
-    // The data prop will be an array of posts, the cursor will be used for pagination.
-    const {data, cursor} = await Fire.shared.getRoutes({size: 5, start: lastKey});
+    const {data} = await Fire.shared.getRoutes()
 
-    this.lastKnownKey = cursor;
-
-    // Iteratively add posts
     let posts = {};
     for (let child of data) {
       posts[child.key] = child;
     }
+
+    const routesArray = Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
+    this.props.insertDataRoutes(routesArray)
+
     await this.userRequest()
 
-    this.addPosts(posts)
-
-    // Finish loading, this will stop the refreshing animation.
     this.setState({loading: false})
-  }
-
-  addPosts = posts => {
-    this.setState(previousState => {
-      let data = {
-        ...previousState.data,
-        ...posts
-      };
-      return {
-        data,
-        // Sort the data by timestamp
-        posts: Object.values(data).sort((a, b) => a.timestamp < b.timestamp)
-      }
-    })
-    this.props.insertDataRoutes(this.state.posts)
-
   }
 
   _confiBackButtonAndroid = () => {
@@ -93,11 +73,12 @@ class RutasScreen extends React.Component {
 
   refreshList = () => {
     showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
-    this.makeRemoteRequest()
+    this.routesRequest()
   };
 
   goToNewRoute = () => {
     if (Fire.shared.uid != undefined) {
+      this.props.resetNewRoute()
       this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList, restoreBackButton: this._confiBackButtonAndroid})
     } else {
       this.showAlertLogIn()
@@ -117,12 +98,7 @@ class RutasScreen extends React.Component {
     ], {cancelable: true})
   }
 
-  // Because we want to get the most recent items, don't pass the cursor back.
-  // This will make the data base pull the most recent items.
-  _onRefresh = () => this.makeRemoteRequest();
-
-  // If we press the "Load More..." footer then get the next page of posts
-  onPressFooter = () => this.makeRemoteRequest(this.lastKnownKey);
+  _onRefresh = () => this.routesRequest()
 
   render() {
     LayoutAnimation.easeInEaseOut();
@@ -134,7 +110,7 @@ class RutasScreen extends React.Component {
         onRefresh = {
           this._onRefresh
         }
-        />} onPressFooter={this.onPressFooter} data={this.props.dataRoutes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
+        />} onPressFooter={this._onRefresh} data={this.props.dataRoutes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
       <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {
           this.goToNewRoute()
         }} size={this.state.loading
@@ -164,6 +140,12 @@ const mapDispatchToProps = dispatch => {
     },
     insertDataMyUser: (user) => {
       dispatch(insertDataMyUser(user))
+    },
+    resetNewRoute: () => {
+      dispatch(resetNewRoute())
+    },
+    requestDataRoutes: () => {
+      dispatch(requestDataRoutes())
     }
   }
 }

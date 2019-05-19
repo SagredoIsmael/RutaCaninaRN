@@ -1,5 +1,5 @@
 
-import { RESET_NEW_ROUTE, SET_DATA_ROUTES, SET_DATA_NEW_ROUTE, SET_POSITION_SCROLL_LIST, RESET_POSITION_SCROLL_LIST } from './types';
+import { RESET_NEW_ROUTE, SET_DATA_ROUTES, SET_DATA_NEW_ROUTE, SET_POSITION_SCROLL_LIST, RESET_POSITION_SCROLL_LIST, REQUEST_DATA_ROUTES } from './types';
 
 
 export const resetNewRoute = () => {
@@ -33,5 +33,11 @@ export const insertScrollPositionList = scrollPositionList => {
 export const resetScrollPositionList = () => {
   return {
     type: RESET_POSITION_SCROLL_LIST
+  }
+}
+
+export const requestDataRoutes = () => {
+  return {
+    type: REQUEST_DATA_ROUTES
   }
 }

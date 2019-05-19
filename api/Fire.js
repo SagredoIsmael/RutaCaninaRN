@@ -101,14 +101,10 @@ class Fire extends React.Component {
   //API ROUTES///////////////////
 
   // Download Data Route
-  getRoutes = async ({size, start}) => {
-    console.log("in getpage: ", "Size:", size, "start", start);
+  getRoutes = async () => {
     const users = await this.getUsers();
     let ref = this.collectionRoutes;
     try {
-      // if (start) {
-      //   ref = ref.startAfter(start);
-      // }
       const querySnapshot = await ref.get();
       const data = [];
       querySnapshot.forEach(function(doc) {
@@ -125,8 +121,7 @@ class Fire extends React.Component {
           data.push(route);
         }
       });
-      const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-      return {data, cursor: lastVisible};
+      return {data};
     } catch ({message}) {
       alert(message);
     }
