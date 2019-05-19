@@ -46,7 +46,7 @@ class NewRouteScreen extends React.Component {
       headerStyle: {
         backgroundColor: Colors.background
       },
-      headerRight: (<Icon.Button name='info' backgroundColor="transparent" size={28} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>),
+      headerRight: (<Icon.Button name='question' backgroundColor="transparent" size={28} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.activateHelper()}></Icon.Button>),
       headerLeft: (<Icon1.Button name='md-arrow-back' backgroundColor="transparent" size={32} color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} onPress={() => ourself.showAlert()}></Icon1.Button>)
     }
   }
@@ -111,7 +111,6 @@ class NewRouteScreen extends React.Component {
   }
 
   render() {
-
     return (<View style={styles.container}>
       <ImageBackground source={require('../../assets/images/background.png')} style={{
           width: '100%',

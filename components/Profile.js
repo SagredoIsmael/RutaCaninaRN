@@ -2,14 +2,16 @@ import React, {Component} from "react"
 import {Permissions, ImagePicker, Font, Constants} from "expo"
 import {connect} from "react-redux"
 import {resetDataMyUser, insertDataMyUser} from '../actions/usersActions'
+import {openNameUserModal} from '../actions/modalsActions'
 import Fire from "../api/Fire"
 import Icon from "react-native-vector-icons/Ionicons"
 import IconFoundation from "react-native-vector-icons/Foundation"
-import IconAntDesign from "react-native-vector-icons/AntDesign"
 import _ from "lodash"
 import {Avatar, Button} from "react-native-elements"
 import Loader from "./Modals/Loader"
 import InfoDog from "./Modals/InfoDogModal"
+import NameUserModal from "./Modals/NameUserModal"
+
 import {
   StyleSheet,
   Alert,
@@ -78,30 +80,29 @@ class Profile extends React.Component {
     }
     return _.map(dogs, (user, index) => {
       return this.renderCard(user, index);
-    });
+    })
+  }
+
+  _openNameUserModal = () => {
+    this.props.isMyProfile ? this.props.openNameUserModal() : null
   }
 
   renderTitleUser() {
-    var name = "";
-    if (this.props.isMyProfile) {
-      name = this.props.dataMyUser.name;
-    } else {
-      name = this.props.dataUser.name;
-    }
-    return (<View style={{
+    return (
+      <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._openNameUserModal()} style={{
         flex: 1,
         marginTop: 40,
         justifyContent: "center"
-      }}>
-      <Text style={{
-          fontFamily: "bold",
-          fontSize: 25,
-          color: Colors.verdeOscuro,
-          marginLeft: -15
-        }}>
-        {name}
-      </Text>
-    </View>);
+      }} >
+        <Text style={{
+            fontFamily: "bold",
+            fontSize: 25,
+            color: Colors.verdeOscuro,
+            marginLeft: -15
+          }}>
+          {this.props.isMyProfile? this.props.dataMyUser.name : this.props.dataUser.name}
+        </Text>
+    </TouchableHighlight>)
   }
 
   renderCard(dog, index) {
@@ -257,7 +258,7 @@ class Profile extends React.Component {
               top: 2,
               right: 2
             }}>
-              <IconAntDesign name="setting" color={Colors.pinkChicle} size={28}/>
+              <Icon name="md-log-out" color={Colors.pinkChicle} size={28}/>
           </View>
         </TouchableHighlight>
       )
@@ -330,6 +331,7 @@ class Profile extends React.Component {
         }
       </ImageBackground>
       <InfoDog isOpenInfoDog={this.state.isOpenInfoDog} clickDismiss={this._pressDismissInfoDog} dogSelect={this.state.dogSelect}/>
+      <NameUserModal/>
     </ScrollView>)
   }
 
@@ -432,12 +434,15 @@ const mapDispatchToProps = dispatch => {
     },
     insertDataMyUser: (user) => {
       dispatch(insertDataMyUser(user))
+    },
+    openNameUserModal: () => {
+      dispatch(openNameUserModal())
     }
   }
 }
 
 const mapStateToProps = state => {
-  return {dataUser: state.dataUser, dataMyUser: state.dataMyUser};
-};
+  return {dataUser: state.dataUser, dataMyUser: state.dataMyUser}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile)

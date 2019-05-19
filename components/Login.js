@@ -1,9 +1,8 @@
-import React, {Component} from "react";
-import PropTypes from "prop-types";
-import firebase from "firebase";
-import Fire from "../api/Fire";
+import React, {Component} from "react"
+import PropTypes from "prop-types"
+import Fire from "../api/Fire"
 import {insertDataMyUser} from '../actions/usersActions'
-import {connect} from "react-redux";
+import {connect} from "react-redux"
 import {
   StyleSheet,
   View,
@@ -14,38 +13,37 @@ import {
   UIManager,
   KeyboardAvoidingView,
   Alert
-} from "react-native";
-import {Font} from "expo";
-import {Input, Button} from "react-native-elements";
+} from "react-native"
+import {Font} from "expo"
+import {Input, Button} from "react-native-elements"
+import Icon from "react-native-vector-icons/FontAwesome"
+import SimpleIcon from "react-native-vector-icons/SimpleLineIcons"
 
-import Icon from "react-native-vector-icons/FontAwesome";
-import SimpleIcon from "react-native-vector-icons/SimpleLineIcons";
+const SCREEN_WIDTH = Dimensions.get("window").width
+const SCREEN_HEIGHT = Dimensions.get("window").height
 
-const SCREEN_WIDTH = Dimensions.get("window").width;
-const SCREEN_HEIGHT = Dimensions.get("window").height;
-
-const BG_IMAGE = require("../assets/images/backgroundLoggin.jpg");
+const BG_IMAGE = require("../assets/images/backgroundLoggin.jpg")
 
 // Enable LayoutAnimation on Android
-UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
+UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true)
 
 const TabSelector = ({selected}) => {
   return (<View style={styles.selectorContainer}>
     <View style={selected && styles.selected}/>
-  </View>);
-};
+  </View>)
+}
 
 TabSelector.propTypes = {
   selected: PropTypes.bool.isRequired
-};
+}
 
 class Login extends Component {
   static navigationOptions = {
     header: null
-  };
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       email: undefined,
@@ -57,7 +55,7 @@ class Login extends Component {
       isEmailValid: true,
       isPasswordValid: true,
       isConfirmationValid: true
-    };
+    }
 
     this.selectCategory = this.selectCategory.bind(this);
     this.login = this.login.bind(this);
@@ -67,7 +65,7 @@ class Login extends Component {
   async componentDidMount() {
     await Font.loadAsync({georgia: require("../assets/fonts/Georgia.ttf"), regular: require("../assets/fonts/Montserrat-Regular.ttf"), light: require("../assets/fonts/Montserrat-Light.ttf")});
 
-    this.setState({fontLoaded: true});
+    this.setState({fontLoaded: true})
   }
 
   selectCategory(selectedCategory) {
@@ -78,75 +76,75 @@ class Login extends Component {
   validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return re.test(email);
+    return re.test(email)
   }
 
   login = async () => {
     const {email, password} = this.state;
     // Comprobe email and password
-    LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.easeInEaseOut()
     if (this.validateEmail(email)) {
-      this.setState({isEmailValid: true, isLoading: true});
+      this.setState({isEmailValid: true, isLoading: true})
       if (password.length >= 8) {
-        this.setState({isPasswordValid: true, isLoading: true});
+        this.setState({isPasswordValid: true, isLoading: true})
         //API call
         Fire.shared.loginUser(email, password).then(user => {
-          this.props.insertDataMyUser({key: user.user.uid});
-          this.setState({isLoading: false});
+          this.props.insertDataMyUser({key: user.user.uid})
+          this.setState({isLoading: false})
         }).catch(error => {
           Alert.alert("¡Wuau!", "Usuario o contraseña incorrectos", [
             {
               text: "Aceptar",
               onPress: () => this.setState({isLoading: false})
             }
-          ], {cancelable: false});
-        });
+          ], {cancelable: false})
+        })
       } else {
-        this.passwordInput.shake();
-        this.setState({isLoading: false, isPasswordValid: false});
+        this.passwordInput.shake()
+        this.setState({isLoading: false, isPasswordValid: false})
       }
     } else {
-      this.emailInput.shake();
-      this.setState({isLoading: false, isEmailValid: false});
+      this.emailInput.shake()
+      this.setState({isLoading: false, isEmailValid: false})
     }
-  };
+  }
 
   signUp = async () => {
-    const {email, password, passwordConfirmation, name} = this.state;
-    LayoutAnimation.easeInEaseOut();
+    const {email, password, passwordConfirmation, name} = this.state
+    LayoutAnimation.easeInEaseOut()
     if (this.validateEmail(email)) {
-      this.setState({isEmailValid: true, isLoading: true});
+      this.setState({isEmailValid: true, isLoading: true})
       if (password.length >= 8) {
-        this.setState({isPasswordValid: true, isLoading: true});
+        this.setState({isPasswordValid: true, isLoading: true})
         if (password == passwordConfirmation) {
-          this.setState({isConfirmationValid: true, isLoading: true});
+          this.setState({isConfirmationValid: true, isLoading: true})
           // API call
           Fire.shared.registryUser(email, password).then(user => {
             const attributesDicc = {
               name: name
-            };
-            Fire.shared.updateAttributeUser(attributesDicc);
-            this.props.insertDataMyUser({key: user.user.uid});
-            this.setState({isLoading: false});
+            }
+            Fire.shared.updateAttributeUser(attributesDicc)
+            this.props.insertDataMyUser({key: user.user.uid})
+            this.setState({isLoading: false})
           }).catch(error => {
             Alert.alert("¡Wuau!", "Este email ya está registrado", [
               {
                 text: "Aceptar",
                 onPress: () => this.setState({isLoading: false})
               }
-            ], {cancelable: false});
+            ], {cancelable: false})
           });
         } else {
-          this.confirmationInput.shake();
-          this.setState({isLoading: false, isConfirmationValid: false});
+
+          this.setState({isLoading: false, isConfirmationValid: false})
         }
       } else {
-        this.passwordInput.shake();
-        this.setState({isLoading: false, isPasswordValid: false});
+        this.passwordInput.shake()
+        this.setState({isLoading: false, isPasswordValid: false})
       }
     } else {
-      this.emailInput.shake();
-      this.setState({isLoading: false, isEmailValid: false});
+      this.emailInput.shake()
+      this.setState({isLoading: false, isEmailValid: false})
     }
   };
 

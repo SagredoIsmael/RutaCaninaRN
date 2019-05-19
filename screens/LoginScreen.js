@@ -24,7 +24,6 @@ class LoginScreen extends React.Component {
   }
 
   render() {
-    console.log('killo', this.props.dataMyUser.key);
     if (this.props.dataMyUser.key == '') {
       return (<ScrollView style={styles.container}>
         <View>

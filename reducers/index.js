@@ -4,6 +4,8 @@ import dataUser from './dataUsersReducer'
 import dataMyUser from './dataMyUserReducer'
 import newRoute from './newRouteReducer'
 import routesScrollPos from './routesScrollPositionReducer'
+import modals from './modalsReducer'
+
 
 
 export default combineReducers({
@@ -11,5 +13,6 @@ export default combineReducers({
   dataMyUser: dataMyUser,
   dataRoutes: routes,
   dataNewRoute: newRoute,
-  scrollPositionList: routesScrollPos
+  scrollPositionList: routesScrollPos,
+  modals: modals
 })
