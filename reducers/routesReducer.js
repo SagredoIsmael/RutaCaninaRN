@@ -1,28 +1,39 @@
-import Fire from "../api/Fire"
-import { SET_DATA_ROUTES, REQUEST_DATA_ROUTES } from '../actions/types';
+import Fire from "../api/FireAPI"
+import { REQUEST_DATA_ROUTES, SUCCESS_DATA_ROUTES, ERROR_DATA_ROUTES } from '../actions/types'
 
-export default (state = [], action) => {
+const initialState = {
+  items: [],
+  loading: false,
+  error: null
+}
+
+export default (state = initialState, action) => {
   switch(action.type){
 
-    case SET_DATA_ROUTES:
-      return action.payload
-
     case REQUEST_DATA_ROUTES:
-      return _routesRequest()
+      Fire.getRoutes()
+      return {
+        ...state,
+        loading: true,
+        error: null
+      }
+
+    case SUCCESS_DATA_ROUTES:
+      return {
+        ...state,
+        loading: false,
+        items: action.payload
+      }
+
+    case ERROR_DATA_ROUTES:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        items: []
+      }
 
     default:
       return state
   }
-}
-
-
-export const _routesRequest = async() => {
-  const {data} = await Fire.shared.getRoutes()
-
-  let posts = {};
-  for (let child of data) {
-    posts[child.key] = child;
-  }
-
-  return Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
 }

@@ -1,25 +1,10 @@
 
-import { RESET_NEW_ROUTE, SET_DATA_ROUTES, SET_DATA_NEW_ROUTE, SET_POSITION_SCROLL_LIST, RESET_POSITION_SCROLL_LIST, REQUEST_DATA_ROUTES } from './types';
+import { RESET_NEW_ROUTE, SET_POSITION_SCROLL_LIST, RESET_POSITION_SCROLL_LIST, REQUEST_DATA_ROUTES, SUCCESS_DATA_ROUTES, ERROR_DATA_ROUTES } from './types';
 
 
 export const resetNewRoute = () => {
   return {
     type: RESET_NEW_ROUTE
-  }
-}
-
-export const insertDataRoutes = dataRoutes => {
-  return {
-    type: SET_DATA_ROUTES,
-    payload: dataRoutes
-  }
-}
-
-
-export const insertDataNewRoute = dataNewRoute => {
-  return {
-    type: SET_DATA_NEW_ROUTE,
-    payload: dataNewRoute
   }
 }
 
@@ -39,5 +24,19 @@ export const resetScrollPositionList = () => {
 export const requestDataRoutes = () => {
   return {
     type: REQUEST_DATA_ROUTES
+  }
+}
+
+export const successDataRoutes = (dataRoutes) => {
+  return {
+    type: SUCCESS_DATA_ROUTES,
+    payload: dataRoutes
+  }
+}
+
+export const errorDataRoutes = (error) => {
+  return {
+    type: ERROR_DATA_ROUTES,
+    payload: error
   }
 }

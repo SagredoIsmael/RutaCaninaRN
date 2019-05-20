@@ -102,7 +102,6 @@ class Fire extends React.Component {
 
   // Download Data Route
   getRoutes = async () => {
-    const users = await this.getUsers();
     let ref = this.collectionRoutes;
     try {
       const querySnapshot = await ref.get();

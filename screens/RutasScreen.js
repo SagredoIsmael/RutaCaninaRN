@@ -1,7 +1,7 @@
 import React from 'react'
 import Fire from '../api/Fire'
 import {connect} from 'react-redux'
-import {insertDataRoutes, resetNewRoute, requestDataRoutes} from '../actions/routesActions'
+import {resetNewRoute, requestDataRoutes, successDataRoutes} from '../actions/routesActions'
 import {insertDataMyUser} from '../actions/usersActions'
 import List from '../components/List'
 import ActionButton from 'react-native-action-button'
@@ -57,9 +57,12 @@ class RutasScreen extends React.Component {
     }
 
     const routesArray = Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
-    this.props.insertDataRoutes(routesArray)
+
+    this.props.successDataRoutes(routesArray)
 
     await this.userRequest()
+
+    this.props.requestDataRoutes()
 
     this.setState({loading: false})
   }
@@ -110,7 +113,7 @@ class RutasScreen extends React.Component {
         onRefresh = {
           this._onRefresh
         }
-        />} onPressFooter={this._onRefresh} data={this.props.dataRoutes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
+        />} onPressFooter={this._onRefresh} data={this.props.routes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
       <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {
           this.goToNewRoute()
         }} size={this.state.loading
@@ -130,14 +133,11 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {dataRoutes: state.dataRoutes, dataMyUser: state.dataMyUser}
+  return {routes: state.dataRoutes.items, loading: state.dataRoutes.loading, error: state.dataRoutes.error, dataMyUser: state.dataMyUser}
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    insertDataRoutes: (routes) => {
-      dispatch(insertDataRoutes(routes))
-    },
     insertDataMyUser: (user) => {
       dispatch(insertDataMyUser(user))
     },
@@ -146,7 +146,10 @@ const mapDispatchToProps = dispatch => {
     },
     requestDataRoutes: () => {
       dispatch(requestDataRoutes())
-    }
+    },
+    successDataRoutes: (routes) => {
+      dispatch(successDataRoutes(routes))
+    },
   }
 }
 
