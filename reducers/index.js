@@ -1,4 +1,6 @@
 import {combineReducers} from 'redux'
+import { firebaseReducer } from 'react-redux-firebase'
+import { firestoreReducer } from 'redux-firestore'
 import routes from './routesReducer'
 import dataUser from './dataUsersReducer'
 import dataMyUser from './dataMyUserReducer'
@@ -15,4 +17,11 @@ export default combineReducers({
   dataNewRoute: newRoute,
   scrollPositionList: routesScrollPos,
   modals: modals
+})
+
+export const initialState = {}
+
+export const rootReducer = combineReducers({
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
 })

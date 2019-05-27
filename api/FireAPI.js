@@ -41,7 +41,6 @@ class Fire extends React.Component {
               data.push(route)
             }
           })
-          console.log('killo', this.props.routes); //TODO NOT WORKING REDUX
         } catch ({message}) {
           alert(message)
         }
