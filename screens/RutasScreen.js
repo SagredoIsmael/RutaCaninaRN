@@ -25,12 +25,6 @@ class RutasScreen extends React.Component {
     header: null
   }
 
-  state = {
-    loading: false,
-    posts: [],
-    data: {}
-  };
-
   componentDidMount() {
     this._confiBackButtonAndroid()
     this.routesRequest()
@@ -44,40 +38,26 @@ class RutasScreen extends React.Component {
   }
 
   routesRequest = async () => {
-    if (this.state.loading) {
+    if (this.props.loading) {
       return
     }
-    this.setState({loading: true})
-
-    const {data} = await Fire.shared.getRoutes()
-
-    let posts = {};
-    for (let child of data) {
-      posts[child.key] = child;
-    }
-
-    const routesArray = Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
-
-    this.props.successDataRoutes(routesArray)
-
-    await this.userRequest()
-
     this.props.requestDataRoutes()
-
-    this.setState({loading: false})
+    const data = await Fire.shared.getRoutes()
+    this.props.successDataRoutes(data)
+    await this.userRequest()
   }
 
   _confiBackButtonAndroid = () => {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       this.props.navigation.navigate('RutasStack')
       return true;
-    });
+    })
   }
 
   refreshList = () => {
     showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
     this.routesRequest()
-  };
+  }
 
   goToNewRoute = () => {
     if (Fire.shared.uid != undefined) {
@@ -104,11 +84,11 @@ class RutasScreen extends React.Component {
   _onRefresh = () => this.routesRequest()
 
   render() {
-    LayoutAnimation.easeInEaseOut();
+    LayoutAnimation.easeInEaseOut()
     return (<View style={styles.container}>
       <List refreshControl={<RefreshControl
         refreshing = {
-          this.state.loading
+          this.props.loading
         }
         onRefresh = {
           this._onRefresh
@@ -116,7 +96,7 @@ class RutasScreen extends React.Component {
         />} onPressFooter={this._onRefresh} data={this.props.routes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
       <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {
           this.goToNewRoute()
-        }} size={this.state.loading
+        }} size={this.props.loading
           ? 0
           : 50}/>
       <FlashMessage position="top"/>

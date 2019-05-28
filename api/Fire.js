@@ -99,7 +99,14 @@ class Fire extends React.Component {
           data.push(route);
         }
       });
-      return {data};
+
+      let posts = {};
+      for (let child of data) {
+        posts[child.key] = child;
+      }
+
+      return Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
+
     } catch ({message}) {
       alert(message);
     }
