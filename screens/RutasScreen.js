@@ -62,6 +62,8 @@ class RutasScreen extends React.Component {
 
     await this.userRequest()
 
+    this.props.requestDataRoutes()
+
     this.setState({loading: false})
   }
 

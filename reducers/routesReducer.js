@@ -1,4 +1,3 @@
-import Fire from "../api/FireAPI"
 import { REQUEST_DATA_ROUTES, SUCCESS_DATA_ROUTES, ERROR_DATA_ROUTES } from '../actions/types'
 
 const initialState = {
@@ -11,7 +10,6 @@ export default (state = initialState, action) => {
   switch(action.type){
 
     case REQUEST_DATA_ROUTES:
-      Fire.getRoutes()
       return {
         ...state,
         loading: true,

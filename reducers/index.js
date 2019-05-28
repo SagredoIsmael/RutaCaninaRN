@@ -9,19 +9,15 @@ import routesScrollPos from './routesScrollPositionReducer'
 import modals from './modalsReducer'
 
 
+export const initialState = {}
 
-export default combineReducers({
+export const rootReducer = combineReducers({
+  firebase: firebaseReducer,
+  firestore: firestoreReducer,
   dataUser: dataUser,
   dataMyUser: dataMyUser,
   dataRoutes: routes,
   dataNewRoute: newRoute,
   scrollPositionList: routesScrollPos,
   modals: modals
-})
-
-export const initialState = {}
-
-export const rootReducer = combineReducers({
-  firebase: firebaseReducer,
-  firestore: firestoreReducer,
 })
