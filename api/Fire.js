@@ -1,13 +1,31 @@
-import uuid from "uuid";
-import React from "react";
-import {Alert} from "react-native";
-import {ImageManipulator} from "expo";
-import getUserInfo from "../utils/getUserInfo";
-import shrinkImageAsync from "../utils/shrinkImageAsync";
-const firebase = require("firebase");
-require("firebase/firestore");
+import uuid from "uuid"
+import React from "react"
+import firebaseConfig from './firebaseConfig.js'
+import {Alert} from "react-native"
+import {ImageManipulator} from "expo"
+import getUserInfo from "../utils/getUserInfo"
+import shrinkImageAsync from "../utils/shrinkImageAsync"
+const firebase = require("firebase")
+require("firebase/firestore")
 
 class Fire extends React.Component {
+
+  constructor() {
+    super()
+
+    firebase.initializeApp(firebaseConfig)
+
+    firebase.firestore().settings( { timestampsInSnapshots: true })
+
+    firebase.auth().onAuthStateChanged(async user => {
+      if (!user) {
+        await firebase.auth().signInAnonymously()
+        console.log("UID user: anónimo")
+      } else {
+        console.log("UID user: ", user.uid)
+      }
+    })
+  }
 
   registryUser = async (email, password) => {
     return firebase.auth().createUserWithEmailAndPassword(email, password);

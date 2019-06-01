@@ -1,7 +1,7 @@
 import React from 'react'
 import Fire from '../api/Fire'
 import {connect} from 'react-redux'
-import {resetNewRoute, requestDataRoutes, successDataRoutes} from '../actions/routesActions'
+import {resetNewRoute, fetchRoutes} from '../actions/routesActions'
 import {insertDataMyUser} from '../actions/usersActions'
 import List from '../components/List'
 import ActionButton from 'react-native-action-button'
@@ -27,24 +27,16 @@ class RutasScreen extends React.Component {
 
   componentDidMount() {
     this._confiBackButtonAndroid()
-    this.routesRequest()
+    this.props.fetchRoutes()
+    this.userRequest() //TODO: hacer lo mismo que con las rutas
   }
 
   userRequest = async () => {
+    console.log('killo', Fire.shared.uid);  //TODO : AHORA NO SE QUE PASA QUE NO PIDE ESTO (CREO QUE LO PIDE ANTES DE TIEMPO), OPTO POR QUITARLO Y QUE LO PIDA CUANDO CLICKA EN PERFIL (PARA ESO ANTES HAY QUE PONERLO IGUAL QUE RUTAS)
     if (Fire.shared.uid) {
       const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
       this.props.insertDataMyUser(dataUser)
     }
-  }
-
-  routesRequest = async () => {
-    if (this.props.loading) {
-      return
-    }
-    this.props.requestDataRoutes()
-    const data = await Fire.shared.getRoutes()
-    this.props.successDataRoutes(data)
-    await this.userRequest()
   }
 
   _confiBackButtonAndroid = () => {
@@ -56,7 +48,7 @@ class RutasScreen extends React.Component {
 
   refreshList = () => {
     showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
-    this.routesRequest()
+    //this.routesRequest()  //TODO: quitar esto de parametros a pasar y refrescarla desde el otro lado
   }
 
   goToNewRoute = () => {
@@ -81,24 +73,18 @@ class RutasScreen extends React.Component {
     ], {cancelable: true})
   }
 
-  _onRefresh = () => this.routesRequest()
+  _onRefresh = () => this.props.fetchRoutes()
 
   render() {
+    const { loading, routes, dataMyUser, navigation } = this.props
     LayoutAnimation.easeInEaseOut()
-    return (<View style={styles.container}>
-      <List refreshControl={<RefreshControl
-        refreshing = {
-          this.props.loading
-        }
-        onRefresh = {
-          this._onRefresh
-        }
-        />} onPressFooter={this._onRefresh} data={this.props.routes} myKey={this.props.dataMyUser.key} nav={this.props.navigation}/>
-      <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {
-          this.goToNewRoute()
-        }} size={this.props.loading
-          ? 0
-          : 50}/>
+    return (
+      <View style={styles.container}>
+      <List refreshControl = {
+        <RefreshControl refreshing = {loading} onRefresh = {this._onRefresh} />
+      }
+      onPressFooter={this._onRefresh} data={routes} myKey={dataMyUser.key} nav={navigation}/>
+      <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {this.goToNewRoute()}} size={loading? 0: 50}/>
       <FlashMessage position="top"/>
     </View>)
   }
@@ -124,12 +110,9 @@ const mapDispatchToProps = dispatch => {
     resetNewRoute: () => {
       dispatch(resetNewRoute())
     },
-    requestDataRoutes: () => {
-      dispatch(requestDataRoutes())
-    },
-    successDataRoutes: (routes) => {
-      dispatch(successDataRoutes(routes))
-    },
+    fetchRoutes: () => {
+      dispatch(fetchRoutes())
+    }
   }
 }
 
