@@ -152,8 +152,8 @@ class Item extends React.Component {
     const imgH = this.props.imageHeight || this.state.height;
     const aspect = imgW / imgH || 1
 
-    var esLocale = require('moment/locale/es');
-    moment.locale('es', esLocale);
+    var esLocale = require('moment/locale/es')
+    moment.locale('es', esLocale)
     return (<View>
       <ImageBackground source={require("../assets/images/background.png")} style={{
           width: "100%"
@@ -162,7 +162,7 @@ class Item extends React.Component {
             marginTop: 10
           }}>
 
-          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.myKey} nav={this.props.nav} isHiddenOption={this.props.isHiddenOption}></ItemUser>
+          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.myKey} nav={this.props.nav} isHiddenOption={this.props.isHiddenOption} dismissModal={false} route={this.props.route}></ItemUser>
 
         </View>
         <View style={{

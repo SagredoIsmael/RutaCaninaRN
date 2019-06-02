@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableHighlight, StyleSheet} from 'react-native'
+import {connect} from 'react-redux'
+import {setEditingRoute} from '../actions/routesActions'
+import {View, Text, Image, TouchableHighlight, StyleSheet, BackHandler} from 'react-native'
 import Colors from "../constants/Colors"
 import Icon from "react-native-vector-icons/Octicons"
 import {Avatar} from "react-native-elements"
@@ -7,7 +9,7 @@ import {Avatar} from "react-native-elements"
 const profileImageSize = 36
 const padding = 12
 
-export default class ItemUser extends Component {
+class ItemUser extends Component {
 
   render() {
     const isMine = (this.props.keyCreator == this.props.myKeyUser)
@@ -24,7 +26,7 @@ export default class ItemUser extends Component {
         </View>
       </TouchableHighlight>
       {
-        isMine? (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._goToEditRoute()} style={{
+        isMine && !this.props.dismissModal? (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._goToEditRoute()} style={{
             flexDirection: "row",
             justifyContent: "flex-end",
             top: 2,
@@ -40,7 +42,9 @@ export default class ItemUser extends Component {
   }
 
   _goToEditRoute = () => {
-      
+    const routeEditing = {...this.props.route, isEditing: true}
+    this.props.setEditingRoute(routeEditing)
+    this.props.nav.navigate('NewRoute', {restoreBackButton: this._confiBackButtonAndroid, titleHeader: routeEditing.name})
   }
 
   goToProfile = () => {
@@ -56,6 +60,13 @@ export default class ItemUser extends Component {
     if (this.props.dismissModal != null) {
       this.props.dismissModal()
     }
+  }
+
+  _confiBackButtonAndroid = () => {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.navigate('RutasStack')
+      return true;
+    })
   }
 
 }
@@ -83,4 +94,18 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 15
   }
-});
+})
+
+const mapStateToProps = state => {
+  return {}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setEditingRoute: (route) => {
+      dispatch(setEditingRoute(route))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemUser)

@@ -1,8 +1,6 @@
 import React from 'react'
-import Fire from '../api/Fire'
 import {connect} from 'react-redux'
 import {resetNewRoute, fetchRoutes} from '../actions/routesActions'
-import {insertDataMyUser} from '../actions/usersActions'
 import List from '../components/List'
 import ActionButton from 'react-native-action-button'
 import Colors from '../constants/Colors'
@@ -28,15 +26,6 @@ class RutasScreen extends React.Component {
   componentDidMount() {
     this._confiBackButtonAndroid()
     this.props.fetchRoutes()
-    this.userRequest() //TODO: hacer lo mismo que con las rutas
-  }
-
-  userRequest = async () => {
-    console.log('killo', Fire.shared.uid);  //TODO : AHORA NO SE QUE PASA QUE NO PIDE ESTO (CREO QUE LO PIDE ANTES DE TIEMPO), OPTO POR QUITARLO Y QUE LO PIDA CUANDO CLICKA EN PERFIL (PARA ESO ANTES HAY QUE PONERLO IGUAL QUE RUTAS)
-    if (Fire.shared.uid) {
-      const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
-      this.props.insertDataMyUser(dataUser)
-    }
   }
 
   _confiBackButtonAndroid = () => {
@@ -48,13 +37,13 @@ class RutasScreen extends React.Component {
 
   refreshList = () => {
     showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
-    //this.routesRequest()  //TODO: quitar esto de parametros a pasar y refrescarla desde el otro lado
+    this.props.fetchRoutes()
   }
 
   goToNewRoute = () => {
-    if (Fire.shared.uid != undefined) {
+    if (this.props.dataMyUser.key != '') {
       this.props.resetNewRoute()
-      this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList, restoreBackButton: this._confiBackButtonAndroid})
+      this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList, restoreBackButton: this._confiBackButtonAndroid, titleHeader: 'Nueva ruta'})
     } else {
       this.showAlertLogIn()
     }
@@ -104,9 +93,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    insertDataMyUser: (user) => {
-      dispatch(insertDataMyUser(user))
-    },
     resetNewRoute: () => {
       dispatch(resetNewRoute())
     },

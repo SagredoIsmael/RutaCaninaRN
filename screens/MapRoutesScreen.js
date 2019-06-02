@@ -63,7 +63,7 @@ class MapRoutesScreen extends React.Component {
   }
 
   _pressMarker = (markerKey) => {
-    for (let route of this.props.dataRoutes) {
+    for (let route of this.props.dataRoutes.items) {
       if (route.key == markerKey) {
         this.setState({routeSelected: route, isOpenInfoRoute: true})
         break
@@ -100,7 +100,7 @@ class MapRoutesScreen extends React.Component {
         }} mapType={'hybrid'} maxZoomLevel={this.state.maxZoomLevel} onMapReady={() => {
           this.setState({maxZoomLevel: 20})
         }}>
-        {this.props.dataRoutes.map(this.renderMarker)}
+        {this.props.dataRoutes.items.map(this.renderMarker)}
         <InfoRoute isOpenInfoRoute={this.state.isOpenInfoRoute} routeSelect={this.state.routeSelected} clickDismiss={this._pressDismissInfoRoute} nav={this.props.navigation}/>
       </MapView>
     </View>);

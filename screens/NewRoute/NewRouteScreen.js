@@ -36,7 +36,7 @@ class NewRouteScreen extends React.Component {
 
   static navigationOptions = ({navigation}) => {
     return {
-      title: 'Nueva ruta',
+      title: navigation.getParam('titleHeader'),
       headerTitleStyle: {
         color: Colors.verdeOscuro,
         fontSize: 28

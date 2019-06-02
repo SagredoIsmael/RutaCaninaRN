@@ -27,8 +27,7 @@ export class EndRoute extends React.Component {
 
   state = {
     secondStepActive: true,
-    isLoading: false,
-    isEditingRoute: false
+    isLoading: false
   }
 
   componentDidMount() {
@@ -73,7 +72,7 @@ export class EndRoute extends React.Component {
             } else {
               this.setState({isLoading: true})
               const attributesDicc = this.prepareAttributes()
-              if (this.state.isEditingRoute) {
+              if (this.props.dataNewRoute.isEditing) {
                 //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
               } else {
                 //Create route

@@ -9,7 +9,7 @@ import {NavigationEvents} from "react-navigation"
 
 class List extends React.Component {
   renderItem = ({item}) => <View>
-    <Item {...item} nav={this.props.nav} keyRoute={item.key} myKey={this.props.myKey}/>
+    <Item {...item} nav={this.props.nav} keyRoute={item.key} myKey={this.props.myKey} route={item}/>
   </View>;
   keyExtractor = item => item.key;
   render() {
@@ -30,9 +30,9 @@ class List extends React.Component {
   _comprobeScrollPosition = () => {
     if (this.props.scrollPositionList.keyRoute != null) {
 
-      if (this.props.scrollPositionList.keyRoute != '' && this.props.dataRoutes != null) {
-        for (var i = 0; i < this.props.dataRoutes.length; i++) {
-          if (this.props.dataRoutes[i].key == this.props.scrollPositionList.keyRoute) {
+      if (this.props.scrollPositionList.keyRoute != '' && this.props.dataRoutes.items != null) {
+        for (var i = 0; i < this.props.dataRoutes.items.length; i++) {
+          if (this.props.dataRoutes.items[i].key == this.props.scrollPositionList.keyRoute) {
             this.flatListRef.scrollToIndex({animated: true, index: i})
             this.props.resetScrollPositionList()
             break

@@ -11,7 +11,6 @@ import {Avatar, Button} from "react-native-elements"
 import Loader from "./Modals/Loader"
 import InfoDog from "./Modals/InfoDogModal"
 import NameUserModal from "./Modals/NameUserModal"
-
 import {
   StyleSheet,
   Alert,
@@ -366,17 +365,17 @@ class Profile extends React.Component {
   }
 
   infoDogs = dog => {
-    this.setState({isOpenInfoDog: true, dogSelect: dog});
+    this.setState({isOpenInfoDog: true, dogSelect: dog})
   }
 
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3]
-    });
+    })
     if (!result.cancelled) {
-      this.setState({isLoading: true});
-      uploadUrl = await Fire.shared.uploadImageUserAsync(result.uri);
+      this.setState({isLoading: true})
+      uploadUrl = await Fire.shared.uploadImageUserAsync(result.uri)
       uploadUrl
         ? this.userRequest()
         : Alert.alert("¡Wuau!", "Error al cargar la foto", [

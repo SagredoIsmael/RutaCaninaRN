@@ -12,10 +12,7 @@ class Fire extends React.Component {
 
   constructor() {
     super()
-
     firebase.initializeApp(firebaseConfig)
-
-    firebase.firestore().settings( { timestampsInSnapshots: true })
 
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) {
@@ -90,7 +87,8 @@ class Fire extends React.Component {
        });
        return {data};
      } catch ({message}) {
-       alert(message);
+       console.log('Error in getMessages func fire', message)
+       alert(message)
      }
    };
 
@@ -126,6 +124,7 @@ class Fire extends React.Component {
       return Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
 
     } catch ({message}) {
+      console.log('Error in getRoutes func fire', message)
       alert(message);
     }
   }
@@ -223,7 +222,7 @@ class Fire extends React.Component {
       });
       return {data};
     } catch ({message}) {
-      console.log("Error. No se puede obtener la infoMyUser");
+      console.log('Error in getUserAssistants func fire', message)
       alert(message);
     }
   }
@@ -252,6 +251,7 @@ class Fire extends React.Component {
       });
       return {data};
     } catch ({message}) {
+      console.log('Error in getUsers func fire', message)
       alert(message);
     }
   };
@@ -279,11 +279,11 @@ class Fire extends React.Component {
         };
         return {dataUser};
       } else {
-        console.log("Error", message);
+        console.log('Error in getInfoUser func fire', message)
         alert("Error en la identificación de tu usuario. Por favor inicia sesión")
       }
     } catch ({message}) {
-      console.log("Error", message);
+      console.log('Error in getInfoUser func fire', message)
       alert("Error en la identificación de tu usuario. Por favor inicia sesión")
     }
   }
@@ -373,6 +373,7 @@ class Fire extends React.Component {
       });
       return {data};
     } catch ({message}) {
+      console.log('Error in getDogsByUser func fire', message)
       alert(message);
     }
   };
@@ -407,7 +408,7 @@ class Fire extends React.Component {
       await ref.set(attributesDicc, {merge: true});
       return true;
     } catch ({message}) {
-      console.log('Error', message);
+      console.log('Error in updateAttributeUser func fire', message)
       alert(message);
     }
   }

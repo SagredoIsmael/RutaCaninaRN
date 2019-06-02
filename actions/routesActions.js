@@ -1,10 +1,17 @@
 import Fire from '../api/Fire'
-import { RESET_NEW_ROUTE, SET_POSITION_SCROLL_LIST, RESET_POSITION_SCROLL_LIST, REQUEST_DATA_ROUTES, SUCCESS_DATA_ROUTES, ERROR_DATA_ROUTES } from './types';
+import { RESET_NEW_ROUTE, SET_POSITION_SCROLL_LIST, RESET_POSITION_SCROLL_LIST, REQUEST_DATA_ROUTES, SUCCESS_DATA_ROUTES, ERROR_DATA_ROUTES, SET_EDITING_ROUTE } from './types';
+import {fetchUser} from './usersActions'
 
-
-export const resetNewRoute = () => { 
+export const resetNewRoute = () => {
   return {
     type: RESET_NEW_ROUTE
+  }
+}
+
+export const setEditingRoute = (route) => {
+  return {
+    type: SET_EDITING_ROUTE,
+    payload: route
   }
 }
 
@@ -49,9 +56,8 @@ const _fetchRoutesFire = async(dispatch, getState) => {
   if (getState().dataRoutes.loading) {
     return
   }
-  getState().dataMyUser
-
-  dispatch(requestDataRoutes(data))
+  dispatch(requestDataRoutes())
   const data = await Fire.shared.getRoutes()
   dispatch(successDataRoutes(data))
+  dispatch(fetchUser())
 }
