@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {Permissions, ImagePicker, Font, Constants} from "expo";
-import {insertDataNewRoute} from '../../actions/routesActions'
+import {setEditingRoute} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import moment from 'moment'
 import AutoTypingText from 'react-native-auto-typing-text'
@@ -115,12 +115,14 @@ class StartRoute extends React.Component {
         this.setState({duration: value})
         break;
     }
-    this.props.insertDataNewRoute(this.props.dataNewRoute)
+    this.props.setEditingRoute(this.props.dataNewRoute)
   }
 
   componentDidMount() {
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
     this.props.onRef(this)
+    if (this.props.dataNewRoute.isEditing) this.setState({isTypingName: false, photoStatus: "Foto cargada", description: this.props.dataNewRoute.description})
+    console.log('eeeekillo', this.props.dataNewRoute)
   }
 
   componentWillUnmount() {
@@ -179,19 +181,23 @@ class StartRoute extends React.Component {
   }
 
   render() {
-
     if (this.props.currentPosition == 0) {
       return (<View style={styles.container}>
         <ScrollView style={styles.container}>
           <View style={{
               alignItems: 'center'
             }}>
-            <AutoTypingText text={'¿Creamos una ruta? ¡Genial!'} charMovingTime={40} delay={0} style={{
+            {!this.props.dataNewRoute.isEditing?
+              <AutoTypingText text={'¿Creamos una ruta? ¡Genial!'} charMovingTime={40} delay={0} style={{
                 fontSize: 20,
                 color: Colors.verdeOscuro
               }} onComplete={() => {
                 this.setState({isTypingName: false})
               }}/>
+              :
+              null
+            }
+
           </View>
           {
             this.state.isTypingName
@@ -286,8 +292,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    insertDataNewRoute: (route) => {
-      dispatch(insertDataNewRoute(route))
+    setEditingRoute: (route) => {
+      dispatch(setEditingRoute(route))
     }
   }
 }

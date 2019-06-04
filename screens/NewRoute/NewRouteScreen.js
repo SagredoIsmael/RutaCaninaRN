@@ -56,9 +56,6 @@ class NewRouteScreen extends React.Component {
     });
   }
 
-  componentWillMount() {
-  }
-
   changeIndex = (index) => {
     this.setState({currentPosition: index})
   }

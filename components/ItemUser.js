@@ -44,7 +44,7 @@ class ItemUser extends Component {
   _goToEditRoute = () => {
     const routeEditing = {...this.props.route, isEditing: true}
     this.props.setEditingRoute(routeEditing)
-    this.props.nav.navigate('NewRoute', {restoreBackButton: this._confiBackButtonAndroid, titleHeader: routeEditing.name})
+    this.props.nav.navigate('NewRoute', {restoreBackButton: this._confiBackButtonAndroid, titleHeader: 'Editar ruta'})
   }
 
   goToProfile = () => {

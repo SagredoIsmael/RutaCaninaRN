@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {insertDataNewRoute} from '../../actions/routesActions'
+import {setEditingRoute} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import {MapView} from 'expo'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
@@ -112,7 +112,7 @@ class MapRoute extends React.Component {
 
   changeValueNewRoute = (value) => {
     this.props.dataNewRoute.coords = value
-    this.props.insertDataNewRoute(this.props.dataNewRoute)
+    this.props.setEditingRoute(this.props.dataNewRoute)
   }
 
   render() {
@@ -206,8 +206,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    insertDataNewRoute: (route) => {
-      dispatch(insertDataNewRoute(route))
+    setEditingRoute: (route) => {
+      dispatch(setEditingRoute(route))
     }
   }
 }

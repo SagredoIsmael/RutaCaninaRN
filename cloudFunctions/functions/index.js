@@ -16,3 +16,24 @@ exports.addMessage = functions.https.onRequest((req, res) => {
     return res.redirect(303, snapshot.ref.toString());
   });
 });
+
+// Listen for any change on document `marie` in collection `users`
+exports.myFunctionName = functions.firestore
+    .document('users/marie').onWrite((change, context) => {
+      console.log('has modificado el documento', change);
+    });
+
+
+// Listens for new messages added to /messages/:pushId/original and creates an
+// uppercase version of the message to /messages/:pushId/uppercase
+/*exports.makeUppercase = functions.database.ref('/users/cOv4mr679dYEjdMMBn2sbX8US2M2/dogs/WQMaF7FFfrSGyueWg05w')
+    .onCreate((snapshot, context) => {
+      // Grab the current value of what was written to the Realtime Database.
+      const original = snapshot.val();
+      console.log('Uppercasingjejeje', context.params.pushId, original);
+      const uppercase = original.toUpperCase();
+      // You must return a Promise when performing asynchronous tasks inside a Functions such as
+      // writing to the Firebase Realtime Database.
+      // Setting an "uppercase" sibling in the Realtime Database returns a Promise.
+      return snapshot.ref.parent.child('uppercase').set(uppercase);
+    }); */
