@@ -92,12 +92,43 @@ class Login extends Component {
           this.props.insertDataMyUser({key: user.user.uid})
           this.setState({isLoading: false})
         }).catch(error => {
-          Alert.alert("¡Wuau!", "Usuario o contraseña incorrectos", [
-            {
-              text: "Aceptar",
-              onPress: () => this.setState({isLoading: false})
-            }
-          ], {cancelable: false})
+          switch (error.code) {
+
+            case "auth/wrong-password":
+              Alert.alert("¡Wuau!", "Contraseña incorrecta", [
+                {
+                  text: "Intentar de nuevo",
+                  onPress: () => this.setState({isLoading: false})
+                }
+              ], {cancelable: false})
+              break
+
+              case "auth/user-not-found":
+                Alert.alert("¡Wuau!", "Usuario no registrado", [
+                  {
+                    text: 'Registrarme',
+                    onPress: () => this.setState({ selectedCategory : 1, isLoading: false})
+                  },
+                  {
+                    text: "Cancelar",
+                    onPress: () => this.setState({isLoading: false})
+                  }
+                ], {cancelable: false})
+              break
+
+            default:
+              Alert.alert("¡Wuau!", "Usuario o contraseña incorrectos", [
+                {
+                  text: "Intentar de nuevo",
+                  onPress: () => this.setState({isLoading: false})
+                },
+                {
+                  text: 'Registrarme',
+                  onPress: () => this.setState({ selectedCategory : 1, isLoading: false})
+                }
+              ], {cancelable: false})
+            break
+          }
         })
       } else {
         this.passwordInput.shake()
