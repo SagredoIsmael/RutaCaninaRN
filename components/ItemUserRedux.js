@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {setEditingRoute} from '../actions/routesActions'
 import {View, Text, Image, TouchableHighlight, StyleSheet, BackHandler} from 'react-native'
 import Colors from "../constants/Colors"
 import Icon from "react-native-vector-icons/Octicons"
@@ -7,7 +9,7 @@ import {Avatar} from "react-native-elements"
 const profileImageSize = 36
 const padding = 12
 
-class ItemUser extends Component {
+class ItemUserRedux extends Component {
 
   render() {
     const isMine = (this.props.keyCreator == this.props.myKeyUser)
@@ -24,8 +26,26 @@ class ItemUser extends Component {
             <Text style={styles.text}>{this.props.nameCreator}</Text>
           </View>
         </TouchableHighlight>
+        {
+          isMine && !this.props.dismissModal? (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._goToEditRoute()} style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              top: 2,
+              right: 2
+            }}>
+              <Icon name="settings" color={Colors.pinkChicle} size={28}/>
+          </TouchableHighlight>)
+          :
+          null
+        }
       </View>
     )
+  }
+
+  _goToEditRoute = () => {
+    const routeEditing = {...this.props.route, isEditing: true}
+    this.props.setEditingRoute(routeEditing)
+    this.props.nav.navigate('NewRoute', {restoreBackButton: this._confiBackButtonAndroid, titleHeader: 'Editar ruta'})
   }
 
   goToProfile = () => {
@@ -77,4 +97,16 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ItemUser
+const mapStateToProps = state => {
+  return {}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setEditingRoute: (route) => {
+      dispatch(setEditingRoute(route))
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemUserRedux)

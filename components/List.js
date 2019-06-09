@@ -8,7 +8,8 @@ import Item from "./Item"
 import {NavigationEvents} from "react-navigation"
 
 class List extends React.Component {
-  renderItem = ({item}) => <View>
+  renderItem = ({item}) =>
+  <View>
     <Item {...item} nav={this.props.nav} keyRoute={item.key} myKey={this.props.myKey} route={item}/>
   </View>;
   keyExtractor = item => item.key;
@@ -17,14 +18,16 @@ class List extends React.Component {
       onPressFooter,
       ...props
     } = this.props;
-    return (<View>
-      <NavigationEvents onDidFocus={(payload) => this._comprobeScrollPosition()}/>
-      <FlatList style={{
-          paddingTop: 10
-        }} ref={(ref) => {
-          this.flatListRef = ref;
-        }} keyExtractor={this.keyExtractor} ListFooterComponent={footerProps => (<Footer {...footerProps} onPress={onPressFooter}/>)} renderItem={this.renderItem} {...props} ItemSeparatorComponent={this.renderSeparator}/>
-    </View>)
+    return (
+      <View>
+        <NavigationEvents onDidFocus={(payload) => this._comprobeScrollPosition()}/>
+        <FlatList style={{
+            paddingTop: 10
+          }} ref={(ref) => {
+            this.flatListRef = ref;
+          }} keyExtractor={this.keyExtractor} ListFooterComponent={footerProps => (<Footer {...footerProps} onPress={onPressFooter}/>)} renderItem={this.renderItem} {...props} ItemSeparatorComponent={this.renderSeparator}/>
+      </View>
+    )
   }
 
   _comprobeScrollPosition = () => {

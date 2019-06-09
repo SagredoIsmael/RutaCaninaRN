@@ -63,7 +63,7 @@ class InfoRouteModal extends React.Component {
                 width: "100%"
               }}>
               < TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._pressRoute()}>
-                <Item keyCreator={this.props.routeSelect.keyCreator} imageCreator={this.props.routeSelect.imageCreator} nameCreator={this.props.routeSelect.nameCreator} title={this.props.routeSelect.name} image={this.props.routeSelect.image} description={this.props.routeSelect.description} date={this.props.routeSelect.date} time={this.props.routeSelect.time} isHiddenOption={true} coords={this.props.routeSelect.coords} duration={this.props.routeSelect.duration}/>
+                <Item keyCreator={this.props.routeSelect.keyCreator} imageCreator={this.props.routeSelect.imageCreator} nameCreator={this.props.routeSelect.nameCreator} title={this.props.routeSelect.name} image={this.props.routeSelect.image} description={this.props.routeSelect.description} date={this.props.routeSelect.date} time={this.props.routeSelect.time} isHiddenOption={true} coords={this.props.routeSelect.coords} duration={this.props.routeSelect.duration} isOpenFromModal={true}/>
               </TouchableHighlight>
             </ImageBackground>
           </ScrollView>

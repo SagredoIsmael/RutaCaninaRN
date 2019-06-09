@@ -4,7 +4,7 @@ import moment from 'moment'
 import IconSimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import ListAssistans from './Modals/ListAssistansModal'
 import MapLocation from './Modals/MapLocationModal'
-import ItemUser from './ItemUser'
+import ItemUserRedux from './ItemUserRedux'
 import IconSubscribe from './IconsBarCell/IconSubscribe.js'
 import ViewMoreText from 'react-native-view-more-text';
 import Fire from "../api/Fire"
@@ -110,7 +110,7 @@ class Item extends React.Component {
             : null
         }
       </View>
-      <ViewMoreText numberOfLines={1} renderViewMore={this.renderViewMore} renderViewLess={this.renderViewLess}>
+      <ViewMoreText numberOfLines={1} renderViewMore={this.props.isOpenFromModal? this.renderNoViewMore :this.renderViewMore} renderViewLess={this.renderViewLess}>
         <Text style={styles.subtitle}>{this.props.description}</Text>
       </ViewMoreText>
     </View>)
@@ -127,6 +127,12 @@ class Item extends React.Component {
     return (<Text style={{
         color: 'gray'
       }} onPress={onPress}>Ver menos</Text>)
+  }
+
+  renderNoViewMore(onPress) {
+    return (<Text style={{
+        color: 'gray'
+      }} ></Text>)
   }
 
   _pressChat = () => {
@@ -154,44 +160,49 @@ class Item extends React.Component {
 
     var esLocale = require('moment/locale/es')
     moment.locale('es', esLocale)
-    return (<View>
-      <ImageBackground source={require("../assets/images/background.png")} style={{
-          width: "100%"
-        }}>
-        <View style={{
-            marginTop: 10
+
+    return (
+      <View>
+        <ImageBackground source={require("../assets/images/background.png")} style={{
+            width: "100%"
           }}>
+          <View style={{
+              marginTop: 10
+            }}>
+            {this.props.isOpenFromModal ?
+              null
+              :
+              <ItemUserRedux nav={this.props.nav} keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.myKey}  isHiddenOption={this.props.isHiddenOption} dismissModal={false} route={this.props.route}></ItemUserRedux>
+            }
+          </View>
+          <View style={{
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+            <Image resizeMode="contain" style={{
+                backgroundColor: Colors.whiteCrudo,
+                width: "98%",
+                aspectRatio: aspect,
+                borderRadius: 20
+              }} source={{
+                uri: this.props.image
+              }} onLoadStart={() => this.setState({loadingImage: true})} onLoadEnd={() => {
+                this.setState({loadingImage: false})
+              }}></Image>
+            {this.state.loadingImage && <ActivityIndicator size="small" color={Colors.pinkChicle} animating={this.state.loadingImage}/>}
+          </View>
+          {
+            this.props.isHiddenOption
+              ? null
+              : this.renderIconBar()
+          }
+          {this.renderBarOptions()}
 
-          <ItemUser keyCreator={this.props.keyCreator} nameCreator={this.props.nameCreator} imageCreator={this.props.imageCreator} myKeyUser={this.props.myKey} nav={this.props.nav} isHiddenOption={this.props.isHiddenOption} dismissModal={false} route={this.props.route}></ItemUser>
-
-        </View>
-        <View style={{
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-          <Image resizeMode="contain" style={{
-              backgroundColor: Colors.whiteCrudo,
-              width: "98%",
-              aspectRatio: aspect,
-              borderRadius: 20
-            }} source={{
-              uri: this.props.image
-            }} onLoadStart={() => this.setState({loadingImage: true})} onLoadEnd={() => {
-              this.setState({loadingImage: false})
-            }}></Image>
-          {this.state.loadingImage && <ActivityIndicator size="small" color={Colors.pinkChicle} animating={this.state.loadingImage}/>}
-        </View>
-        {
-          this.props.isHiddenOption
-            ? null
-            : this.renderIconBar()
-        }
-        {this.renderBarOptions()}
-
-        <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissModals} myKeyUser={this.props.myKey} assistants={this.state.assistants}/>
-        <MapLocation isOpenMapLocation={this.state.isOpenMapLocation} location={this.props.coords} descriptionMarker={this.state.descriptionMarker} clickDismiss={this._pressDismissModals} />
-      </ImageBackground>
-    </View>)
+          <ListAssistans isOpenListAssistans={this.state.isOpenListAssistans} nav={this.props.nav} clickDismiss={this._pressDismissModals} myKeyUser={this.props.myKey} assistants={this.state.assistants}/>
+          <MapLocation isOpenMapLocation={this.state.isOpenMapLocation} location={this.props.coords} descriptionMarker={this.state.descriptionMarker} clickDismiss={this._pressDismissModals} />
+        </ImageBackground>
+      </View>
+    )
   }
 }
 const styles = StyleSheet.create({
