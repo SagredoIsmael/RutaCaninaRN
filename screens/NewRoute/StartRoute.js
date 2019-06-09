@@ -81,12 +81,23 @@ class StartRoute extends React.Component {
       this.setState({isIOS: true})
   }
 
-  changeValueFromComponent = (type, value) => {
-    this.handleValueChange(type, value)
+  componentDidMount() {
+    this.props.copilotEvents.on('stepChange', this.handleStepChange)
+    this.props.onRef(this)
+    if (this.props.dataNewRoute.isEditing)
+      this.setState({
+        isTypingName: false,
+        photoStatus: "Foto cargada",
+        description: this.props.dataNewRoute.description,
+        date: moment(this.props.dataNewRoute.date, 'YYYY-MM-DD').format("dddd DD MMM")
+    })
   }
 
-  handleValueChange = (type, value) => {
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
 
+  changeValueFromComponent = (type, value) => {
     switch (type) {
       case "name":
         this.props.dataNewRoute.title = value
@@ -118,17 +129,6 @@ class StartRoute extends React.Component {
     this.props.setEditingRoute(this.props.dataNewRoute)
   }
 
-  componentDidMount() {
-    this.props.copilotEvents.on('stepChange', this.handleStepChange)
-    this.props.onRef(this)
-    if (this.props.dataNewRoute.isEditing) this.setState({isTypingName: false, photoStatus: "Foto cargada", description: this.props.dataNewRoute.description})
-    console.log('eeeekillo', this.props.dataNewRoute)
-  }
-
-  componentWillUnmount() {
-    this.props.onRef(undefined)
-  }
-
   activateHelper = () => {
     this.props.start()
     this.touchable.props.onPress()
@@ -147,12 +147,6 @@ class StartRoute extends React.Component {
       this.props.dataNewRoute.photo = result.uri
       this.setState({photoStatus: "Foto cargada"})
     }
-  }
-
-  nowDate = () => {
-    var today = new Date()
-    date = today.getDate() + "-" + parseInt(today.getMonth() + 1) + "-" + today.getFullYear() + " " + today.getHours() + ":" + today.getMinutes()
-    return date
   }
 
   _timePickerAndroid = async () => {

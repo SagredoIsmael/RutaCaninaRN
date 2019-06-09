@@ -152,7 +152,7 @@ let styles = StyleSheet.create({
   }
 });
 
-const labels = ["Inicio", "Mapa", "¡Crear!"];
+const labels = ["Inicio", "Mapa", "¡Guardar!"];
 const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,

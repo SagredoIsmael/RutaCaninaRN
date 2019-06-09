@@ -11,7 +11,7 @@ export default (state = initialState, action) => {
     case SET_DATA_NEW_ROUTE:
       return action.payload
     case RESET_NEW_ROUTE:
-      return {initialState}
+      return initialState
     case SET_EDITING_ROUTE:
       return action.payload
     default:

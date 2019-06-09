@@ -23,7 +23,6 @@ import {
 class IconSubscribe extends React.Component {
 
   state = {
-    isSubscribe: false,
     isLoadingSubscribe: false
   }
 
@@ -38,10 +37,10 @@ class IconSubscribe extends React.Component {
           ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
           : (<TouchableHighlight underlayColor="rgba(98,93,144,0)"  onPress={() => {this._pressSubscribe() }}>
             {
-              this.state.isSubscribe
+              this.comprobeSubscribe()
                 ? <View style={styles.row}>
                     <IconOcticons style={{marginRight: 5}} name={'heart'} size={40} color={Colors.pinkChicle}/>
-                    <Text style={styles.textSmall}>¡Estás apuntado!</Text>
+                    <Text style={styles.textSmall}>¡Estás apuntad@!</Text>
                   </View>
 
                 : <View style={styles.row}>
@@ -60,20 +59,16 @@ class IconSubscribe extends React.Component {
       this.showAlertLogIn()
     } else {
       this.setState({isLoadingSubscribe: true})
-      this.state.isSubscribe
+      this.comprobeSubscribe()
         ? this.unSubscribeRoute()
         : this.subscribeRoute()
     }
   }
 
-  comprobeSubscribe = async () => {
-    if (this.props.dataMyUser.subscribedRoutes) {
-      for (let assistant of this.props.dataMyUser.subscribedRoutes) {
-        if (assistant == this.props.keyRoute) {
-          this.setState({isSubscribe: true})
-        }
-      }
-    }
+  comprobeSubscribe = () => { 
+    if (this.props.dataMyUser.subscribedRoutes)
+      return this.props.dataMyUser.subscribedRoutes.includes(this.props.keyRoute)
+    return false
   }
 
   userRequest = async (force) => {
@@ -81,7 +76,6 @@ class IconSubscribe extends React.Component {
       const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
       this.props.insertDataMyUser(dataUser)
     }
-    this.comprobeSubscribe()
   }
 
   subscribeRoute = async () => {
@@ -107,12 +101,11 @@ class IconSubscribe extends React.Component {
       if (await Fire.shared.deleteAssistantsRoute(this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
         this.userRequest(true)
         showMessage({message: "Te has desapuntado de la ruta", type: "danger", floating: true})
-        this.setState({isSubscribe: false})
       } else {
-        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+        showMessage({message: "Ha ocurrido un error al desapuntarte. Inténtalo más tarde", type: "danger", floating: true})
       }
     } else {
-      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
+      showMessage({message: "Ha ocurrido un error al desapuntarte. Inténtalo más tarde", type: "danger", floating: true})
     }
     this.setState({isLoadingSubscribe: false})
   }

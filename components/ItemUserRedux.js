@@ -13,7 +13,6 @@ class ItemUserRedux extends Component {
 
   render() {
     const isMine = (this.props.keyCreator == this.props.myKeyUser)
-
     return (
       <View style={[styles.row, styles.padding]}>
         <TouchableHighlight width={145} height={145} activeOpacity={0.7} underlayColor="rgba(98,93,144,0)" overlayContainerStyle={{
@@ -27,13 +26,14 @@ class ItemUserRedux extends Component {
           </View>
         </TouchableHighlight>
         {
-          isMine && !this.props.dismissModal? (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._goToEditRoute()} style={{
+          isMine && !this.props.dismissModal?
+          (<TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._goToEditRoute()} style={{
               flexDirection: "row",
               justifyContent: "flex-end",
-              top: 2,
-              right: 2
+              marginTop: 2,
+              marginRight: 2
             }}>
-              <Icon name="settings" color={Colors.pinkChicle} size={28}/>
+              <Icon name="settings" color={Colors.pinkChicle} size={32}/>
           </TouchableHighlight>)
           :
           null
