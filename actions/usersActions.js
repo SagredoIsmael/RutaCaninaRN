@@ -47,7 +47,7 @@ export const fetchUser = () => (dispatch, getState) => {
 }
 
 const _fetchUserFire = async(dispatch, getState) => {
-  if (getState().dataMyUser.key == '' && Fire.shared.uid) {
+  if (getState().dataMyUser.key == '' && Fire.shared.uid && Fire.shared.uid != '') {
     dispatch(requestDataUser())
     const {dataUser} = await Fire.shared.getInfoUser(Fire.shared.uid)
     dispatch(successDataUser(dataUser))

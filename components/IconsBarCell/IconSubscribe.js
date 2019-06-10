@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {insertDataMyUser} from '../../actions/usersActions'
+import {fetchUser} from '../../actions/usersActions'
 import Colors from "../../constants/Colors"
 import IconSimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import IconOcticons from "react-native-vector-icons/Octicons"
@@ -65,7 +65,7 @@ class IconSubscribe extends React.Component {
     }
   }
 
-  comprobeSubscribe = () => { 
+  comprobeSubscribe = () => {
     if (this.props.dataMyUser.subscribedRoutes)
       return this.props.dataMyUser.subscribedRoutes.includes(this.props.keyRoute)
     return false
@@ -73,8 +73,7 @@ class IconSubscribe extends React.Component {
 
   userRequest = async (force) => {
     if (!this.props.dataMyUser.name || this.props.dataMyUser.key == '' || this.props.dataMyUser.name == '' || force) {
-      const {dataUser} = await Fire.shared.getInfoUser(this.props.dataMyUser.key)
-      this.props.insertDataMyUser(dataUser)
+      fetchUser
     }
   }
 
@@ -132,8 +131,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    insertDataMyUser: (user) => {
-      dispatch(insertDataMyUser(user))
+    fetchUser: () => {
+      dispatch(fetchUser())
     }
   }
 }

@@ -111,17 +111,15 @@ class Fire extends React.Component {
             image: img || "https://firebasestorage.googleapis.com/v0/b/rutacaninarn.appspot.com/o/utils%2FdefectRoute.jpg?alt=media&token=86c6aedb-8a51-4e70-b42b-78cd4949613f",
             name: (title || "Desconocido").trim(),
             ...post
-          };
-          data.push(route);
+          }
+          data.push(route)
         }
-      });
-
-      let posts = {};
+      })
+      let posts = {}
       for (let child of data) {
         posts[child.key] = child;
       }
-
-      return Object.values(posts).sort((a, b) => a.timestamp < b.timestamp)
+      return Object.values(posts)
 
     } catch ({message}) {
       console.log('Error in getRoutes func fire', message)

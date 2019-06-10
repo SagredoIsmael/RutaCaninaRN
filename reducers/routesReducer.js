@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        items: action.payload
+        items: action.payload.sort((a,b) => (a.date > b.date) ? 1 : ((b.date > a.date) ? -1 : 0))
       }
 
     case ERROR_DATA_ROUTES:

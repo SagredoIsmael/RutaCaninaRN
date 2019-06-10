@@ -30,7 +30,7 @@ class RutasScreen extends React.Component {
   _confiBackButtonAndroid = () => {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       this.props.navigation.navigate('RutasStack')
-      return true;
+      return true
     })
   }
 

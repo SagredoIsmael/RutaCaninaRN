@@ -9,7 +9,6 @@ import Fire from "../../api/Fire"
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Item from "../../components/Item"
 import Loader from '../../components/Modals/Loader'
-import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Alert,
   ScrollView,
@@ -92,7 +91,6 @@ export class EndRoute extends React.Component {
               this.setState({isLoading: false})
               this.goToBack()
               this.props.fetchRoutes()
-              showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
             }
           }
         }
