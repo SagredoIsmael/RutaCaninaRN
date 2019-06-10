@@ -58,9 +58,6 @@ class ItemUserRedux extends Component {
         this.props.nav.navigate("Profile", {keyUser: this.props.keyCreator})
       }
     }
-    if (this.props.dismissModal != null) {
-      this.props.dismissModal()
-    }
   }
 
   _confiBackButtonAndroid = () => {

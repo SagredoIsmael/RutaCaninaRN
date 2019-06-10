@@ -275,11 +275,9 @@ class Fire extends React.Component {
         return {dataUser};
       } else {
         console.log('Error in getInfoUser func fire', message)
-        alert("Error en la identificación de tu usuario. Por favor inicia sesión")
       }
     } catch ({message}) {
       console.log('Error in getInfoUser func fire', message)
-      alert("Error en la identificación de tu usuario. Por favor inicia sesión")
     }
   }
 
