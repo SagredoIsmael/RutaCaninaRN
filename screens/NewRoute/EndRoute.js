@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux'
 import {insertDataMyUser} from '../../actions/usersActions'
+import {fetchRoutes} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
@@ -8,6 +9,7 @@ import Fire from "../../api/Fire"
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import Item from "../../components/Item"
 import Loader from '../../components/Modals/Loader'
+import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Alert,
   ScrollView,
@@ -73,22 +75,24 @@ export class EndRoute extends React.Component {
               this.setState({isLoading: true})
               const attributesDicc = this.prepareAttributes()
               if (this.props.dataNewRoute.isEditing) {
-                //  await Fire.shared.updateAttributeDog(attributesDicc, this.state.newValueKeyDog)
+                //update route
+                  await Fire.shared.updateRouteWithAttributes(attributesDicc, this.props.dataNewRoute.key)
               } else {
                 //Create route
-                const keyRoute = await Fire.shared.createNewRouteWithAttributes(attributesDicc, this.props.dataNewRoute.photo)
+                const keyRoute = await Fire.shared.createNewRouteWithAttributes(attributesDicc)
 
                 //Subscribe me
                 const attributesSubscribe = {
                   nameCreator: this.props.dataMyUser.name,
                   imageCreator: this.props.dataMyUser.image
                 }
-
                 await Fire.shared.addAssistantsRoute(attributesSubscribe, keyRoute, this.props.dataMyUser.subscribedRoutes)
+
               }
               this.setState({isLoading: false})
               this.goToBack()
-              this.props.refreshList();
+              this.props.fetchRoutes()
+              showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
             }
           }
         }
@@ -120,12 +124,12 @@ export class EndRoute extends React.Component {
   }
 
   renderItem = () => (
-    <Item keyCreator={this.props.dataMyUser.key} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.photo} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} isHiddenOption={true} coords={this.props.dataNewRoute.coords} duration={this.props.dataNewRoute.duration}/>)
+    <Item keyCreator={this.props.dataMyUser.key} imageCreator={this.props.dataMyUser.image} nameCreator={this.props.dataMyUser.name} title={this.props.dataNewRoute.title} image={this.props.dataNewRoute.image} description={this.props.dataNewRoute.description} date={this.props.dataNewRoute.date} time={this.props.dataNewRoute.time} isHiddenOption={true} coords={this.props.dataNewRoute.coords}/>)
 
   render() {
     if (this.props.currentPosition == 2) {
       return (<ScrollView style={styles.container}>
-        <CopilotStep text="Vista previa de tu ruta. ¡Click en 'Crear ruta' si todo está genial!" order={1} name="createRoute">
+        <CopilotStep text="Vista previa de tu ruta. ¡Click en 'Guardar ruta' si todo está genial!" order={1} name="createRoute">
           <WalkthroughableView style={{
               alignItems: 'center',
               paddingLeft: 35,
@@ -143,7 +147,7 @@ export class EndRoute extends React.Component {
             marginTop: 30,
             marginBottom: 50
           }} borderColor={Colors.pinkChicle} raiseLevel={2} textColor={Colors.pinkChicle} backgroundDarker={Colors.pinkChicle} backgroundShadow={Colors.pinkChicle} backgroundActive={Colors.background} onPress={value => this.comprobeChanges()}>
-          ¡Crear ruta!
+          {this.props.dataNewRoute.isEditing? "¡Modificar ruta!" : "¡Crear ruta!"}
         </AwesomeButtonRick>
         <Loader loading={this.state.isLoading}/>
       </ScrollView>)
@@ -163,6 +167,9 @@ const mapDispatchToProps = dispatch => {
   return {
     insertDataMyUser: (user) => {
       dispatch(insertDataMyUser(user))
+    },
+    fetchRoutes: () => {
+      dispatch(fetchRoutes())
     }
   }
 }

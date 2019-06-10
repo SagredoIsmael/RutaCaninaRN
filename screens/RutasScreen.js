@@ -5,7 +5,6 @@ import List from '../components/List'
 import ActionButton from 'react-native-action-button'
 import Colors from '../constants/Colors'
 import FlashMessage from 'react-native-flash-message'
-import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   LayoutAnimation,
   RefreshControl,
@@ -35,15 +34,10 @@ class RutasScreen extends React.Component {
     })
   }
 
-  refreshList = () => {
-    showMessage({message: "¡Tu ruta se ha creado correctamente!", type: "success", floating: true})
-    this.props.fetchRoutes()
-  }
-
   goToNewRoute = () => {
     if (this.props.dataMyUser.key != '') {
       this.props.resetNewRoute()
-      this.props.navigation.navigate('NewRoute', {onResfresh: this.refreshList, restoreBackButton: this._confiBackButtonAndroid, titleHeader: 'Nueva ruta'})
+      this.props.navigation.navigate('NewRoute', {restoreBackButton: this._confiBackButtonAndroid, titleHeader: 'Nueva ruta'})
     } else {
       this.showAlertLogIn()
     }

@@ -129,29 +129,26 @@ class Fire extends React.Component {
     }
   }
 
-  createNewRouteWithAttributes = async (attributesDicc, newValuePhotoPathRoute) => {
+  createNewRouteWithAttributes = async (attributesDicc) => {
     let ref = firebase.firestore().collection("routes")
     var newIdRoute = -1
     await ref.add(attributesDicc).then(data => {
-      if (newValuePhotoPathRoute != null)
-        this.uploadImageRouteAsync(newValuePhotoPathRoute, data.id)
-        newIdRoute = data.id
+      newIdRoute = data.id
     }).catch(function(error) {
       console.error("Error adding new route: ", error);
     })
     return newIdRoute
   }
 
+
   uploadImageRouteAsync = async (uri, keyRoute) => {
-    const ref = firebase.storage().ref().child("routesPhotos").child(keyRoute).child("photo");
+    let randomStringID =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const ref = firebase.storage().ref().child("routesPhotos").child(randomStringID).child("photo");
 
     const resultFetch = await this._fetchUploadImage(ref, uri)
 
     if (resultFetch){
-      const attributesDicc = {
-        image: resultFetch
-      };
-      return this.updateAttributeRoute(attributesDicc, keyRoute);
+      return resultFetch
     }else{
       return false
     }

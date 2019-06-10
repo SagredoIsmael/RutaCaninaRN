@@ -40,7 +40,7 @@ class MapRoute extends React.Component {
     this._getLocationAsync()
     this.props.copilotEvents.on('stepChange', this.handleStepChange)
     this.props.onRef(this)
-    if (this.props.dataNewRoute.isEditing) this.setState({coordsMarker: this.props.dataNewRoute.coords})
+    if (this.props.dataNewRoute.isEditing) this.setState({coordsMarker: this.props.dataNewRoute.coords, descripMarker:'Punto de encuentro'})
   }
 
 

@@ -4,6 +4,8 @@ import {Permissions, ImagePicker, Font, Constants} from "expo";
 import {setEditingRoute} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import moment from 'moment'
+import Loader from "../../components/Modals/Loader"
+import Fire from "../../api/Fire"
 import AutoTypingText from 'react-native-auto-typing-text'
 import AwesomeButtonRick from 'react-native-really-awesome-button/src/themes/rick'
 import TooltipCopilot from '../../components/TooltipComponent/TooltipCopilot'
@@ -49,7 +51,8 @@ class StartRoute extends React.Component {
     modalVisible: false,
     isOpenTimePickerIosModal: false,
     isOpenDateModal: false,
-    isOpenDescriptionModal: false
+    isOpenDescriptionModal: false,
+    isLoading: false,
   }
 
   setModalVisible(visible, params = null) {
@@ -120,11 +123,6 @@ class StartRoute extends React.Component {
         this.props.dataNewRoute.description = value
         this.setState({description: value})
         break;
-
-      case "duration":
-        this.props.dataNewRoute.duration = value[0]
-        this.setState({duration: value})
-        break;
     }
     this.props.setEditingRoute(this.props.dataNewRoute)
   }
@@ -142,10 +140,22 @@ class StartRoute extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [4, 3]
-    });
+    })
     if (!result.cancelled) {
-      this.props.dataNewRoute.photo = result.uri
-      this.setState({photoStatus: "Foto cargada"})
+      this.setState({isLoading: true})
+      uploadUrl = await Fire.shared.uploadImageRouteAsync(result.uri)
+      if (uploadUrl != null) {
+        this.props.dataNewRoute.image = uploadUrl
+        this.setState({photoStatus: "Foto cargada"})
+      }else{
+        Alert.alert("¡Wuau!", "Error al cargar la foto", [
+          {
+            text: "Aceptar",
+            onPress: () => this.setState({isLoading: false})
+          }
+        ], {cancelable: false})
+      }
+      this.setState({isLoading: false})
     }
   }
 
@@ -163,7 +173,7 @@ class StartRoute extends React.Component {
         min = "00"
       var time = hour + ":" + min
 
-      this.handleValueChange("time", time)
+      this.changeValueFromComponent("time", time)
     }
     if (action === TimePickerAndroid.dismissedAction) {
       console.log("Dismissed");
@@ -208,7 +218,7 @@ class StartRoute extends React.Component {
                   <Fumi label={'Nombre de la ruta'} style={{
                       marginTop: 5
                     }} iconClass={MaterialCommunityIcons} iconName={'routes'} iconColor={Colors.pinkChicle} onChangeText={(text) => {
-                      this.handleValueChange('name', text)
+                      this.changeValueFromComponent('name', text)
                     }} value={this.props.dataNewRoute.title} iconSize={20} iconWidth={40} inputPadding={16}/>
 
                   <TouchableOpacity onPress={() => this.setState({isOpenDateModal: true})}>
@@ -267,6 +277,7 @@ class StartRoute extends React.Component {
         <DateModal isOpenDateModal={this.state.isOpenDateModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
         <TimePickerIosModal isOpenTimePickerIosModal={this.state.isOpenTimePickerIosModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
         <TextInputModal isOpenDescriptionModal={this.state.isOpenDescriptionModal} clickDismiss={this._pressDismissModals} changeValueDate={this.changeValueFromComponent}/>
+        <Loader loading={this.state.isLoading}/>
       </View>)
     }
     return (<View/>)

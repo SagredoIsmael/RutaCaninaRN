@@ -101,14 +101,6 @@ class Item extends React.Component {
               </Text>
             : null
         }
-        {
-          this.props.duration != ''
-            ? <Text style={styles.time}>
-                ({this.props.duration})
-              </Text>
-
-            : null
-        }
       </View>
       <ViewMoreText numberOfLines={1} renderViewMore={this.props.isOpenFromModal? this.renderNoViewMore :this.renderViewMore} renderViewLess={this.renderViewLess}>
         <Text style={styles.subtitle}>{this.props.description}</Text>

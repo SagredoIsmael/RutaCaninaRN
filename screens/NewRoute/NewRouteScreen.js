@@ -97,13 +97,6 @@ class NewRouteScreen extends React.Component {
     }
   }
 
-  refreshList = () => {
-    const { navigation } = this.props;
-    const onRefresh = navigation.getParam('onResfresh', null);
-
-    if (onRefresh) onRefresh()
-  }
-
   render() {
     return (<View style={styles.container}>
       <ImageBackground source={require('../../assets/images/background.png')} style={{
@@ -125,7 +118,7 @@ class NewRouteScreen extends React.Component {
             <MapRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childMap = ref)}/>
           </View>
           <View style={styles.slide1}>
-            <EndRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childEnd = ref)} nav={this.props.navigation} refreshList={this.refreshList}/>
+            <EndRoute currentPosition={this.state.currentPosition} onRef={ref => (this.childEnd = ref)} nav={this.props.navigation}/>
           </View>
         </Swiper>
       </ImageBackground>
