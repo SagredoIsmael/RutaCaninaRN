@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 import Colors from '../constants/Colors'
 import Icon1 from 'react-native-vector-icons/Ionicons'
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat, Send } from 'react-native-gifted-chat'
 import Fire from "../api/Fire"
 import {
   Image,
@@ -74,6 +74,18 @@ class ChatRouteScreen extends React.Component {
     this._addMessagesToChat(message)
   }
 
+  _renderSend(props) {
+        return (
+            <Send
+                {...props}
+            >
+                <View style={{marginRight: 10, marginBottom: 5}}>
+                  <Icon1 style={{marginRight: 5}} name="ios-send" color={Colors.pinkChicle} size={32}/>
+                </View>
+            </Send>
+        )
+    }
+
   _goToProfile = (user) => {
     if (user._id){
       if (user._id == Fire.shared.uid) {
@@ -85,7 +97,6 @@ class ChatRouteScreen extends React.Component {
   }
 
   _addMessagesToChat = (messages) => {
-
     if (messages) {
       const messagesSorted = [].concat(messages)
       .sort((a, b) => a.createdAt < b.createdAt)
@@ -103,6 +114,7 @@ class ChatRouteScreen extends React.Component {
         messages={this.state.messages}
         placeholder={"Escribe tu mensaje.."}
         onSend={this._sendMessage}
+        renderSend={this._renderSend}
         isAnimated={true}
         showUserAvatar={true}
         //inverted={false}
