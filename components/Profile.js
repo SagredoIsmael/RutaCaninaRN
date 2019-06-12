@@ -253,6 +253,7 @@ class Profile extends React.Component {
         <TouchableHighlight underlayColor="rgba(98,93,144,0)" onPress={() => this._logOut()}>
           <View style={{
               flexDirection: "row",
+              marginRight: 5,
               justifyContent: "flex-end",
               top: 2,
               right: 2
@@ -402,7 +403,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignSelf: "center",
     position: "relative",
-    marginTop: 40
+    marginTop: 40,
+    marginLeft: 5
   },
 
   closeButtonContainer: {

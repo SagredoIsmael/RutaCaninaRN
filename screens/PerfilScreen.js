@@ -24,7 +24,7 @@ class PerfilScreen extends React.Component {
     headerStyle: {
       backgroundColor: Colors.profilegreen
     },
-    headerLeft: (<Icon.Button name='md-arrow-back' backgroundColor="transparent" color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} size={32} onPress={() => ourself.props.navigation.goBack(null)}></Icon.Button>)
+    headerLeft: (<Icon.Button name='md-arrow-back' backgroundColor="transparent" color={Colors.pinkChicle} underlayColor={Colors.whiteCrudo} size={32} onPress={() => ourself.props.navigation.navigate('RutasStack')}></Icon.Button>)
   }
 
   state = {

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableHighlight, StyleSheet, BackHandler} from 'react-native'
 import Colors from "../constants/Colors"
-import Icon from "react-native-vector-icons/Octicons"
 import {Avatar} from "react-native-elements"
 
 const profileImageSize = 36
