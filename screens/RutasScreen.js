@@ -66,7 +66,7 @@ class RutasScreen extends React.Component {
       <List refreshControl = {
         <RefreshControl refreshing = {loading} onRefresh = {this._onRefresh} />
       }
-      onPressFooter={this._onRefresh} data={routes} myKey={dataMyUser.key} nav={navigation}/>
+      onPressFooter={this._onRefresh} data={routes.items} myKey={dataMyUser.key} nav={navigation}/>
       <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {this.goToNewRoute()}} size={loading? 0: 50}/>
       <FlashMessage position="top"/>
     </View>)
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {routes: state.dataRoutes.items, loading: state.dataRoutes.loading, error: state.dataRoutes.error, dataMyUser: state.dataMyUser}
+  return {routes: state.dataRoutes, loading: state.dataRoutes.loading, error: state.dataRoutes.error, dataMyUser: state.dataMyUser}
 }
 
 const mapDispatchToProps = dispatch => {

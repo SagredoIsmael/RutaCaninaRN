@@ -102,7 +102,7 @@ class Item extends React.Component {
             : null
         }
       </View>
-      <ViewMoreText numberOfLines={1} renderViewMore={this.props.isOpenFromModal? this.renderNoViewMore :this.renderViewMore} renderViewLess={this.renderViewLess}>
+      <ViewMoreText numberOfLines={3} renderViewMore={this.props.isOpenFromModal? this.renderNoViewMore :this.renderViewMore} renderViewLess={this.renderViewLess}>
         <Text style={styles.subtitle}>{this.props.description}</Text>
       </ViewMoreText>
     </View>)
