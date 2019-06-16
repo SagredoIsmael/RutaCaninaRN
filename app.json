@@ -31,12 +31,12 @@
         "NSPhotoLibraryUsageDescription": "¿Permites usar la librería para ver fotos de tus canes?",
       },
       "config": {
-        "googleMapsApiKey": "AIzaSyBFn2gCWT1I0-kEG2v3bm8h1lP69_NA0dk",
+        "googleMapsApiKey": "AIzaSyBwmd0aIxF5kvpI1mP1qGfwBCLeyCJRmds",
       },
     },
     "android": {
       "package": "com.ismaelsagredo.RutaCaninaRN",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBwmd0aIxF5kvpI1mP1qGfwBCLeyCJRmds"
@@ -47,8 +47,6 @@
         "ACCESS_FINE_LOCATION",
         "CAMERA",
         "MANAGE_DOCUMENTS",
-        "READ_CALENDAR",
-        "WRITE_CALENDAR",
         "READ_EXTERNAL_STORAGE",
         "USE_FINGERPRINT",
         "VIBRATE",
