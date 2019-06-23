@@ -78,17 +78,13 @@ class IconSubscribe extends React.Component {
   }
 
   subscribeRoute = async () => {
-    if (this.props.dataMyUser.name != '') {
-      const attributesSubscribe = {
-        nameCreator: this.props.dataMyUser.name,
-        imageCreator: this.props.dataMyUser.image
-      }
-      if (await Fire.shared.addAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
-        this.userRequest(true)
-        showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-      } else {
-        showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-      }
+    const attributesSubscribe = {
+      nameCreator: this.props.dataMyUser.name,
+      imageCreator: this.props.dataMyUser.image
+    }
+    if (await Fire.shared.addAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
+      this.userRequest(true)
+      showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
     } else {
       showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
     }

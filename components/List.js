@@ -1,7 +1,6 @@
 import React from "react"
 import {FlatList, View, Button} from "react-native"
 import Colors from "../constants/Colors"
-import Footer from "./Footer"
 import {connect} from "react-redux"
 import {resetScrollPositionList} from '../actions/routesActions'
 import Item from "./Item"
@@ -15,7 +14,6 @@ class List extends React.Component {
   keyExtractor = item => item.key;
   render() {
     const {
-      onPressFooter,
       ...props
     } = this.props;
     return (
@@ -25,7 +23,7 @@ class List extends React.Component {
             paddingTop: 10
           }} ref={(ref) => {
             this.flatListRef = ref;
-          }} keyExtractor={this.keyExtractor} ListFooterComponent={footerProps => (<Footer {...footerProps} onPress={onPressFooter}/>)} renderItem={this.renderItem} {...props} ItemSeparatorComponent={this.renderSeparator}/>
+          }} keyExtractor={this.keyExtractor} renderItem={this.renderItem} {...props} ItemSeparatorComponent={this.renderSeparator}/>
       </View>
     )
   }

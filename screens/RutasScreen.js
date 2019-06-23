@@ -66,7 +66,7 @@ class RutasScreen extends React.Component {
       <List refreshControl = {
         <RefreshControl refreshing = {loading} onRefresh = {this._onRefresh} />
       }
-      onPressFooter={this._onRefresh} data={routes.items} myKey={dataMyUser.key} nav={navigation}/>
+      data={routes.items} myKey={dataMyUser.key} nav={navigation}/>
       <ActionButton buttonColor={Colors.verdeOscuro} onPress={() => {this.goToNewRoute()}} size={loading? 0: 50}/>
       <FlashMessage position="top"/>
     </View>)
