@@ -1,4 +1,5 @@
 import Fire from '../api/Fire'
+import { showLoadingSubscribeUserRoute, hiddenLoadingSubscribeUserRoute, showSuccessMessage, showErrorMessage } from './UI'
 import { SET_DATA_MY_USER, RESET_DATA_MY_USER, SET_DATA_USERS, SET_DATA_NAME_USER, REQUEST_DATA_USER, REQUEST_ADD_ASSISTANT_ROUTE, REQUEST_DELETE_ASSISTANT_ROUTE, SUCCESS_ADD_ASSISTANT_ROUTE, SUCCESS_DELETE_ASSISTANT_ROUTE, ERROR_ADD_ASSISTANT_ROUTE, ERROR_DELETE_ASSISTANT_ROUTE } from './types'
 
 export const requestDataUser = () => {
@@ -112,13 +113,29 @@ const _addAsistantFire = async(dispatch, getState, keyRoute) => {
     nameCreator: getState().dataMyUser.name,
     imageCreator: getState().dataMyUser.image
   }
+  dispatch(showLoadingSubscribeUserRoute())
   dispatch(requestAddAssistantRoute())
   const response = await Fire.shared.addAssistantsRoute(attributesSubscribe, keyRoute, getState().dataMyUser.subscribedRoutes)
-  response ? dispatch(successAddAssistantRoute(keyRoute)) : dispatch(errorAddAssistantRoute())
+  if (response) {
+    dispatch(successAddAssistantRoute(keyRoute))
+    dispatch(showSuccessMessage("¡Te has apuntado a la ruta!"))
+  }else{
+    dispatch(showErrorMessage("Ha ocurrido un error al apuntarte. Inténtalo más tarde"))
+    dispatch(errorAddAssistantRoute())
+  }
+  dispatch(hiddenLoadingSubscribeUserRoute())
 }
 
 const _deleteAsistantFire = async(dispatch, getState, keyRoute) => {
+  dispatch(showLoadingSubscribeUserRoute())
   dispatch(requestDeleteAssistantRoute())
   const response = await Fire.shared.deleteAssistantsRoute(keyRoute, getState().dataMyUser.subscribedRoutes)
-  response ? dispatch(successDeleteAssistantRoute(keyRoute)) : dispatch(errorDeleteAssistantRoute())
+  if (response) {
+    dispatch(successDeleteAssistantRoute(keyRoute))
+    dispatch(showErrorMessage("Te has desapuntado de la ruta"))
+  }else{
+    dispatch(showErrorMessage("Ha ocurrido un error al desapuntarte. Inténtalo más tarde"))
+    dispatch(errorDeleteAssistantRoute())
+  }
+  dispatch(hiddenLoadingSubscribeUserRoute())
 }

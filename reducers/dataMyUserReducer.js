@@ -26,7 +26,6 @@ export default (state = initialState, action) => {
 
     case SUCCESS_DELETE_ASSISTANT_ROUTE:
       const newDeleteSubscribedRoutes = state.subscribedRoutes.filter(e => e != action.payload)
-      
       return {...state, subscribedRoutes: newDeleteSubscribedRoutes}
 
     case ERROR_ADD_ASSISTANT_ROUTE:

@@ -7,9 +7,7 @@ import dataMyUser from './dataMyUserReducer'
 import newRoute from './newRouteReducer'
 import routesScrollPos from './routesScrollPositionReducer'
 import modals from './modalsReducer'
-
-
-export const initialState = {}
+import UI from './UI'
 
 export const rootReducer = combineReducers({
   firebase: firebaseReducer,
@@ -19,5 +17,6 @@ export const rootReducer = combineReducers({
   dataRoutes: routes,
   dataNewRoute: newRoute,
   scrollPositionList: routesScrollPos,
-  modals: modals
+  modals: modals,
+  UI: UI,
 })

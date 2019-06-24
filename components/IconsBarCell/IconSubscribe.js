@@ -4,7 +4,6 @@ import {fetchUser, fetchAssistantsRoute} from '../../actions/usersActions'
 import Colors from "../../constants/Colors"
 import IconSimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import IconOcticons from "react-native-vector-icons/Octicons"
-import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Image,
   Platform,
@@ -21,14 +20,11 @@ import {
 
 class IconSubscribe extends React.Component {
 
-state ={
-  isLoadingSubscribe:false
-}
-
   render() {
+    const { loading } = this.props
     return (<View>
       {
-        this.state.isLoadingSubscribe
+        loading
           ? (<ActivityIndicator size="small" color={Colors.pinkChicle}/>)
           : (<TouchableHighlight underlayColor="rgba(98,93,144,0)"  onPress={() => {this._pressSubscribe() }}>
             {
@@ -81,7 +77,10 @@ state ={
 }
 
 const mapStateToProps = state => {
-  return {dataMyUser: state.dataMyUser}
+  return {
+    dataMyUser: state.dataMyUser,
+    loading: state.UI.loadingSubscribeUserRoute
+  }
 }
 
 
