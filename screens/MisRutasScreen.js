@@ -40,18 +40,17 @@ class MisRutasScreen extends React.Component {
   render() {
     LayoutAnimation.easeInEaseOut()
     const { loading, routes, dataMyUser, navigation } = this.props
-
     var myRoutes = []
 
     if (dataMyUser.subscribedRoutes != null ){
       myRoutes = routes.filter(route => {return dataMyUser.subscribedRoutes.includes(route.key)})
-      console.log('@@@@aver', myRoutes);
     }
 
     if (this.props.dataMyUser.key != '' && myRoutes.length > 0){
       return (
         <View style={styles.containerList}>
         <List data={myRoutes} myKey={dataMyUser.key} nav={navigation}/>
+        <FlashMessage position="top"/>
       </View>)
     }
 

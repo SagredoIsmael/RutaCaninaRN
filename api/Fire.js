@@ -160,18 +160,15 @@ class Fire extends React.Component {
 
   addAssistantsRoute = async (attributesDicc, keyRoute, subscribedRoutes) => {
     let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid);
-
     try {
       await ref.set(attributesDicc, {merge: true})
 
-      subscribedRoutes
-        ? subscribedRoutes.push(keyRoute)
-        : subscribedRoutes = [keyRoute]
+      const newSubscribedRoutes = subscribedRoutes? [...subscribedRoutes, keyRoute] : [keyRoute]
 
-      const newSubscribedRoutes = {
-        subscribedRoutes: subscribedRoutes
+      const ObjNewSubscribedRoutes = {
+        subscribedRoutes: newSubscribedRoutes
       }
-      return this.updateAttributeUser(newSubscribedRoutes);
+      return this.updateAttributeUser(ObjNewSubscribedRoutes);
     } catch ({message}) {
       console.log(message);
       return false
@@ -179,18 +176,17 @@ class Fire extends React.Component {
   }
 
   deleteAssistantsRoute = async (keyRoute, subscribedRoutes) => {
-    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid);
-
+    let ref = firebase.firestore().collection("routes").doc(keyRoute).collection("assistants").doc(this.uid)
     try {
 
       await ref.delete()
-      var index = subscribedRoutes.indexOf(keyRoute);
-      subscribedRoutes.splice(index, 1);
 
-      const newSubscribedRoutes = {
-        subscribedRoutes: subscribedRoutes
+      const newSubscribedRoutes = subscribedRoutes.filter(e => e != keyRoute)
+
+      const objNewSubscribedRoutes = {
+        subscribedRoutes: newSubscribedRoutes
       }
-      return this.updateAttributeUser(newSubscribedRoutes);
+      return this.updateAttributeUser(objNewSubscribedRoutes);
 
     } catch ({message}) {
       console.log(message);

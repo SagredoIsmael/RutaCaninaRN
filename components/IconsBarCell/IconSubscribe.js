@@ -1,10 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {fetchUser} from '../../actions/usersActions'
+import {fetchUser, fetchAssistantsRoute} from '../../actions/usersActions'
 import Colors from "../../constants/Colors"
 import IconSimpleLineIcons from "react-native-vector-icons/SimpleLineIcons"
 import IconOcticons from "react-native-vector-icons/Octicons"
-import Fire from "../../api/Fire"
 import {showMessage, hideMessage} from 'react-native-flash-message'
 import {
   Image,
@@ -22,13 +21,9 @@ import {
 
 class IconSubscribe extends React.Component {
 
-  state = {
-    isLoadingSubscribe: false
-  }
-
-  componentDidMount() {
-    this.userRequest(false)
-  }
+state ={
+  isLoadingSubscribe:false
+}
 
   render() {
     return (<View>
@@ -58,10 +53,9 @@ class IconSubscribe extends React.Component {
     if (this.props.dataMyUser.key == '') {
       this.showAlertLogIn()
     } else {
-      this.setState({isLoadingSubscribe: true})
       this.comprobeSubscribe()
-        ? this.unSubscribeRoute()
-        : this.subscribeRoute()
+        ? this.props.fetchAssistantsRoute('delete', this.props.keyRoute)
+        : this.props.fetchAssistantsRoute('add', this.props.keyRoute)
     }
   }
 
@@ -69,40 +63,6 @@ class IconSubscribe extends React.Component {
     if (this.props.dataMyUser.subscribedRoutes)
       return this.props.dataMyUser.subscribedRoutes.includes(this.props.keyRoute)
     return false
-  }
-
-  userRequest = async (force) => {
-    if (!this.props.dataMyUser.name || this.props.dataMyUser.key == '' || this.props.dataMyUser.name == '' || force) {
-      fetchUser
-    }
-  }
-
-  subscribeRoute = async () => {
-    const attributesSubscribe = {
-      nameCreator: this.props.dataMyUser.name,
-      imageCreator: this.props.dataMyUser.image
-    }
-    if (await Fire.shared.addAssistantsRoute(attributesSubscribe, this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
-      this.userRequest(true)
-      showMessage({message: "¡Te has apuntado a la ruta!", type: "success", floating: true})
-    } else {
-      showMessage({message: "Ha ocurrido un error al apuntarte. Inténtalo más tarde", type: "danger", floating: true})
-    }
-    this.setState({isLoadingSubscribe: false})
-  }
-
-  unSubscribeRoute = async () => {
-    if (this.props.dataMyUser.name != '') {
-      if (await Fire.shared.deleteAssistantsRoute(this.props.keyRoute, this.props.dataMyUser.subscribedRoutes)) {
-        this.userRequest(true)
-        showMessage({message: "Te has desapuntado de la ruta", type: "danger", floating: true})
-      } else {
-        showMessage({message: "Ha ocurrido un error al desapuntarte. Inténtalo más tarde", type: "danger", floating: true})
-      }
-    } else {
-      showMessage({message: "Ha ocurrido un error al desapuntarte. Inténtalo más tarde", type: "danger", floating: true})
-    }
-    this.setState({isLoadingSubscribe: false})
   }
 
   showAlertLogIn = () => {
@@ -129,6 +89,9 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchUser: () => {
       dispatch(fetchUser())
+    },
+    fetchAssistantsRoute: (action, keyRoute) => {
+      dispatch(fetchAssistantsRoute(action, keyRoute))
     }
   }
 }
