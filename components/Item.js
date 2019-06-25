@@ -6,8 +6,8 @@ import ListAssistans from './Modals/ListAssistansModal'
 import MapLocation from './Modals/MapLocationModal'
 import ItemUserRedux from './ItemUserRedux'
 import IconSubscribe from './IconsBarCell/IconSubscribe.js'
-import ViewMoreText from 'react-native-view-more-text';
 import Fire from "../api/Fire"
+import ReadMore from 'react-native-read-more-text';
 import {
   Image,
   StyleSheet,
@@ -102,30 +102,35 @@ class Item extends React.Component {
             : null
         }
       </View>
-      <ViewMoreText numberOfLines={3} renderViewMore={this.props.isOpenFromModal? this.renderNoViewMore :this.renderViewMore} renderViewLess={this.renderViewLess}>
+      <ReadMore
+        numberOfLines={3}
+        renderTruncatedFooter={this._renderTruncatedFooter}
+        renderRevealedFooter={this._renderRevealedFooter}
+        onReady={this._handleTextReady}>
         <Text style={styles.subtitle}>{this.props.description}</Text>
-      </ViewMoreText>
+      </ReadMore>
     </View>)
   }
 
+  _renderTruncatedFooter = (handlePress) => {
+      return (
+        <Text style={{color: Colors.tintColor, marginTop: 5}} onPress={handlePress}>
+          Ver más...
+        </Text>
+      );
+    }
 
-  renderViewMore(onPress) {
-    return (<Text style={{
-        color: 'gray'
-      }} onPress={onPress}>Ver más</Text>)
-  }
+    _renderRevealedFooter = (handlePress) => {
+      return (
+        <Text style={{color: Colors.tintColor, marginTop: 5}} onPress={handlePress}>
+          Ver menos
+        </Text>
+      );
+    }
 
-  renderViewLess(onPress) {
-    return (<Text style={{
-        color: 'gray'
-      }} onPress={onPress}>Ver menos</Text>)
-  }
-
-  renderNoViewMore(onPress) {
-    return (<Text style={{
-        color: 'gray'
-      }} ></Text>)
-  }
+  _handleTextReady = () => {
+   console.log('ready!');
+ }
 
   _pressChat = () => {
     this.props.nav.navigate('ChatRouteScreen', {keyRoute :this.props.keyRoute})
