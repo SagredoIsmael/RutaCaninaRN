@@ -39,7 +39,7 @@ class MisRutasScreen extends React.Component {
 
   render() {
     LayoutAnimation.easeInEaseOut()
-    const { loading, routes, dataMyUser, navigation } = this.props
+    const { routes, dataMyUser, navigation } = this.props
     var myRoutes = []
 
     if (dataMyUser.subscribedRoutes != null ){
@@ -112,7 +112,10 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {routes: state.dataRoutes.items, loading: state.dataRoutes.loading, error: state.dataRoutes.error, dataMyUser: state.dataMyUser}
+  return {
+    routes: state.dataRoutes.items,
+    dataMyUser: state.dataMyUser
+  }
 }
 
 

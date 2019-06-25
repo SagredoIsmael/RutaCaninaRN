@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {insertDataMyUser} from '../../actions/usersActions'
+import { insertDataMyUser, fetchAssistantsRoute } from '../../actions/usersActions'
 import {fetchRoutes} from '../../actions/routesActions'
 import Colors from '../../constants/Colors'
 import {copilot, walkthroughable, CopilotStep} from '@okgrow/react-native-copilot'
@@ -46,7 +46,7 @@ export class EndRoute extends React.Component {
   }
 
   handleStepChange = (step) => {
-    console.log(`Current step is: ${step.name}`);
+    console.log(`Current step is: ${step.name}`)
   }
 
   userRequest = async () => {
@@ -55,7 +55,6 @@ export class EndRoute extends React.Component {
   }
 
   comprobeChanges = async () => {
-
     if (this.props.dataNewRoute.title == '') {
       this._showSimpleAlert('¡Wuau!', 'El nombre de la ruta es un campo obligatorio')
     } else {
@@ -72,21 +71,18 @@ export class EndRoute extends React.Component {
               this._showSimpleAlert('¡Wuau!', 'Debes seleccionar el punto de encuentro en el mapa')
             } else {
               this.setState({isLoading: true})
-              const attributesDicc = this.prepareAttributes()
               if (this.props.dataNewRoute.isEditing) {
+                const attributesDicc = this.prepareAttributes()
+
                 //update route
-                  await Fire.shared.updateRouteWithAttributes(attributesDicc, this.props.dataNewRoute.key)
+                  await Fire.shared.updateAttributeRoute(attributesDicc, this.props.dataNewRoute.key)
               } else {
+                const attributesDicc = this.prepareAttributes()
                 //Create route
                 const keyRoute = await Fire.shared.createNewRouteWithAttributes(attributesDicc)
 
                 //Subscribe me
-                const attributesSubscribe = {
-                  nameCreator: this.props.dataMyUser.name,
-                  imageCreator: this.props.dataMyUser.image
-                }
-                await Fire.shared.addAssistantsRoute(attributesSubscribe, keyRoute, this.props.dataMyUser.subscribedRoutes)
-
+                this.props.fetchAssistantsRoute('add', keyRoute)
               }
               this.setState({isLoading: false})
               this.goToBack()
@@ -168,12 +164,20 @@ const mapDispatchToProps = dispatch => {
     },
     fetchRoutes: () => {
       dispatch(fetchRoutes())
+    },
+    fetchAssistantsRoute: (action, keyRoute) => {
+      dispatch(fetchAssistantsRoute(action, keyRoute))
     }
   }
 }
 
 const mapStateToProps = state => {
-  return {dataNewRoute: state.dataNewRoute, dataMyUser: state.dataMyUser, refreshRoutes: state.refreshRoutes}
+  return {
+    dataNewRoute: state.dataNewRoute,
+    dataMyUser: state.dataMyUser,
+    refreshRoutes: state.refreshRoutes,
+
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(copilot({tooltipComponent: TooltipCopilot, animated: true, overlay: 'svg'})(EndRoute))

@@ -82,7 +82,11 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = state => {
-  return {routes: state.dataRoutes, loading: state.dataRoutes.loading, error: state.dataRoutes.error, dataMyUser: state.dataMyUser}
+  return {
+    routes: state.dataRoutes,
+    loading: state.dataRoutes.loading,
+    error: state.dataRoutes.error,
+    dataMyUser: state.dataMyUser}
 }
 
 const mapDispatchToProps = dispatch => {
