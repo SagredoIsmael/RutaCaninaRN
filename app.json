@@ -5,7 +5,7 @@
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": ["ios", "android"],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
     "splash": {
@@ -36,7 +36,7 @@
     },
     "android": {
       "package": "com.ismaelsagredo.RutaCaninaRN",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBwmd0aIxF5kvpI1mP1qGfwBCLeyCJRmds"
